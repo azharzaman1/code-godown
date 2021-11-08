@@ -1,0 +1,9 @@
+:root {
+  --primary: #e76f51;
+  --primary-light: #d69b8c;
+  --primary-dark: #e24d28;
+  --primaryText-accent: rgba(255, 255, 255, 0.87);
+
+  --background-main: #1e2c31;
+  --background-light: #26363b;
+}
