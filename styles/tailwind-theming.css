@@ -3,6 +3,12 @@
 @layer components {
   /* Custom Classes */
 
+  .divider::before {
+    height: 2px;
+    background: gray;
+    width: 20px;
+  }
+
   .font-primary {
     font-family: "Inter", "Roboto", sans-serif;
   }
@@ -21,30 +27,42 @@
 
   /* Buttons */
 
+  .small-button {
+    @apply px-6 py-2;
+  }
+
+  .medium-button {
+    @apply px-8 py-3.5;
+  }
+
   .primary-button-custom {
-    @apply px-8 py-3 rounded-md shadow-md font-medium transition duration-200 hover:shadow-lg active:scale-90 cursor-pointer select-none;
+    @apply rounded-md shadow-md font-medium transition duration-200 hover:shadow-lg active:scale-90 cursor-pointer select-none;
   }
 
   .primary-button {
-    @apply primary-button-custom bg-[#e76f51] text-white hover:bg-[#e24d28];
+    @apply primary-button-custom medium-button bg-[#e76f51] text-white hover:bg-[#e24d28];
+  }
+
+  .primary-button-small {
+    @apply primary-button-custom small-button bg-[#e76f51] text-white hover:bg-[#e24d28];
   }
 
   .secondary-button {
-    @apply px-8 py-3 rounded-md shadow-md font-medium transition duration-200 hover:shadow-lg active:scale-90 cursor-pointer select-none bg-[#e76f510e] border-[#e24d28] border-2 text-gray-800 hover:bg-[#e76f51] hover:text-white hover:border-[#e76f51];
+    @apply primary-button-custom bg-[#e76f510e] border-[#e24d28] border-2 text-gray-800 hover:bg-[#e76f51] hover:text-white hover:border-[#e76f51];
   }
 
   .text-button {
-    @apply px-5 rounded-full bg-transparent hover:bg-gray-100 transition duration-150 text-gray-800;
+    @apply px-5 py-2 rounded-md bg-transparent hover:bg-gray-300 transition duration-150 text-gray-800 cursor-pointer;
   }
 
   /* Headings */
 
   .primary-heading {
-    @apply font-bold text-[32px] mb-6;
+    @apply text-4xl tracking-tight font-extrabold text-gray-700 sm:text-5xl md:text-6xl;
   }
 
   .secondary-heading {
-    @apply text-center font-semibold text-[24px] sm:text-[32px] lg:text-[34px] xl:text-[36px] 2xl:text-[42px];
+    @apply text-xl tracking-tight font-bold text-gray-700 sm:text-2xl md:text-4xl;
   }
 
   .tertiary-heading {
@@ -77,5 +95,17 @@
 
   .link-semibold {
     @apply hover:underline cursor-pointer text-[14px] font-semibold text-gray-800;
+  }
+
+  /* Input */
+
+  .input {
+    @apply py-3 px-3 my-3 rounded-md text-gray-500 placeholder-gray-400 border-2 outline-none;
+  }
+
+  /* icon */
+
+  .icon {
+    @apply text-gray-500;
   }
 }

@@ -1,8 +1,12 @@
 import Head from "next/head";
+import { Provider } from "react-redux";
+import store from "../redux/store";
+import AppWrapper from "../components/AppWrapper";
 import "../styles/globals.css";
 import "@material-tailwind/react/tailwind.css";
 import "../styles/tailwind-theming.css";
 import "tailwindcss/tailwind.css";
+import { SnackbarProvider } from "notistack";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -19,7 +23,13 @@ function MyApp({ Component, pageProps }) {
           rel="stylesheet"
         />
       </Head>
-      <Component {...pageProps} />
+      <Provider store={store}>
+        <SnackbarProvider maxSnack={3}>
+          <AppWrapper>
+            <Component {...pageProps} />
+          </AppWrapper>
+        </SnackbarProvider>
+      </Provider>
     </>
   );
 }

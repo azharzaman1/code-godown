@@ -24,7 +24,7 @@ export default function Hero() {
 
           <main className="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
             <div className="sm:text-center lg:text-left">
-              <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+              <h1 className="primary-heading">
                 <span className="block xl:inline">Data to enrich your</span>{" "}
                 <span className="block color-primary-dark xl:inline">
                   online business
@@ -42,7 +42,7 @@ export default function Hero() {
                   </a>
                 </div>
                 <div>
-                  <a href="#" className="secondary-button">
+                  <a href="#" className="secondary-button medium-button">
                     Live Demo
                   </a>
                 </div>

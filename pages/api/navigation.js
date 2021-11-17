@@ -6,21 +6,62 @@ export default function navigation(req, res) {
       name: "Portfolios",
       dropdown: true,
       dropdownItems: [
-        { label: "Portfolio Website", link: "https://azharzaman.com" },
         {
-          label: "Simplified Amazon Clone",
-          link: "https://azhar-amazonclone.ga",
+          name: "Portfolio Website",
+          description:
+            "Get a better understading of where your traffic is coming from",
+          href: "https://azharzaman.com",
+          imgSrc:
+            "https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg",
         },
         {
-          label: "Airbnb Clone",
-          link: "https://azhar-airbnb-clone.netlify.app/",
+          name: "Simplified Amazon Clone",
+          description:
+            "Get a better understading of where your traffic is coming from",
+          href: "https://azhar-amazonclone.ga",
+          imgSrc:
+            "https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg",
         },
         {
-          label: "Simplified Netflix Clone",
-          link: "https://azhar-netflixclone.netlify.app",
+          name: "Airbnb Clone",
+          description:
+            "Get a better understading of where your traffic is coming from",
+          href: "https://azhar-airbnb-clone.netlify.app/",
+          imgSrc:
+            "https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg",
+        },
+        {
+          name: "Simplified Netflix Clone",
+          description:
+            "Get a better understading of where your traffic is coming from",
+          href: "https://azhar-netflixclone.netlify.app",
+          imgSrc:
+            "https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg",
         },
       ],
     },
-    { name: "Upcoming Products", href: "#", dropdown: false },
+    {
+      name: "Upcoming Products",
+      href: "#",
+      dropdown: true,
+      dropdownItems: [
+        {
+          name: "Amazon Clone 2.0",
+          description:
+            "Get a better understading of where your traffic is coming from",
+          href: "#",
+          imgSrc:
+            "https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg",
+        },
+        {
+          name: "Airbnb Clone 2.0",
+          description:
+            "Get a better understading of where your traffic is coming from",
+          href: "https://azhar-airbnb-clone.netlify.app/",
+          imgSrc:
+            "https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg",
+        },
+      ],
+    },
   ]);
 }
