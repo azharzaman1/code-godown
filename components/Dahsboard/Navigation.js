@@ -5,7 +5,8 @@ import "react-minimal-side-navigation/lib/ReactMinimalSideNavigation.css";
 const Navigation = () => {
   return (
     <>
-      <MinimalNavigation
+      <h3>Nav</h3>
+      {/* <MinimalNavigation
         activeItemId="/management/members"
         onSelect={({ itemId }) => {}}
         items={[
@@ -40,7 +41,7 @@ const Navigation = () => {
             ],
           },
         ]}
-      />
+      /> */}
     </>
   );
 };

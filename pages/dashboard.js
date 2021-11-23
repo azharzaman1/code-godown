@@ -13,11 +13,11 @@ import {
   selectFileName,
   selectSnippetName,
 } from "../redux/slices/appSlice";
-import { Cancel, Save, Send } from "@mui/icons-material";
+import { Save, Send } from "@mui/icons-material";
 import AddNewSnippetPanel from "../components/Dahsboard/AddNewSnippetPanel";
 import { useRouter } from "next/dist/client/router";
 
-const dashboard = ({ navigation }) => {
+const dashboard = () => {
   const [dashboardLoading, setDashboardLoading] = useState(false);
   const userInDB = useSelector(selectUserFromDB);
   const snippetName = useSelector(selectSnippetName);
@@ -77,9 +77,8 @@ const dashboard = ({ navigation }) => {
 
   return (
     <Layout
-      className={`min-w-full ${appTheme === "dark" && "dark-bg"}`}
       hideHeader={dashboardLoading}
-      navigation={navigation}
+      className={`min-w-full ${appTheme === "dark" && "dark-bg"}`}
       headerVariant={appTheme === "dark" ? "dark" : "light"}
     >
       {dashboardLoading ? (
@@ -95,8 +94,16 @@ const dashboard = ({ navigation }) => {
               } dashboard-left flex-[0.20]`}
             >
               <div className="dahsboardLeft__navigation flex flex-col w-full">
-                <div className="h-16 rounded shadow w-full flex items-center pl-4">
-                  <h3 className="tertiary-heading">Navigation</h3>
+                <div className="h-16 rounded shadow w-full flex items-center pl-4 border-b">
+                  <h3
+                    className={
+                      appTheme === "dark"
+                        ? "tertiary-heading-dark"
+                        : "tertiary-heading"
+                    }
+                  >
+                    Navigation
+                  </h3>
                 </div>
                 <div className="w-full">
                   <Navigation />
@@ -217,7 +224,7 @@ const dashboard = ({ navigation }) => {
                   )}
                 </div>
               </div>
-              <div className="dashboard__content mt-1 shadow">
+              <div className="dashboard__content mt-1 shadow min-h-[700px]">
                 {display === "snippets" && <DashboardContentPanel />}
                 {display === "add-new-snippet-info" ||
                 display === "finalize-new-snippet" ? (
@@ -235,13 +242,3 @@ const dashboard = ({ navigation }) => {
 };
 
 export default dashboard;
-
-export async function getStaticProps(context) {
-  const navigation = await (
-    await fetch("http://localhost:3000/api/navigation")
-  ).json();
-
-  return {
-    props: { navigation },
-  };
-}
