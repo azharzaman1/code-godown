@@ -6,6 +6,7 @@ import "../styles/globals.css";
 import "@material-tailwind/react/tailwind.css";
 import "../styles/tailwind-theming.css";
 import "tailwindcss/tailwind.css";
+import "../components/Generic/Loader.css";
 import { SnackbarProvider } from "notistack";
 
 function MyApp({ Component, pageProps }) {

@@ -11,18 +11,20 @@
     "@headlessui/react": "^1.4.2",
     "@heroicons/react": "^1.0.5",
     "@material-tailwind/react": "0.3.4",
+    "@monaco-editor/react": "^4.3.1",
     "@mui/icons-material": "^5.1.0",
     "@mui/material": "^5.1.1",
     "@reduxjs/toolkit": "^1.6.2",
-    "daisyui": "^1.16.2",
+    "express": "^4.17.1",
     "firebase": "^9.4.0",
-    "formik": "^2.2.9",
     "next": "latest",
     "notistack": "^2.0.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-firebase-hooks": "^4.0.1",
-    "react-redux": "^7.2.6"
+    "react-minimal-side-navigation": "^1.9.2",
+    "react-redux": "^7.2.6",
+    "react-syntax-highlighter": "^15.4.5"
   },
   "devDependencies": {
     "autoprefixer": "^10.2.6",

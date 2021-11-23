@@ -35,7 +35,7 @@ export default function Hero() {
                 lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat
                 fugiat aliqua.
               </p>
-              <div className="mt-10 sm:mt-8 md:mt-12 lg:mt-14 flex items-center justify-center lg:justify-start space-x-3">
+              <div className="mt-10 sm:mt-8 md:mt-12 lg:mt-14 flex-center-center lg:justify-start space-x-3">
                 <div>
                   <a href="#" className="primary-button">
                     Get started

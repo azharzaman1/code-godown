@@ -7,7 +7,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const DropdownLink = ({ dropdownData, label }) => {
+const DropdownLink = ({ dropdownData, label, dropdownTrigger }) => {
   return (
     <Popover className="relative">
       {({ open }) => (
