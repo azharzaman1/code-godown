@@ -1,4 +1,6 @@
 import Head from "next/head";
+import useSWR from "swr";
+import { fetcher } from "../files/utils";
 import Header from "./Generic/Header/Header";
 
 const Layout = ({
@@ -14,6 +16,8 @@ const Layout = ({
   icon = "/favicon.ico",
   navigation,
 }) => {
+  const { data, error } = useSWR("/api/navigation", fetcher);
+
   return (
     <div className={`layout-contaianer ${className}`}>
       <Head>
@@ -23,7 +27,7 @@ const Layout = ({
       </Head>
       {!hideHeader && (
         <Header
-          navigation={navigation}
+          navigation={navigation || data}
           transparentEffect={tranparentHeader}
           variant={headerVariant}
         />
