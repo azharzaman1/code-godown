@@ -17,3 +17,7 @@ export function validatePassword(password) {
     return false;
   }
 }
+
+export const splitAtIndex = (value, index) => {
+  return value.substring(0, index);
+};

@@ -174,6 +174,7 @@ const authentication = () => {
               fullName: "",
               displayName: user.displayName,
               email: user.email,
+              photoURL: user.photoURL,
               password: "",
               emailVerified: user.emailVerified,
               registeredAt: serverTimestamp(),
@@ -191,7 +192,6 @@ const authentication = () => {
         }
       })
       .catch((error) => {
-        // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
         enqueueSnackbar(`Error Code: ${errorCode}: ${errorMessage}`, {
@@ -217,6 +217,7 @@ const authentication = () => {
               fullName: "",
               displayName: user.displayName,
               email: user.email,
+              photoURL: user.photoURL,
               password: "",
               emailVerified: user.emailVerified,
               registeredAt: serverTimestamp(),
@@ -245,8 +246,8 @@ const authentication = () => {
 
   return (
     <Layout title="Authentication" hideHeader>
-      <Container className="flex flex-col bg-gray-50 min-h-[100vh] items-center justify-center">
-        <div className="w-[450px] max-w-[90%] flex flex-col items-center justify-center">
+      <Container className="flex-center-center flex-col bg-gray-50 min-h-[100vh]">
+        <div className="w-[450px] max-w-[90%] flex-center-center flex-col">
           <div className="form__header">
             <h3 className="secondary-heading mb-4 text-center">
               {formHeading}
@@ -266,16 +267,16 @@ const authentication = () => {
             >
               {mode !== "reset-password" && (
                 <>
-                  <div className="providersAuth-section flex justify-evenly mb-6">
+                  <div className="providersAuth-section flex-evenly-center mb-6">
                     <button
                       onClick={continueWithGH}
-                      className="primary-button-custom w-1/3 py-3 border"
+                      className="button-base w-1/3 py-3 border"
                     >
                       <GitHub fontSize="medium" className="icon" />
                     </button>
                     <button
                       onClick={continueWithGoogle}
-                      className="primary-button-custom w-1/3 border"
+                      className="button-base w-1/3 py-3 border"
                     >
                       <Google fontSize="medium" className="icon" />
                     </button>
@@ -318,7 +319,7 @@ const authentication = () => {
               </div>
               {mode !== "reset-password" && (
                 <div
-                  className={`flex items-center rounded-md justify-between ${
+                  className={`relative flex-between-center rounded-md ${
                     passError && mode !== "login"
                       ? "border-red-400"
                       : "border-[#dadada]"
@@ -337,7 +338,7 @@ const authentication = () => {
                   />
                   <span
                     onClick={() => setPasswordShow((prevState) => !prevState)}
-                    className="cursor-pointer pr-2"
+                    className="absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer pr-2"
                   >
                     {passwordShow ? (
                       <EyeOffIcon className="h-6 icon" />

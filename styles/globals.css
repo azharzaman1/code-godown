@@ -7,3 +7,7 @@
   --background-main: #1e2c31;
   --background-light: #26363b;
 }
+
+.dahsboardLeft__navigation * {
+  user-select: none !important;
+}

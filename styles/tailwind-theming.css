@@ -3,6 +3,18 @@
 @layer components {
   /* Custom Classes */
 
+  .flex-center-center {
+    @apply flex justify-center items-center;
+  }
+
+  .flex-between-center {
+    @apply flex justify-between items-center;
+  }
+
+  .flex-evenly-center {
+    @apply flex justify-evenly items-center;
+  }
+
   .divider::before {
     height: 2px;
     background: gray;
@@ -25,7 +37,27 @@
     color: var(--primary-light);
   }
 
+  .dark-bg {
+    background-color: var(--background-main);
+  }
+
+  .dark-bg-light {
+    background-color: var(--background-light);
+  }
+
   /* Buttons */
+
+  .button-base {
+    @apply rounded-md shadow-md font-medium transition duration-200 hover:shadow-lg active:scale-90 cursor-pointer select-none;
+  }
+
+  .primary-look {
+    @apply bg-[#e76f51] text-white hover:bg-[#e24d28];
+  }
+
+  .secondary-look {
+    @apply bg-[#e76f510e] border-[#e24d28] border-2 text-gray-800 hover:bg-[#e76f51] hover:text-white hover:border-[#e76f51];
+  }
 
   .small-button {
     @apply px-6 py-2;
@@ -35,24 +67,28 @@
     @apply px-8 py-3.5;
   }
 
-  .primary-button-custom {
-    @apply rounded-md shadow-md font-medium transition duration-200 hover:shadow-lg active:scale-90 cursor-pointer select-none;
+  .primary-button-small {
+    @apply button-base small-button primary-look;
   }
 
   .primary-button {
-    @apply primary-button-custom medium-button bg-[#e76f51] text-white hover:bg-[#e24d28];
+    @apply button-base medium-button primary-look;
   }
 
-  .primary-button-small {
-    @apply primary-button-custom small-button bg-[#e76f51] text-white hover:bg-[#e24d28];
+  .secondary-button-small {
+    @apply button-base secondary-look small-button;
   }
 
   .secondary-button {
-    @apply primary-button-custom bg-[#e76f510e] border-[#e24d28] border-2 text-gray-800 hover:bg-[#e76f51] hover:text-white hover:border-[#e76f51];
+    @apply button-base secondary-look medium-button;
   }
 
   .text-button {
     @apply px-5 py-2 rounded-md bg-transparent hover:bg-gray-300 transition duration-150 text-gray-800 cursor-pointer;
+  }
+
+  .icon-button {
+    @apply button-base primary-look flex-between-center py-2 px-3;
   }
 
   /* Headings */
@@ -66,13 +102,25 @@
   }
 
   .tertiary-heading {
-    @apply text-xl text-gray-700;
+    @apply text-xl text-gray-700 font-semibold;
+  }
+
+  .tertiary-heading-dark {
+    @apply text-xl font-semibold text-gray-200;
   }
 
   /* Text */
 
   .text {
     @apply text-[16px] text-gray-800;
+  }
+
+  .info-text {
+    @apply text-xs text-gray-500 font-normal;
+  }
+
+  .info-text-dark {
+    @apply text-xs text-gray-300 font-normal;
   }
 
   .text-semibold {

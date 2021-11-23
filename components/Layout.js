@@ -1,9 +1,11 @@
 import Head from "next/head";
-import Header from "./Header";
+import Header from "./Generic/Header/Header";
 
 const Layout = ({
   children,
   hideHeader = false,
+  headerVariant = "light",
+  tranparentHeader = false,
   hideFooter = false,
   className,
   title = "Code Godown",
@@ -19,7 +21,13 @@ const Layout = ({
         <meta name={descriptionName} content={description} />
         <link rel="icon" href={icon} />
       </Head>
-      {!hideHeader && <Header navigation={navigation} />}
+      {!hideHeader && (
+        <Header
+          navigation={navigation}
+          transparentEffect={tranparentHeader}
+          variant={headerVariant}
+        />
+      )}
       <main>{children}</main>
     </div>
   );
