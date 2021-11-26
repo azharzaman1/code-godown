@@ -19,8 +19,13 @@ import {
 } from "@mui/icons-material";
 import { auth } from "../../../client/firebase";
 import { splitAtIndex } from "../../../files/utils";
+import { Typography } from "@mui/material";
+import { useSelector } from "react-redux";
+import { selectTheme } from "../../../redux/slices/appSlice";
+import { ChevronDownIcon } from "@heroicons/react/outline";
 
 function Dropdown({ dropdownTrigger, avatar }) {
+  const themePreference = useSelector(selectTheme);
   const [user, loading, error] = useAuthState(auth);
   const { enqueueSnackbar } = useSnackbar();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -98,6 +103,7 @@ function Dropdown({ dropdownTrigger, avatar }) {
         PaperProps={{
           elevation: 0,
           sx: {
+            color: "primary.contrastText",
             overflow: "visible",
             filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.2))",
             minWidth: 250,
@@ -127,7 +133,7 @@ function Dropdown({ dropdownTrigger, avatar }) {
       >
         <MenuItem>{avatar} Profile</MenuItem>
         <MenuItem onClick={dashboardRedirectHandler}>
-          <ListItemIcon>
+          <ListItemIcon sx={{ color: "primary.contrastText" }}>
             <Dashboard fontSize="small" />
           </ListItemIcon>
           Dashboard
@@ -136,26 +142,26 @@ function Dropdown({ dropdownTrigger, avatar }) {
         <Divider />
         {!user?.emailVerified && (
           <MenuItem onClick={emailVerificationHandler}>
-            <ListItemIcon>
+            <ListItemIcon sx={{ color: "primary.contrastText" }}>
               <Verified fontSize="small" />
             </ListItemIcon>
             Verify email address
           </MenuItem>
         )}
         <MenuItem>
-          <ListItemIcon>
+          <ListItemIcon sx={{ color: "primary.contrastText" }}>
             <PersonAdd fontSize="small" />
           </ListItemIcon>
           Add friend
         </MenuItem>
         <MenuItem>
-          <ListItemIcon>
+          <ListItemIcon sx={{ color: "primary.contrastText" }}>
             <Settings fontSize="small" />
           </ListItemIcon>
           Settings
         </MenuItem>
         <MenuItem onClick={logoutHandler}>
-          <ListItemIcon>
+          <ListItemIcon sx={{ color: "primary.contrastText" }}>
             <Logout fontSize="small" />
           </ListItemIcon>
           Logout

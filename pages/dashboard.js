@@ -1,4 +1,4 @@
-import { PlusIcon, SaveIcon, XIcon } from "@heroicons/react/outline";
+import { PlusIcon, XIcon } from "@heroicons/react/outline";
 import { SearchIcon } from "@heroicons/react/solid";
 import { useEffect, useState } from "react";
 import Loader from "../components/Generic/Loader";
@@ -7,29 +7,29 @@ import Container from "../files/Container";
 import { selectUserFromDB } from "../redux/slices/userSlice";
 import Navigation from "../components/Dahsboard/Navigation";
 import DashboardContentPanel from "../components/Dahsboard/DashboardContentPanel";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  selectDashboardState,
-  selectFileName,
-  selectSnippetName,
-} from "../redux/slices/appSlice";
+import { useSelector } from "react-redux";
 import { Save, Send } from "@mui/icons-material";
 import AddNewSnippetPanel from "../components/Dahsboard/AddNewSnippetPanel";
 import { useRouter } from "next/dist/client/router";
+import { Paper } from "@mui/material";
+import {
+  selectFileName,
+  selectSnippetName,
+  selectTheme,
+} from "../redux/slices/appSlice";
 
 const dashboard = () => {
   const [dashboardLoading, setDashboardLoading] = useState(false);
   const userInDB = useSelector(selectUserFromDB);
   const snippetName = useSelector(selectSnippetName);
   const fileName = useSelector(selectFileName);
+  const themePreference = useSelector(selectTheme);
 
   const router = useRouter();
   const { display, file, snippet } = router.query;
 
   const fileN = file || fileName || "file";
   const snippetN = snippet || snippetName || "New Snippet";
-
-  const appTheme = "dark";
 
   useEffect(() => {
     setTimeout(() => {
@@ -78,8 +78,8 @@ const dashboard = () => {
   return (
     <Layout
       hideHeader={dashboardLoading}
-      className={`min-w-full ${appTheme === "dark" && "dark-bg"}`}
-      headerVariant={appTheme === "dark" ? "dark" : "light"}
+      className={`min-w-full ${themePreference === "dark" && "dark-bg"}`}
+      headerVariant={themePreference === "dark" ? "dark" : "light"}
     >
       {dashboardLoading ? (
         <div className="loader-container w-full min-h-[90vh] flex-center-center">
@@ -87,25 +87,34 @@ const dashboard = () => {
         </div>
       ) : (
         <Container>
-          <div className="dashboard mt-1 flex md:space-x-3">
+          <div
+            elevation={0}
+            className={`dashboard mt-1 flex ${
+              display === "snippets" && "md:space-x-3"
+            }`}
+          >
             <div
               className={`hidden ${
                 display === "snippets" && "md:inline-flex"
               } dashboard-left flex-[0.20]`}
             >
               <div className="dahsboardLeft__navigation flex flex-col w-full">
-                <div className="h-16 rounded shadow w-full flex items-center pl-4 border-b">
+                <Paper className="h-16 rounded shadow w-full flex items-center pl-4">
                   <h3
                     className={
-                      appTheme === "dark"
+                      themePreference === "dark"
                         ? "tertiary-heading-dark"
                         : "tertiary-heading"
                     }
                   >
                     Navigation
                   </h3>
-                </div>
-                <div className="w-full">
+                </Paper>
+                <div
+                  className={`w-full ${
+                    themePreference === "dark" && "dark-bg-accent"
+                  }`}
+                >
                   <Navigation />
                 </div>
               </div>
@@ -115,12 +124,12 @@ const dashboard = () => {
                 display === "snippets" ? "flex-[0.80]" : "w-full"
               } flex flex-col`}
             >
-              <div className="dashboard__contentHeader flex-between-center w-full px-4 h-16 rounded shadow border-b">
+              <Paper className="dashboard__contentHeader flex-between-center w-full px-4 h-16 rounded shadow">
                 <div>
                   {display === "snippets" && (
                     <h3
                       className={
-                        appTheme === "dark"
+                        themePreference === "dark"
                           ? "tertiary-heading-dark"
                           : "tertiary-heading"
                       }
@@ -134,7 +143,7 @@ const dashboard = () => {
                   {display === "add-new-snippet-info" && (
                     <h3
                       className={
-                        appTheme === "dark"
+                        themePreference === "dark"
                           ? "tertiary-heading-dark"
                           : "tertiary-heading"
                       }
@@ -147,7 +156,7 @@ const dashboard = () => {
                     <>
                       <h3
                         className={
-                          appTheme === "dark"
+                          themePreference === "dark"
                             ? "tertiary-heading-dark"
                             : "tertiary-heading"
                         }
@@ -155,16 +164,14 @@ const dashboard = () => {
                         Adding new snippet
                       </h3>
                       <p
-                        className={
-                          appTheme === "dark"
-                            ? "info-text-dark mt-1"
-                            : "info-text mt-1"
-                        }
+                        className={`info-text mt-1 ${
+                          themePreference === "dark" && "dark"
+                        }`}
                       >
                         {`${snippetN}`} /{" "}
                         <span
                           className={`info-text font-medium underline ${
-                            appTheme === "dark" && "text-gray-300"
+                            themePreference === "dark" && "text-gray-300"
                           }`}
                         >{`${fileN}`}</span>
                       </p>
@@ -173,12 +180,13 @@ const dashboard = () => {
                 </div>
                 <div>
                   <form>
-                    <div className="flex-between-center border-2 rounded-md pl-3 flex-[0.5]">
+                    <div className="flex-between-center border rounded-md pl-3 flex-[0.5]">
                       <input
                         type="text"
                         placeholder="Search snippet"
                         className={`outline-none flex-1 ${
-                          appTheme === "dark" && "bg-transparent text-gray-300"
+                          themePreference === "dark" &&
+                          "bg-transparent text-gray-300 placeholder-gray-400 border-gray-400"
                         }`}
                       />
                       <div className="bg-red-400 rounded-r-md p-2 cursor-pointer">
@@ -223,7 +231,7 @@ const dashboard = () => {
                     <></>
                   )}
                 </div>
-              </div>
+              </Paper>
               <div className="dashboard__content mt-1 shadow min-h-[700px]">
                 {display === "snippets" && <DashboardContentPanel />}
                 {display === "add-new-snippet-info" ||

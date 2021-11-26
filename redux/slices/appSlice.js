@@ -6,6 +6,7 @@ export const appSlice = createSlice({
     dashboardState: "snippets_display",
     snippetName: "New Snippet",
     fileName: "",
+    themePreference: "dark",
   },
   reducers: {
     SET_DASHBOARD_STATE: (state, action) => {
@@ -26,14 +27,25 @@ export const appSlice = createSlice({
         fileName: action.payload,
       };
     },
+    SET_THEME: (state, action) => {
+      return {
+        ...state,
+        themePreference: action.payload,
+      };
+    },
   },
 });
 
-export const { SET_DASHBOARD_STATE, SET_SNIPPET_NAME, SET_FILE_NAME } =
-  appSlice.actions;
+export const {
+  SET_DASHBOARD_STATE,
+  SET_SNIPPET_NAME,
+  SET_FILE_NAME,
+  SET_THEME,
+} = appSlice.actions;
 
 export const selectDashboardState = (state) => state.appStore.dashboardState;
 export const selectSnippetName = (state) => state.appStore.snippetName;
 export const selectFileName = (state) => state.appStore.fileName;
+export const selectTheme = (state) => state.appStore.themePreference;
 
 export default appSlice.reducer;

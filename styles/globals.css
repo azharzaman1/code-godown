@@ -4,8 +4,9 @@
   --primary-dark: #e24d28;
   --primaryText-accent: rgba(255, 255, 255, 0.87);
 
-  --background-main: #1e2c31;
-  --background-light: #26363b;
+  --background-main: #1a202c;
+  --background-light: #2d3748;
+  --background-accent: #011627;
 }
 
 .dahsboardLeft__navigation * {
