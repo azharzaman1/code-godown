@@ -45,6 +45,10 @@
     background-color: var(--background-light);
   }
 
+  .dark-bg-accent {
+    background-color: var(--background-accent);
+  }
+
   /* Buttons */
 
   .button-base {
@@ -119,16 +123,20 @@
     @apply text-xs text-gray-500 font-normal;
   }
 
-  .info-text-dark {
-    @apply text-xs text-gray-300 font-normal;
-  }
-
   .text-semibold {
     @apply text-[16px] font-semibold text-gray-800;
   }
 
   .text-bold {
     @apply text-[16px] font-bold text-gray-800;
+  }
+
+  .text.dark {
+    @apply text-gray-300;
+  }
+
+  .info-text.dark {
+    @apply text-gray-300;
   }
 
   /* Links */
@@ -145,10 +153,18 @@
     @apply hover:underline cursor-pointer text-[14px] font-semibold text-gray-800;
   }
 
+  .link.dark {
+    @apply text-gray-300 hover:text-gray-400;
+  }
+
   /* Input */
 
   .input {
     @apply py-3 px-3 my-3 rounded-md text-gray-500 placeholder-gray-400 border-2 outline-none;
+  }
+
+  .input.dark {
+    @apply bg-transparent text-gray-300 placeholder-gray-400 border-2 border-gray-400;
   }
 
   /* icon */

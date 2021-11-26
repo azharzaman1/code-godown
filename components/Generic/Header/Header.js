@@ -1,20 +1,25 @@
 import { Fragment } from "react";
 import { useRouter } from "next/dist/client/router";
 import { Popover } from "@headlessui/react";
-import { MenuIcon } from "@heroicons/react/outline";
-import { useSelector } from "react-redux";
+import { MenuIcon, MoonIcon, SunIcon } from "@heroicons/react/outline";
+import { useDispatch, useSelector } from "react-redux";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useSnackbar } from "notistack";
 import { Avatar } from "@mui/material";
 import { deepOrange } from "@mui/material/colors";
 import Link from "next/link";
-import Dropdown from "./Dropdown";
+import CustomizedDropdown from "./CustomizedDropdown";
 import DropdownLink from "./DropdownLink";
 import { auth } from "../../../client/firebase";
 import { selectUserFromDB } from "../../../redux/slices/userSlice";
+import { selectTheme, SET_THEME } from "../../../redux/slices/appSlice";
+import { IconButton } from "@chakra-ui/react";
+import SimpleDropdown from "./SimpleDropdown";
 
 const Header = ({ navigation = [], transparentEffect, variant }) => {
   const router = useRouter();
+  const { pathname } = router;
+  const dispatch = useDispatch();
+  const themePreference = useSelector(selectTheme);
   const userInDB = useSelector(selectUserFromDB);
   const [user, loading, error] = useAuthState(auth);
   console.log("Loading:", loading, "|", "Current user:", user);
@@ -37,18 +42,20 @@ const Header = ({ navigation = [], transparentEffect, variant }) => {
     });
   };
 
-  console.log(variant);
+  const switchTheme = () => {
+    dispatch(SET_THEME(themePreference === "dark" ? "light" : "dark"));
+  };
 
   return (
     <Popover>
       <nav
         className={`${
           transparentEffect
-            ? "absolute top-0 bg-[#ffffffb4]"
+            ? "absolute top-0 bg-[#ffffffb4] border-[#eeeeee41]"
             : variant === "light"
-            ? "bg-white"
+            ? "bg-white border-[#eeeeee41]"
             : "dark-bg-light"
-        } w-full border-b border-[#eeeeee41] z-20 px-3 lg:px-16 flex shadow items-center justify-between`}
+        } w-full z-20 px-3 lg:px-16 flex shadow items-center justify-between`}
         aria-label="Global"
       >
         <div className="flex items-center py-3 px-3">
@@ -63,23 +70,43 @@ const Header = ({ navigation = [], transparentEffect, variant }) => {
         </div>
         <div className="flex md:flex-1 md:pl-5 items-center md:justify-between">
           <div className="hidden md:flex md:space-x-6">
-            {navigation.map(({ name, href, dropdown, dropdownItems }) => (
-              <Fragment key={name}>
-                {dropdown ? (
-                  <DropdownLink dropdownData={dropdownItems} label={name} />
-                ) : (
-                  <a href={href} className="link">
-                    {name}
-                  </a>
-                )}
-              </Fragment>
-            ))}
+            {navigation &&
+              navigation.map(({ name, href, dropdown, dropdownItems }) => (
+                <Fragment key={name}>
+                  {dropdown ? (
+                    <SimpleDropdown
+                      dropdownData={dropdownItems}
+                      label={name}
+                      disableTooltip
+                    />
+                  ) : (
+                    <a href={href} className="link">
+                      {name}
+                    </a>
+                  )}
+                </Fragment>
+              ))}
           </div>
 
-          <div className="flex space-x-2">
+          <div className="flex space-x-2 items-center">
+            <div className="cursor-pointer">
+              <IconButton
+                colorScheme="teal"
+                aria-label="Call Segun"
+                size="lg"
+                onClick={switchTheme}
+                icon={
+                  themePreference === "dark" ? (
+                    <SunIcon className="h-8 p-1 text-gray-200" />
+                  ) : (
+                    <MoonIcon className="h-8 p-1" />
+                  )
+                }
+              />
+            </div>
             {user ? (
               <div className="cursor-pointer">
-                <Dropdown
+                <CustomizedDropdown
                   dropdownTrigger={
                     <Avatar
                       src={
