@@ -73,21 +73,24 @@ export default function SimpleDropdown({ label, dropdownData }) {
         }}
       >
         {dropdownData.map(({ name, description, imgSrc, href }) => (
-          <>
-            <MenuItem href={href} target="_blank" divider>
-              <div className="flex">
-                <ListItemIcon sx={{ color: "primary.contrastText" }}>
-                  <Code />
-                </ListItemIcon>
-                <div className="flex flex-col">
-                  <TWText dark={themePreference === "dark"}>{name}</TWText>
-                  <span className={`mt-2 text-gray-400 text-sm`}>
-                    {description}
-                  </span>
-                </div>
+          <MenuItem
+            key={description.trim()}
+            href={href}
+            target="_blank"
+            divider
+          >
+            <div className="flex">
+              <ListItemIcon sx={{ color: "primary.contrastText" }}>
+                <Code />
+              </ListItemIcon>
+              <div className="flex flex-col">
+                <TWText dark={themePreference === "dark"}>{name}</TWText>
+                <span className={`mt-2 text-gray-400 text-sm`}>
+                  {description}
+                </span>
               </div>
-            </MenuItem>
-          </>
+            </div>
+          </MenuItem>
         ))}
       </Menu>
     </div>

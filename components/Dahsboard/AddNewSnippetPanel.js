@@ -1,31 +1,56 @@
 import { Paper } from "@mui/material";
 import { useRouter } from "next/dist/client/router";
-import { useState } from "react";
+import dynamic from "next/dynamic";
+import { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import { options } from "../../files/editorOptions";
 import { TWText } from "../../files/theming/TWComponents";
 import {
+  selectActiveTabIndex,
   selectFileName,
+  selectSnippet,
   selectSnippetName,
   selectTheme,
   SET_FILE_NAME,
+  SET_SNIPPET,
   SET_SNIPPET_NAME,
 } from "../../redux/slices/appSlice";
-import Editor from "./Editor";
+const Editor = dynamic(() => import("@monaco-editor/react"), { ssr: false });
 
 const AddNewSnippetPanel = () => {
-  const [code, setCode] = useState("// Enter your code here");
-  const [language, setLanguage] = useState("javascript");
-  const [theme, setTheme] = useState("light");
+  const dispatch = useDispatch();
+  const snippet = useSelector(selectSnippet);
+  const activeTabIndex = useSelector(selectActiveTabIndex);
   const snippetName = useSelector(selectSnippetName);
   const fileName = useSelector(selectFileName);
-  const dispatch = useDispatch();
   const themePreference = useSelector(selectTheme);
+  const [theme, setTheme] = useState("vs-dark");
 
-  console.log(code);
+  console.log("Active Tab Index", activeTabIndex);
+  console.log("Active Tab", snippet[activeTabIndex]);
 
   const router = useRouter();
   const { display } = router.query;
+
+  const editorRef = useRef(null);
+
+  function handleEditorDidMount(editor, monaco) {
+    editorRef.current = editor;
+    console.log("Mounted");
+  }
+
+  // will change a tab in snippet
+  const handleEditorChange = (value, e) => {
+    const restOfSnippet = snippet.filter((tab) => tab.key !== activeTabIndex);
+    console.log("Rest", restOfSnippet);
+    let snippetToSet = [
+      ...restOfSnippet,
+      { ...snippet[activeTabIndex], code: value },
+    ];
+    console.log("snippetToSet", snippetToSet);
+    // dispatch(SET_SNIPPET(snippetToSet));
+  };
 
   return (
     <>
@@ -36,7 +61,7 @@ const AddNewSnippetPanel = () => {
               <TWText
                 dark={themePreference === "dark"}
                 component="label"
-                for="snippet_name_input"
+                htmlFor="snippet_name_input"
               >
                 Snippet name
               </TWText>
@@ -56,7 +81,7 @@ const AddNewSnippetPanel = () => {
               <TWText
                 dark={themePreference === "dark"}
                 component="label"
-                for="file_name_input"
+                htmlFor="file_name_input"
               >
                 File name
               </TWText>
@@ -77,7 +102,17 @@ const AddNewSnippetPanel = () => {
 
       {display === "finalize-new-snippet" && (
         <div className="editor-container w-full">
-          <Editor />
+          <Editor
+            height="100vh"
+            defaultLanguage={snippet[
+              activeTabIndex
+            ]?.language?.name.toLowerCase()}
+            defaultValue={snippet[activeTabIndex]?.code}
+            theme={theme}
+            options={options}
+            onMount={handleEditorDidMount}
+            onChange={handleEditorChange}
+          />
         </div>
       )}
     </>

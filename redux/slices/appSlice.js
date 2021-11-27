@@ -7,6 +7,8 @@ export const appSlice = createSlice({
     snippetName: "New Snippet",
     fileName: "",
     themePreference: "dark",
+    snippet: [],
+    editorActiveTabIndex: 0,
   },
   reducers: {
     SET_DASHBOARD_STATE: (state, action) => {
@@ -33,6 +35,18 @@ export const appSlice = createSlice({
         themePreference: action.payload,
       };
     },
+    SET_SNIPPET: (state, action) => {
+      return {
+        ...state,
+        snippet: action.payload,
+      };
+    },
+    SET_EDITOR_ACTIVE_TAB_INDEX: (state, action) => {
+      return {
+        ...state,
+        editorActiveTabIndex: action.payload,
+      };
+    },
   },
 });
 
@@ -41,11 +55,16 @@ export const {
   SET_SNIPPET_NAME,
   SET_FILE_NAME,
   SET_THEME,
+  SET_SNIPPET,
+  SET_EDITOR_ACTIVE_TAB_INDEX,
 } = appSlice.actions;
 
 export const selectDashboardState = (state) => state.appStore.dashboardState;
 export const selectSnippetName = (state) => state.appStore.snippetName;
 export const selectFileName = (state) => state.appStore.fileName;
 export const selectTheme = (state) => state.appStore.themePreference;
+export const selectSnippet = (state) => state.appStore.snippet;
+export const selectActiveTabIndex = (state) =>
+  state.appStore.editorActiveTabIndex;
 
 export default appSlice.reducer;

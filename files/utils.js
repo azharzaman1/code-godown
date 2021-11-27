@@ -22,4 +22,8 @@ export const splitAtIndex = (value, index) => {
   return value.substring(0, index);
 };
 
+export const splitAtCharacter = (value, character) => {
+  return value.split(character);
+};
+
 export const fetcher = (url) => fetch(url).then((res) => res.json());
