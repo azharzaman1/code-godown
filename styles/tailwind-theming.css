@@ -95,6 +95,14 @@
     @apply button-base primary-look flex-between-center py-2 px-3;
   }
 
+  .tab-button {
+    @apply px-5 py-2 text-gray-200 bg-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.2)] border-r border-[#757575];
+  }
+
+  .tab-button.active {
+    @apply bg-transparent text-[#e76f51] transition duration-100;
+  }
+
   /* Headings */
 
   .primary-heading {

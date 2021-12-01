@@ -19,7 +19,7 @@ import {
   selectTheme,
   SET_SNIPPET,
 } from "../redux/slices/appSlice";
-import { fetcher, splitAtCharacter } from "../files/utils";
+import { extractExtentionAndLanguage, fetcher } from "../files/utils";
 import useSWR from "swr";
 import { useSnackbar } from "notistack";
 
@@ -33,8 +33,6 @@ const dashboard = () => {
   const themePreference = useSelector(selectTheme);
   const { data, error } = useSWR("/api/programming-langs", fetcher);
   const { enqueueSnackbar } = useSnackbar();
-
-  console.log("1", data);
 
   const router = useRouter();
   const { display, file, snippet } = router.query;
@@ -59,19 +57,10 @@ const dashboard = () => {
 
   const handleContinueToPhase2 = () => {
     if (fileName.includes(".")) {
-      console.log(data);
-      let stringArr = splitAtCharacter(fileName, ".");
-      let fileExtention =
-        stringArr?.length === 2
-          ? `.${stringArr[1]}`
-          : `.${stringArr[stringArr?.length - 1]}`;
-
-      let language = data?.find((lang) => {
-        let langsStr = lang.extensions.join();
-        console.log(langsStr);
-        return langsStr.includes(fileExtention);
-      });
-
+      const [fileExtention, language] = extractExtentionAndLanguage(
+        fileName,
+        data
+      );
       dispatch(
         SET_SNIPPET([
           {
@@ -79,6 +68,7 @@ const dashboard = () => {
             key: snippetArr?.length,
             fileName: fileName,
             code: "// start coding here",
+            extention: fileExtention,
             language: language ? language : "unknown",
             languageExtentions: language?.extensions,
           },
@@ -220,13 +210,6 @@ const dashboard = () => {
                             }`}
                           >{`${fileN}`}</span>
                         </p>
-                      </div>
-                      <div className="self-end">
-                        <Tooltip title="Add file">
-                          <IconButton onClick={() => {}}>
-                            <PlusIcon className="h-7 p-1 text-gray-200" />
-                          </IconButton>
-                        </Tooltip>
                       </div>
                     </div>
                   )}

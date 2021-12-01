@@ -26,4 +26,18 @@ export const splitAtCharacter = (value, character) => {
   return value.split(character);
 };
 
+export const extractExtentionAndLanguage = (fileName, languages) => {
+  let stringArr = splitAtCharacter(fileName, ".");
+  let extention =
+    stringArr?.length === 2
+      ? `.${stringArr[1]}`
+      : `.${stringArr[stringArr?.length - 1]}`;
+
+  let language = languages?.find((lang) => {
+    let langsStr = lang.extensions.join();
+    return langsStr.includes(extention);
+  });
+  return [extention, language];
+};
+
 export const fetcher = (url) => fetch(url).then((res) => res.json());

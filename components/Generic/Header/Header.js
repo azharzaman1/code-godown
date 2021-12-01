@@ -8,7 +8,6 @@ import { Avatar } from "@mui/material";
 import { deepOrange } from "@mui/material/colors";
 import Link from "next/link";
 import CustomizedDropdown from "./CustomizedDropdown";
-import DropdownLink from "./DropdownLink";
 import { auth } from "../../../client/firebase";
 import { selectUserFromDB } from "../../../redux/slices/userSlice";
 import { selectTheme, SET_THEME } from "../../../redux/slices/appSlice";
@@ -78,6 +77,7 @@ const Header = ({ navigation = [], transparentEffect, variant }) => {
                       dropdownData={dropdownItems}
                       label={name}
                       disableTooltip
+                      dark={variant === "dark"}
                     />
                   ) : (
                     <a href={href} className="link">
