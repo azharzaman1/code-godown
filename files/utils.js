@@ -41,3 +41,9 @@ export const extractExtentionAndLanguage = (fileName, languages) => {
 };
 
 export const fetcher = (url) => fetch(url).then((res) => res.json());
+
+export const sortArray = (arr) => {
+  return arr.sort((a, b) => {
+    return a.key - b.key;
+  });
+};

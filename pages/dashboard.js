@@ -13,11 +13,13 @@ import AddNewSnippetPanel from "../components/Dahsboard/AddNewSnippetPanel";
 import { useRouter } from "next/dist/client/router";
 import { IconButton, Paper, Tooltip } from "@mui/material";
 import {
+  RESSET_SNIPPET,
   selectFileName,
   selectSnippet,
   selectSnippetName,
   selectTheme,
   SET_SNIPPET,
+  SET_UNFILLED_TAB_INDEXS,
 } from "../redux/slices/appSlice";
 import { extractExtentionAndLanguage, fetcher } from "../files/utils";
 import useSWR from "swr";
@@ -79,7 +81,6 @@ const dashboard = () => {
         query: {
           display: "finalize-new-snippet",
           snippet: snippetName,
-          file: fileName,
         },
       });
     } else {
@@ -99,6 +100,7 @@ const dashboard = () => {
   };
 
   const handleDiscard = () => {
+    dispatch(RESSET_SNIPPET());
     router.push({
       pathname: "/dashboard",
       query: {
@@ -133,11 +135,9 @@ const dashboard = () => {
               <div className="dahsboardLeft__navigation flex flex-col w-full">
                 <Paper className="h-16 rounded shadow w-full flex items-center pl-4">
                   <h3
-                    className={
-                      themePreference === "dark"
-                        ? "tertiary-heading-dark"
-                        : "tertiary-heading"
-                    }
+                    className={`tertiary-heading ${
+                      themePreference === "dark" && "dark"
+                    }`}
                   >
                     Navigation
                   </h3>
@@ -162,11 +162,9 @@ const dashboard = () => {
                 <div className="">
                   {display === "snippets" && (
                     <h3
-                      className={
-                        themePreference === "dark"
-                          ? "tertiary-heading-dark"
-                          : "tertiary-heading"
-                      }
+                      className={`tertiary-heading ${
+                        themePreference === "dark" && "dark"
+                      }`}
                     >
                       {userInDB?.userDetails?.displayName
                         ? `${userInDB?.userDetails?.displayName}'s Snippets`
@@ -176,11 +174,9 @@ const dashboard = () => {
 
                   {display === "add-new-snippet-info" && (
                     <h3
-                      className={
-                        themePreference === "dark"
-                          ? "tertiary-heading-dark"
-                          : "tertiary-heading"
-                      }
+                      className={`tertiary-heading ${
+                        themePreference === "dark" && "dark"
+                      }`}
                     >
                       Adding new snippet
                     </h3>
@@ -190,11 +186,9 @@ const dashboard = () => {
                     <div className="flex space-x-2">
                       <div className="flex flex-col">
                         <h3
-                          className={
-                            themePreference === "dark"
-                              ? "tertiary-heading-dark"
-                              : "tertiary-heading"
-                          }
+                          className={`tertiary-heading ${
+                            themePreference === "dark" && "dark"
+                          }`}
                         >
                           Adding new snippet
                         </h3>
