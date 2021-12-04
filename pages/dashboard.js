@@ -7,23 +7,34 @@ import Container from "../files/Container";
 import { selectUserFromDB } from "../redux/slices/userSlice";
 import Navigation from "../components/Dahsboard/Navigation";
 import DashboardContentPanel from "../components/Dahsboard/DashboardContentPanel";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Save, Send } from "@mui/icons-material";
 import AddNewSnippetPanel from "../components/Dahsboard/AddNewSnippetPanel";
 import { useRouter } from "next/dist/client/router";
-import { Paper } from "@mui/material";
+import { IconButton, Paper, Tooltip } from "@mui/material";
 import {
+  RESSET_SNIPPET,
   selectFileName,
+  selectSnippet,
   selectSnippetName,
   selectTheme,
+  SET_SNIPPET,
+  SET_UNFILLED_TAB_INDEXS,
 } from "../redux/slices/appSlice";
+import { extractExtentionAndLanguage, fetcher } from "../files/utils";
+import useSWR from "swr";
+import { useSnackbar } from "notistack";
 
 const dashboard = () => {
+  const dispatch = useDispatch();
+  const snippetArr = useSelector(selectSnippet);
   const [dashboardLoading, setDashboardLoading] = useState(false);
   const userInDB = useSelector(selectUserFromDB);
   const snippetName = useSelector(selectSnippetName);
   const fileName = useSelector(selectFileName);
   const themePreference = useSelector(selectTheme);
+  const { data, error } = useSWR("/api/programming-langs", fetcher);
+  const { enqueueSnackbar } = useSnackbar();
 
   const router = useRouter();
   const { display, file, snippet } = router.query;
@@ -47,14 +58,36 @@ const dashboard = () => {
   };
 
   const handleContinueToPhase2 = () => {
-    router.push({
-      pathname: "/dashboard",
-      query: {
-        display: "finalize-new-snippet",
-        snippet: snippetName,
-        file: fileName,
-      },
-    });
+    if (fileName.includes(".")) {
+      const [fileExtention, language] = extractExtentionAndLanguage(
+        fileName,
+        data
+      );
+      dispatch(
+        SET_SNIPPET([
+          {
+            snippetName: snippetName,
+            key: snippetArr?.length,
+            fileName: fileName,
+            code: "// start coding here",
+            extention: fileExtention,
+            language: language ? language : "unknown",
+            languageExtentions: language?.extensions,
+          },
+        ])
+      );
+      router.push({
+        pathname: "/dashboard",
+        query: {
+          display: "finalize-new-snippet",
+          snippet: snippetName,
+        },
+      });
+    } else {
+      enqueueSnackbar(`File name must contain extention, please recheck`, {
+        variant: "info",
+      });
+    }
   };
 
   const handleSnippetSave = () => {
@@ -67,6 +100,7 @@ const dashboard = () => {
   };
 
   const handleDiscard = () => {
+    dispatch(RESSET_SNIPPET());
     router.push({
       pathname: "/dashboard",
       query: {
@@ -101,11 +135,9 @@ const dashboard = () => {
               <div className="dahsboardLeft__navigation flex flex-col w-full">
                 <Paper className="h-16 rounded shadow w-full flex items-center pl-4">
                   <h3
-                    className={
-                      themePreference === "dark"
-                        ? "tertiary-heading-dark"
-                        : "tertiary-heading"
-                    }
+                    className={`tertiary-heading ${
+                      themePreference === "dark" && "dark"
+                    }`}
                   >
                     Navigation
                   </h3>
@@ -124,15 +156,15 @@ const dashboard = () => {
                 display === "snippets" ? "flex-[0.80]" : "w-full"
               } flex flex-col`}
             >
+              {/* Dashboard Header */}
+
               <Paper className="dashboard__contentHeader flex-between-center w-full px-4 h-16 rounded shadow">
-                <div>
+                <div className="">
                   {display === "snippets" && (
                     <h3
-                      className={
-                        themePreference === "dark"
-                          ? "tertiary-heading-dark"
-                          : "tertiary-heading"
-                      }
+                      className={`tertiary-heading ${
+                        themePreference === "dark" && "dark"
+                      }`}
                     >
                       {userInDB?.userDetails?.displayName
                         ? `${userInDB?.userDetails?.displayName}'s Snippets`
@@ -142,59 +174,60 @@ const dashboard = () => {
 
                   {display === "add-new-snippet-info" && (
                     <h3
-                      className={
-                        themePreference === "dark"
-                          ? "tertiary-heading-dark"
-                          : "tertiary-heading"
-                      }
+                      className={`tertiary-heading ${
+                        themePreference === "dark" && "dark"
+                      }`}
                     >
                       Adding new snippet
                     </h3>
                   )}
 
                   {display === "finalize-new-snippet" && (
-                    <>
-                      <h3
-                        className={
-                          themePreference === "dark"
-                            ? "tertiary-heading-dark"
-                            : "tertiary-heading"
-                        }
-                      >
-                        Adding new snippet
-                      </h3>
-                      <p
-                        className={`info-text mt-1 ${
-                          themePreference === "dark" && "dark"
-                        }`}
-                      >
-                        {`${snippetN}`} /{" "}
-                        <span
-                          className={`info-text font-medium underline ${
-                            themePreference === "dark" && "text-gray-300"
+                    <div className="flex space-x-2">
+                      <div className="flex flex-col">
+                        <h3
+                          className={`tertiary-heading ${
+                            themePreference === "dark" && "dark"
                           }`}
-                        >{`${fileN}`}</span>
-                      </p>
-                    </>
-                  )}
-                </div>
-                <div>
-                  <form>
-                    <div className="flex-between-center border rounded-md pl-3 flex-[0.5]">
-                      <input
-                        type="text"
-                        placeholder="Search snippet"
-                        className={`outline-none flex-1 ${
-                          themePreference === "dark" &&
-                          "bg-transparent text-gray-300 placeholder-gray-400 border-gray-400"
-                        }`}
-                      />
-                      <div className="bg-red-400 rounded-r-md p-2 cursor-pointer">
-                        <SearchIcon className="h-5 text-white" />
+                        >
+                          Adding new snippet
+                        </h3>
+                        <p
+                          className={`info-text mt-1 ${
+                            themePreference === "dark" && "dark"
+                          }`}
+                        >
+                          {`${snippetN}`} {">"}{" "}
+                          <span
+                            className={`info-text font-medium underline ${
+                              themePreference === "dark" && "text-gray-300"
+                            }`}
+                          >{`${fileN}`}</span>
+                        </p>
                       </div>
                     </div>
-                  </form>
+                  )}
                 </div>
+                {display === "snippets" && (
+                  <div>
+                    <form>
+                      <div className="flex-between-center border rounded-md pl-3 flex-[0.5]">
+                        <input
+                          type="text"
+                          placeholder="Search snippet"
+                          className={`outline-none flex-1 ${
+                            themePreference === "dark" &&
+                            "bg-transparent text-gray-300 placeholder-gray-400 border-gray-400"
+                          }`}
+                        />
+                        <div className="bg-red-400 rounded-r-md p-2 cursor-pointer">
+                          <SearchIcon className="h-5 text-white" />
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                )}
+
                 <div className="flex space-x-2">
                   {/* Header Dynamic Buttons */}
                   {display !== "snippets" && (
@@ -232,6 +265,7 @@ const dashboard = () => {
                   )}
                 </div>
               </Paper>
+              {/* / Dashboard Header */}
               <div className="dashboard__content mt-1 shadow min-h-[700px]">
                 {display === "snippets" && <DashboardContentPanel />}
                 {display === "add-new-snippet-info" ||

@@ -1,39 +1,34 @@
-import React, { useEffect, useRef } from "react";
-import Editor, { useMonaco } from "@monaco-editor/react";
+import React from "react";
+import dynamic from "next/dynamic";
+import "@uiw/react-textarea-code-editor/dist.css";
 
-const MonacoEditor = () => {
-  function handleEditorChange(value, event) {
-    console.log("here is the current model value:", value);
-  }
+const CodeEditor = dynamic(
+  () => import("@uiw/react-textarea-code-editor").then((mod) => mod.default),
+  { ssr: false }
+);
 
-  const monaco = useMonaco();
-
-  useEffect(() => {
-    if (monaco) {
-      console.log("here is the monaco isntance:", monaco);
-    }
-  }, [monaco]);
-
-  const editorRef = useRef(null);
-
-  function handleEditorDidMount(editor, monaco) {
-    editorRef.current = editor;
-  }
-
-  function showValue() {
-    alert(editorRef.current.getValue());
-  }
-
-  return (
-    <Editor
-      height="90vh"
-      defaultLanguage="javascript"
-      defaultValue="// some comment"
-      onChange={handleEditorChange}
-      onMount={handleEditorDidMount}
-      theme="vs-dark"
-    />
+function Editor() {
+  const [code, setCode] = React.useState(
+    `function add(a, b) {\n  return a + b;\n}`
   );
-};
+  return (
+    <div>
+      <CodeEditor
+        minHeight="80vh"
+        value={code}
+        language="js"
+        placeholder="Please enter code."
+        onChange={(evn) => setCode(evn.target.value)}
+        padding={15}
+        style={{
+          fontSize: 14,
+          backgroundColor: "#eee",
+          fontFamily:
+            "ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace",
+        }}
+      />
+    </div>
+  );
+}
 
-export default MonacoEditor;
+export default Editor;

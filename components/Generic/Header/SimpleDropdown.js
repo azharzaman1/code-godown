@@ -1,15 +1,14 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { selectTheme } from "../../../redux/slices/appSlice";
 import { useSelector } from "react-redux";
 import { ChevronDownIcon } from "@heroicons/react/outline";
-import { Code, Dashboard } from "@mui/icons-material";
-import { Divider, ListItemIcon } from "@mui/material";
+import { Code } from "@mui/icons-material";
+import { ListItemIcon } from "@mui/material";
 import { TWText } from "../../../files/theming/TWComponents";
 
-export default function SimpleDropdown({ label, dropdownData }) {
+export default function SimpleDropdown({ label, dropdownData, dark }) {
   const themePreference = useSelector(selectTheme);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -24,7 +23,7 @@ export default function SimpleDropdown({ label, dropdownData }) {
     <div>
       <div className="flex items-center space-x-2">
         <span
-          className={`link ${themePreference === "dark" && "dark"}`}
+          className={`link ${dark && "dark"}`}
           aria-controls="basic-menu"
           aria-haspopup="true"
           aria-expanded={open ? "true" : undefined}
@@ -73,21 +72,24 @@ export default function SimpleDropdown({ label, dropdownData }) {
         }}
       >
         {dropdownData.map(({ name, description, imgSrc, href }) => (
-          <>
-            <MenuItem href={href} target="_blank" divider>
-              <div className="flex">
-                <ListItemIcon sx={{ color: "primary.contrastText" }}>
-                  <Code />
-                </ListItemIcon>
-                <div className="flex flex-col">
-                  <TWText dark={themePreference === "dark"}>{name}</TWText>
-                  <span className={`mt-2 text-gray-400 text-sm`}>
-                    {description}
-                  </span>
-                </div>
+          <MenuItem
+            key={description.trim()}
+            href={href}
+            target="_blank"
+            divider
+          >
+            <div className="flex">
+              <ListItemIcon sx={{ color: "primary.contrastText" }}>
+                <Code />
+              </ListItemIcon>
+              <div className="flex flex-col">
+                <TWText dark={themePreference === "dark"}>{name}</TWText>
+                <span className={`mt-2 text-gray-400 text-sm`}>
+                  {description}
+                </span>
               </div>
-            </MenuItem>
-          </>
+            </div>
+          </MenuItem>
         ))}
       </Menu>
     </div>
