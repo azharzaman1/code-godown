@@ -69,7 +69,7 @@ const dashboard = () => {
             snippetName: snippetName,
             key: snippetArr?.length,
             fileName: fileName,
-            code: "// start coding here",
+            code: `// start coding here`,
             extention: fileExtention,
             language: language ? language : "unknown",
             languageExtentions: language?.extensions,
