@@ -28,6 +28,7 @@ import useSWR from "swr";
 import { useSnackbar } from "notistack";
 import Dialog from "../Generic/Dialog";
 import Editor, { useMonaco } from "@monaco-editor/react";
+import files from "../../files/code";
 
 const AddNewSnippetPanel = () => {
   const dispatch = useDispatch();
@@ -45,7 +46,6 @@ const AddNewSnippetPanel = () => {
   const { data, error } = useSWR("/api/programming-langs", fetcher);
   const { enqueueSnackbar } = useSnackbar();
   const [dialogOpen, setOpen] = useState(false);
-
   console.log("Active Tab Index", activeTabIndex);
   console.log("Active Tab", activeTab);
 
@@ -111,7 +111,7 @@ const AddNewSnippetPanel = () => {
         key: fileKey,
         extention: fileExtention,
         fileName: newFileName,
-        code: "// start coding here",
+        code: `// start coding here`,
         language: language ? language : "unknown",
         languageExtentions: language?.extensions,
       };
@@ -249,14 +249,35 @@ const AddNewSnippetPanel = () => {
 
           <div>
             {snippet.length > 0 ? (
-              <Editor
-                height="90vh"
-                defaultLanguage={activeTab?.language.name.toLowerCase()}
-                defaultValue={activeTab?.code}
-                onChange={handleEditorChange}
-                onMount={handleEditorDidMount}
-                theme="vs-dark"
-              />
+              <>
+                <button
+                  disabled={fileName2 === "script.js"}
+                  onClick={() => setFileName2("script.js")}
+                >
+                  script.js
+                </button>
+                <button
+                  disabled={fileName2 === "style.css"}
+                  onClick={() => setFileName2("style.css")}
+                >
+                  style.css
+                </button>
+                <button
+                  disabled={fileName2 === "index.html"}
+                  onClick={() => setFileName2("index.html")}
+                >
+                  index.html
+                </button>
+                <Editor
+                  height="90vh"
+                  defaultLanguage={activeTab?.language.name.toLowerCase()}
+                  defaultValue={activeTab?.code}
+                  path={activeTab?.fileName}
+                  onChange={handleEditorChange}
+                  onMount={handleEditorDidMount}
+                  theme={themePreference === "dark" ? "vs-dark" : "light"}
+                />
+              </>
             ) : (
               <h2
                 className={`primary-heading mt-10 ml-1 ${
