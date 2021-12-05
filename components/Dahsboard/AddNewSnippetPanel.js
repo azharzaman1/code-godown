@@ -1,6 +1,6 @@
 import { IconButton, Paper, Tooltip } from "@mui/material";
 import { useRouter } from "next/dist/client/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { TWText } from "../../files/theming/TWComponents";
@@ -27,11 +27,7 @@ import {
 import useSWR from "swr";
 import { useSnackbar } from "notistack";
 import Dialog from "../Generic/Dialog";
-
-const CodeEditor = dynamic(
-  () => import("@uiw/react-textarea-code-editor").then((mod) => mod.default),
-  { ssr: false }
-);
+import Editor, { useMonaco } from "@monaco-editor/react";
 
 const AddNewSnippetPanel = () => {
   const dispatch = useDispatch();
@@ -67,9 +63,24 @@ const AddNewSnippetPanel = () => {
     };
   }, [snippet, activeTabIndex]);
 
+  // Preparing Editor
+
+  const monaco = useMonaco();
+
+  useEffect(() => {
+    if (monaco) {
+      console.log("here is the monaco isntance:", monaco);
+    }
+  }, [monaco]);
+
+  const editorRef = useRef(null);
+
+  function handleEditorDidMount(editor, monaco) {
+    editorRef.current = editor;
+  }
+
   // will change a tab in snippet
-  const handleEditorChange = (e) => {
-    let value = e.target.value;
+  const handleEditorChange = (value, e) => {
     const restOfSnippet = snippet.filter((tab) => tab.key !== activeTabIndex);
     console.log("Rest", restOfSnippet);
     let snippetToSet = [...restOfSnippet, { ...activeTab, code: value }];
@@ -232,23 +243,13 @@ const AddNewSnippetPanel = () => {
 
           <div>
             {snippet.length > 0 ? (
-              <CodeEditor
-                minHeight="80vh"
-                value={activeTab?.code}
-                language={
-                  activeTab?.extention
-                    ? splitAtCharacter(activeTab?.extention, ".")[1]
-                    : "js"
-                }
-                placeholder="Please enter code."
-                onChange={handleEditorChange}
-                padding={15}
-                style={{
-                  fontSize: 14,
-                  backgroundColor: "#eee",
-                  fontFamily:
-                    "ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace",
-                }}
+              <Editor
+                height="90vh"
+                defaultLanguage="javascript"
+                defaultValue="// some code"
+                onChange={() => {}}
+                onMount={handleEditorDidMount}
+                theme="vs-dark"
               />
             ) : (
               <h2
@@ -284,3 +285,26 @@ const AddNewSnippetPanel = () => {
 };
 
 export default AddNewSnippetPanel;
+
+{
+  /* <CodeEditor
+                minHeight="80vh"
+                value={activeTab?.code}
+                language={
+                  activeTab?.extention
+                    ? splitAtCharacter(activeTab?.extention, ".")[1]
+                    : "js"
+                }
+                placeholder="Please enter code."
+                onChange={handleEditorChange}
+                padding={15}
+                style={{
+                  fontSize: 14,
+                  backgroundColor: "#eee",
+                  fontFamily:
+                    "ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace",
+                }}
+              /> */
+}
+
+// activeTab?.language.name.toLowerCase()
