@@ -16,19 +16,13 @@ import {
   SET_SNIPPET_NAME,
   SET_UNFILLED_TAB_INDEXS,
 } from "../../redux/slices/appSlice";
-import dynamic from "next/dynamic";
 import "@uiw/react-textarea-code-editor/dist.css";
 import { PlusIcon, XIcon } from "@heroicons/react/outline";
-import {
-  extractExtentionAndLanguage,
-  fetcher,
-  splitAtCharacter,
-} from "../../files/utils";
+import { extractExtentionAndLanguage, fetcher } from "../../files/utils";
 import useSWR from "swr";
 import { useSnackbar } from "notistack";
 import Dialog from "../Generic/Dialog";
 import Editor, { useMonaco } from "@monaco-editor/react";
-import files from "../../files/code";
 
 const AddNewSnippetPanel = () => {
   const dispatch = useDispatch();
@@ -250,24 +244,6 @@ const AddNewSnippetPanel = () => {
           <div>
             {snippet.length > 0 ? (
               <>
-                <button
-                  disabled={fileName2 === "script.js"}
-                  onClick={() => setFileName2("script.js")}
-                >
-                  script.js
-                </button>
-                <button
-                  disabled={fileName2 === "style.css"}
-                  onClick={() => setFileName2("style.css")}
-                >
-                  style.css
-                </button>
-                <button
-                  disabled={fileName2 === "index.html"}
-                  onClick={() => setFileName2("index.html")}
-                >
-                  index.html
-                </button>
                 <Editor
                   height="90vh"
                   defaultLanguage={activeTab?.language.name.toLowerCase()}
