@@ -57,6 +57,12 @@ const AddNewSnippetPanel = () => {
     let mounted = true;
     if (mounted) {
       setActiveTab(snippet?.find((tab) => tab.key == activeTabIndex));
+      console.log(
+        "Lang",
+        snippet
+          ?.find((tab) => tab.key == activeTabIndex)
+          ?.language.name.toLowerCase()
+      );
     }
     return () => {
       mounted = false;
@@ -245,9 +251,9 @@ const AddNewSnippetPanel = () => {
             {snippet.length > 0 ? (
               <Editor
                 height="90vh"
-                defaultLanguage="javascript"
-                defaultValue="// some code"
-                onChange={() => {}}
+                defaultLanguage={activeTab?.language.name.toLowerCase()}
+                defaultValue={activeTab?.code}
+                onChange={handleEditorChange}
                 onMount={handleEditorDidMount}
                 theme="vs-dark"
               />
@@ -285,26 +291,3 @@ const AddNewSnippetPanel = () => {
 };
 
 export default AddNewSnippetPanel;
-
-{
-  /* <CodeEditor
-                minHeight="80vh"
-                value={activeTab?.code}
-                language={
-                  activeTab?.extention
-                    ? splitAtCharacter(activeTab?.extention, ".")[1]
-                    : "js"
-                }
-                placeholder="Please enter code."
-                onChange={handleEditorChange}
-                padding={15}
-                style={{
-                  fontSize: 14,
-                  backgroundColor: "#eee",
-                  fontFamily:
-                    "ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace",
-                }}
-              /> */
-}
-
-// activeTab?.language.name.toLowerCase()
