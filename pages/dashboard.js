@@ -91,12 +91,7 @@ const dashboard = () => {
   };
 
   const handleSnippetSave = () => {
-    router.push({
-      pathname: "/dashboard",
-      query: {
-        display: "snippets",
-      },
-    });
+    console.log("Will save");
   };
 
   const handleDiscard = () => {
@@ -108,6 +103,42 @@ const dashboard = () => {
       },
     });
   };
+
+  const dashboardHeaderTagline =
+    display === "snippets"
+      ? userInDB?.userDetails?.displayName
+        ? `${userInDB?.userDetails?.displayName}'s Snippets`
+        : "Your Snippets"
+      : display === "add-new-snippet-info"
+      ? "Adding new snippet"
+      : display === "finalize-new-snippet"
+      ? "Adding new snippet"
+      : "Saving new snippet";
+
+  {
+    userInDB?.userDetails?.displayName
+      ? `${userInDB?.userDetails?.displayName}'s Snippets`
+      : "Your Snippets";
+  }
+
+  const mainButtonTitle =
+    display === "add-new-snippet-info" || display === "finalize-new-snippet"
+      ? "Continue"
+      : "Save Snippet";
+
+  const mainButtonAction =
+    display === "add-new-snippet-info"
+      ? handleContinueToPhase2
+      : display === "finalize-new-snippet"
+      ? () => {
+          router.push({
+            pathname: "/dashboard",
+            query: {
+              display: "saving-snippet",
+            },
+          });
+        }
+      : handleSnippetSave;
 
   return (
     <Layout
@@ -160,53 +191,29 @@ const dashboard = () => {
 
               <Paper className="dashboard__contentHeader flex-between-center w-full px-4 h-16 rounded shadow">
                 <div className="">
-                  {display === "snippets" && (
-                    <h3
-                      className={`tertiary-heading ${
-                        themePreference === "dark" && "dark"
-                      }`}
-                    >
-                      {userInDB?.userDetails?.displayName
-                        ? `${userInDB?.userDetails?.displayName}'s Snippets`
-                        : "Your Snippets"}
-                    </h3>
-                  )}
-
-                  {display === "add-new-snippet-info" && (
-                    <h3
-                      className={`tertiary-heading ${
-                        themePreference === "dark" && "dark"
-                      }`}
-                    >
-                      Adding new snippet
-                    </h3>
-                  )}
-
-                  {display === "finalize-new-snippet" && (
-                    <div className="flex space-x-2">
-                      <div className="flex flex-col">
-                        <h3
-                          className={`tertiary-heading ${
-                            themePreference === "dark" && "dark"
-                          }`}
-                        >
-                          Adding new snippet
-                        </h3>
+                  <div className="flex space-x-2">
+                    <div className="flex flex-col">
+                      <h3
+                        className={`tertiary-heading ${
+                          themePreference === "dark" && "dark"
+                        }`}
+                      >
+                        {dashboardHeaderTagline}
+                      </h3>
+                      {display === "finalize-new-snippet" ||
+                      display === "saving-snippet" ? (
                         <p
                           className={`info-text mt-1 ${
                             themePreference === "dark" && "dark"
                           }`}
                         >
-                          {`${snippetN}`} {">"}{" "}
-                          <span
-                            className={`info-text font-medium underline ${
-                              themePreference === "dark" && "text-gray-300"
-                            }`}
-                          >{`${fileN}`}</span>
+                          {snippetN}
                         </p>
-                      </div>
+                      ) : (
+                        <></>
+                      )}
                     </div>
-                  )}
+                  </div>
                 </div>
                 {display === "snippets" && (
                   <div>
@@ -241,21 +248,13 @@ const dashboard = () => {
                     </button>
                   )}
                   {display === "add-new-snippet-info" ||
-                  display === "finalize-new-snippet" ? (
-                    <button
-                      className="icon-button"
-                      onClick={
-                        display === "add-new-snippet-info"
-                          ? handleContinueToPhase2
-                          : handleSnippetSave
-                      }
-                    >
-                      {display === "finalize-new-snippet" && (
+                  display === "finalize-new-snippet" ||
+                  display === "saving-snippet" ? (
+                    <button className="icon-button" onClick={mainButtonAction}>
+                      {display === "saving-snippet" && (
                         <Save fontSize="medium" className="pr-2" />
                       )}
-                      {display === "add-new-snippet-info"
-                        ? "Continue"
-                        : "Save Snippet"}
+                      {mainButtonTitle}
                       {display === "add-new-snippet-info" && (
                         <Send fontSize="medium" className="pl-2" />
                       )}
@@ -269,7 +268,8 @@ const dashboard = () => {
               <div className="dashboard__content mt-1 shadow min-h-[700px]">
                 {display === "snippets" && <DashboardContentPanel />}
                 {display === "add-new-snippet-info" ||
-                display === "finalize-new-snippet" ? (
+                display === "finalize-new-snippet" ||
+                display === "saving-snippet" ? (
                   <AddNewSnippetPanel />
                 ) : (
                   <></>
