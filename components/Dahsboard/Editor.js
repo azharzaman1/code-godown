@@ -18,6 +18,7 @@ import { PlusIcon, XIcon } from "@heroicons/react/outline";
 import { extractExtentionAndLanguage, fetcher } from "../../files/utils";
 import Dialog from "../Generic/Dialog";
 import useSWR from "swr";
+import ThemeButton from "../Generic/Button";
 
 const MonacoEditor = () => {
   const dispatch = useDispatch();
@@ -133,26 +134,19 @@ const MonacoEditor = () => {
       <div className="editor-navigation text-white flex items-center select-none">
         {snippet &&
           snippet.map(({ fileName, key }) => (
-            <div
+            <ThemeButton
               key={key}
-              className={`tab-button ${
-                key === activeTabIndex && "active"
-              } flex items-center space-x-4`}
+              label={fileName}
+              type="tab"
+              active={key == activeTabIndex}
+              tabCloseButton={key == activeTabIndex}
               onClick={() => {
                 dispatch(SET_EDITOR_ACTIVE_TAB_INDEX(key));
               }}
-            >
-              <span>{fileName}</span>
-              <span
-                onClick={() => {
-                  setOpen(true);
-                }}
-              >
-                {key === activeTabIndex && (
-                  <XIcon className="h-5 text-gray-400" />
-                )}
-              </span>
-            </div>
+              closeButtonOnClick={() => {
+                setOpen(true);
+              }}
+            ></ThemeButton>
           ))}
         {addingNewFile && (
           <form onSubmit={handleAddNewFile}>
@@ -184,7 +178,7 @@ const MonacoEditor = () => {
       </div>
 
       <div>
-        {snippet.length > 0 ? (
+        {snippet.length > 0 && (
           <>
             <Editor
               height="90vh"
@@ -196,14 +190,6 @@ const MonacoEditor = () => {
               theme={themePreference === "dark" ? "vs-dark" : "light"}
             />
           </>
-        ) : (
-          <h2
-            className={`primary-heading mt-10 ml-1 ${
-              themePreference === "dark" && "dark"
-            }`}
-          >
-            No files selected
-          </h2>
         )}
       </div>
       <Dialog

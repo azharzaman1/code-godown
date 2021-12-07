@@ -16,7 +16,7 @@ const ThemeWrapper = ({ children }) => {
         : "rgba(255, 255, 255, 0.80)",
 
     bgDefault: themePreference === "light" ? "#f9f9f9" : "#1a202c",
-    bgLight: themePreference === "light" ? "#FFF" : "#2D3748",
+    bgLight: themePreference === "light" ? "#f9f9f9" : "#2D3748",
 
     dividerColor:
       themePreference === "light"

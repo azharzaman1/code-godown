@@ -71,20 +71,20 @@
     @apply px-8 py-3.5;
   }
 
-  .primary-button-small {
-    @apply button-base small-button primary-look;
-  }
-
   .primary-button {
     @apply button-base medium-button primary-look;
   }
 
-  .secondary-button-small {
-    @apply button-base secondary-look small-button;
+  .primary-button.small {
+    @apply small-button;
   }
 
   .secondary-button {
     @apply button-base secondary-look medium-button;
+  }
+
+  .secondary-button.small {
+    @apply small-button;
   }
 
   .text-button {
@@ -100,7 +100,7 @@
   }
 
   .tab-button {
-    @apply px-4 py-2 text-gray-200 bg-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.2)] border-r border-[#757575] cursor-pointer;
+    @apply px-4 py-2 flex items-center space-x-4 text-gray-200 bg-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.2)] border-r border-[#757575] cursor-pointer;
   }
 
   .tab-button.active {

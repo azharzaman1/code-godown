@@ -1,4 +1,4 @@
-import { PlusIcon, XIcon } from "@heroicons/react/outline";
+import { ArrowLeftIcon, PlusIcon, XIcon } from "@heroicons/react/outline";
 import { SearchIcon } from "@heroicons/react/solid";
 import { useEffect, useState } from "react";
 import Loader from "../components/Generic/Loader";
@@ -24,6 +24,7 @@ import {
 import { extractExtentionAndLanguage, fetcher } from "../files/utils";
 import useSWR from "swr";
 import { useSnackbar } from "notistack";
+import ThemeButton from "../components/Generic/Button";
 
 const dashboard = () => {
   const dispatch = useDispatch();
@@ -38,6 +39,11 @@ const dashboard = () => {
 
   const router = useRouter();
   const { display, file, snippet } = router.query;
+
+  const displaySnippets = display === "snippets";
+  const addingSnippetInfo = display === "add-new-snippet-info";
+  const addingCodeToSnippet = display === "adding-code-to-snippet";
+  const savingSnippet = display === "saving-snippet";
 
   const fileN = file || fileName || "file";
   const snippetN = snippet || snippetName || "New Snippet";
@@ -79,7 +85,7 @@ const dashboard = () => {
       router.push({
         pathname: "/dashboard",
         query: {
-          display: "finalize-new-snippet",
+          display: "adding-code-to-snippet",
           snippet: snippetName,
         },
       });
@@ -104,16 +110,15 @@ const dashboard = () => {
     });
   };
 
-  const dashboardHeaderTagline =
-    display === "snippets"
-      ? userInDB?.userDetails?.displayName
-        ? `${userInDB?.userDetails?.displayName}'s Snippets`
-        : "Your Snippets"
-      : display === "add-new-snippet-info"
-      ? "Adding new snippet"
-      : display === "finalize-new-snippet"
-      ? "Adding new snippet"
-      : "Saving new snippet";
+  const dashboardHeaderTagline = displaySnippets
+    ? userInDB?.userDetails?.displayName
+      ? `${userInDB?.userDetails?.displayName}'s Snippets`
+      : "Your Snippets"
+    : addingSnippetInfo
+    ? "Adding new snippet"
+    : addingCodeToSnippet
+    ? "Adding new snippet"
+    : `Saving ${snippetName}`;
 
   {
     userInDB?.userDetails?.displayName
@@ -122,23 +127,29 @@ const dashboard = () => {
   }
 
   const mainButtonTitle =
-    display === "add-new-snippet-info" || display === "finalize-new-snippet"
-      ? "Continue"
-      : "Save Snippet";
+    addingSnippetInfo || addingCodeToSnippet ? "Continue" : "Save Snippet";
 
-  const mainButtonAction =
-    display === "add-new-snippet-info"
-      ? handleContinueToPhase2
-      : display === "finalize-new-snippet"
-      ? () => {
-          router.push({
-            pathname: "/dashboard",
-            query: {
-              display: "saving-snippet",
-            },
-          });
-        }
-      : handleSnippetSave;
+  const mainButtonAction = addingSnippetInfo
+    ? handleContinueToPhase2
+    : addingCodeToSnippet
+    ? () => {
+        router.push({
+          pathname: "/dashboard",
+          query: {
+            display: "saving-snippet",
+          },
+        });
+      }
+    : handleSnippetSave;
+
+  const handleBackDirect = () => {
+    router.push({
+      pathname: "/dashboard",
+      query: {
+        display: "adding-code-to-snippet",
+      },
+    });
+  };
 
   return (
     <Layout
@@ -153,14 +164,13 @@ const dashboard = () => {
       ) : (
         <Container>
           <div
-            elevation={0}
             className={`dashboard mt-1 flex ${
-              display === "snippets" && "md:space-x-3"
+              displaySnippets && "md:space-x-3"
             }`}
           >
             <div
               className={`hidden ${
-                display === "snippets" && "md:inline-flex"
+                displaySnippets && "md:inline-flex"
               } dashboard-left flex-[0.20]`}
             >
               <div className="dahsboardLeft__navigation flex flex-col w-full">
@@ -184,11 +194,9 @@ const dashboard = () => {
             </div>
             <div
               className={`dashboard-right ${
-                display === "snippets" ? "flex-[0.80]" : "w-full"
+                displaySnippets ? "flex-[0.80]" : "w-full"
               } flex flex-col`}
             >
-              {/* Dashboard Header */}
-
               <Paper className="dashboard__contentHeader flex-between-center w-full px-4 h-16 rounded shadow">
                 <div className="">
                   <div className="flex space-x-2">
@@ -200,8 +208,7 @@ const dashboard = () => {
                       >
                         {dashboardHeaderTagline}
                       </h3>
-                      {display === "finalize-new-snippet" ||
-                      display === "saving-snippet" ? (
+                      {addingCodeToSnippet && (
                         <p
                           className={`info-text mt-1 ${
                             themePreference === "dark" && "dark"
@@ -209,22 +216,20 @@ const dashboard = () => {
                         >
                           {snippetN}
                         </p>
-                      ) : (
-                        <></>
                       )}
                     </div>
                   </div>
                 </div>
-                {display === "snippets" && (
-                  <div>
+                {displaySnippets && (
+                  <div className="hidden md:block flex-1 max-w-[550px]">
                     <form>
-                      <div className="flex-between-center border rounded-md pl-3 flex-[0.5]">
+                      <div className="flex-between-center rounded-md pl-3 border border-gray-600">
                         <input
                           type="text"
                           placeholder="Search snippet"
-                          className={`outline-none flex-1 ${
+                          className={`py-2 outline-none flex-1 ${
                             themePreference === "dark" &&
-                            "bg-transparent text-gray-300 placeholder-gray-400 border-gray-400"
+                            "bg-transparent text-gray-300 placeholder-gray-400"
                           }`}
                         />
                         <div className="bg-red-400 rounded-r-md p-2 cursor-pointer">
@@ -237,39 +242,41 @@ const dashboard = () => {
 
                 <div className="flex space-x-2">
                   {/* Header Dynamic Buttons */}
-                  {display !== "snippets" && (
-                    <button className="icon-button" onClick={handleDiscard}>
+                  {savingSnippet && (
+                    <ThemeButton type="icon" onClick={handleBackDirect}>
+                      <ArrowLeftIcon className="h-4 pr-2" /> Back
+                    </ThemeButton>
+                  )}
+                  {!displaySnippets && (
+                    <ThemeButton type="icon" onClick={handleDiscard}>
                       <XIcon className="h-4 pr-2" /> Discard
-                    </button>
+                    </ThemeButton>
                   )}
-                  {display === "snippets" && (
-                    <button className="icon-button" onClick={handleAddSnippet}>
+                  {displaySnippets && (
+                    <ThemeButton type="icon" onClick={handleAddSnippet}>
                       <PlusIcon className="h-4 pr-2" /> Add New
-                    </button>
+                    </ThemeButton>
                   )}
-                  {display === "add-new-snippet-info" ||
-                  display === "finalize-new-snippet" ||
-                  display === "saving-snippet" ? (
-                    <button className="icon-button" onClick={mainButtonAction}>
-                      {display === "saving-snippet" && (
+                  {addingSnippetInfo || addingCodeToSnippet || savingSnippet ? (
+                    <ThemeButton type="icon" onClick={mainButtonAction}>
+                      {savingSnippet && (
                         <Save fontSize="medium" className="pr-2" />
                       )}
                       {mainButtonTitle}
-                      {display === "add-new-snippet-info" && (
+                      {addingSnippetInfo || addingCodeToSnippet ? (
                         <Send fontSize="medium" className="pl-2" />
+                      ) : (
+                        <></>
                       )}
-                    </button>
+                    </ThemeButton>
                   ) : (
                     <></>
                   )}
                 </div>
               </Paper>
-              {/* / Dashboard Header */}
               <div className="dashboard__content mt-1 shadow min-h-[700px]">
-                {display === "snippets" && <DashboardContentPanel />}
-                {display === "add-new-snippet-info" ||
-                display === "finalize-new-snippet" ||
-                display === "saving-snippet" ? (
+                {displaySnippets && <DashboardContentPanel />}
+                {addingSnippetInfo || addingCodeToSnippet || savingSnippet ? (
                   <AddNewSnippetPanel />
                 ) : (
                   <></>

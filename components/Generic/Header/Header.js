@@ -13,10 +13,15 @@ import { selectUserFromDB } from "../../../redux/slices/userSlice";
 import { selectTheme, SET_THEME } from "../../../redux/slices/appSlice";
 import { IconButton } from "@chakra-ui/react";
 import SimpleDropdown from "./SimpleDropdown";
+import ThemeButton from "../Button";
 
-const Header = ({ navigation = [], transparentEffect, variant }) => {
+const Header = ({
+  navigation = [],
+  transparentEffect,
+  variant,
+  themeSwitch = true,
+}) => {
   const router = useRouter();
-  const { pathname } = router;
   const dispatch = useDispatch();
   const themePreference = useSelector(selectTheme);
   const userInDB = useSelector(selectUserFromDB);
@@ -89,21 +94,28 @@ const Header = ({ navigation = [], transparentEffect, variant }) => {
           </div>
 
           <div className="flex space-x-2 items-center">
-            <div className="cursor-pointer">
-              <IconButton
-                colorScheme="teal"
-                aria-label="Call Segun"
-                size="lg"
-                onClick={switchTheme}
-                icon={
-                  themePreference === "dark" ? (
-                    <SunIcon className="h-8 p-1 text-gray-200" />
-                  ) : (
-                    <MoonIcon className="h-8 p-1" />
-                  )
-                }
-              />
-            </div>
+            {themeSwitch && (
+              <div className="cursor-pointer">
+                <IconButton
+                  colorScheme="teal"
+                  aria-label="Call Segun"
+                  size="lg"
+                  onClick={switchTheme}
+                  icon={
+                    themePreference === "dark" ? (
+                      <SunIcon
+                        className={`h-8 p-1 ${
+                          !transparentEffect && "text-gray-200"
+                        }`}
+                      />
+                    ) : (
+                      <MoonIcon className="h-8 p-1" />
+                    )
+                  }
+                />
+              </div>
+            )}
+
             {user ? (
               <div className="cursor-pointer">
                 <CustomizedDropdown
@@ -133,15 +145,16 @@ const Header = ({ navigation = [], transparentEffect, variant }) => {
               </div>
             ) : (
               <>
-                <a className="text-button" onClick={handleLoginRedirect}>
+                <ThemeButton type="text" onClick={handleLoginRedirect}>
                   Login
-                </a>
-                <a
-                  className="primary-button-small m-7 md:m-0"
+                </ThemeButton>
+                <ThemeButton
+                  className="m-7 md:m-0"
                   onClick={handleRegisterRedirect}
+                  size="small"
                 >
                   Signup
-                </a>
+                </ThemeButton>
               </>
             )}
           </div>
