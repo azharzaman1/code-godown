@@ -6,6 +6,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import { useSelector } from "react-redux";
 import { selectTheme } from "../../redux/slices/appSlice";
+import ThemeButton from "./Button";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -19,6 +20,7 @@ function MuiDialog({
   dialogActions,
 }) {
   const themePreference = useSelector(selectTheme);
+  const dark = themePreference === "dark";
   const handleClose = () => {
     setOpen(false);
   };
@@ -41,15 +43,14 @@ function MuiDialog({
         {dialogActions && (
           <DialogActions>
             {dialogActions.map(({ label, action }) => (
-              <button
-                className={`text-button  ${
-                  themePreference === "dark" && "dark"
-                }`}
+              <ThemeButton
                 key={label.trim()}
+                type={dark ? "text" : "primary"}
+                size={!dark && "small"}
                 onClick={action}
               >
                 {label}
-              </button>
+              </ThemeButton>
             ))}
           </DialogActions>
         )}

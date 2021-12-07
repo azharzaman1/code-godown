@@ -15,6 +15,7 @@ const Layout = ({
   descriptionName = "descritpion",
   icon = "/favicon.ico",
   navigation,
+  themeSwitch,
 }) => {
   const { data, error } = useSWR("/api/navigation", fetcher);
 
@@ -30,6 +31,7 @@ const Layout = ({
           navigation={navigation || data}
           transparentEffect={tranparentHeader}
           variant={headerVariant}
+          themeSwitch={themeSwitch}
         />
       )}
       <main>{children}</main>

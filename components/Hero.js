@@ -1,4 +1,6 @@
 import { Popover } from "@headlessui/react";
+import ThemeButton from "./Generic/Button";
+import ThemeHeading from "./Generic/Heading";
 
 export default function Hero() {
   return (
@@ -22,12 +24,12 @@ export default function Hero() {
 
           <main className="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
             <div className="sm:text-center lg:text-left">
-              <h1 className="primary-heading">
+              <ThemeHeading type="primary">
                 <span className="block xl:inline">Data to enrich your</span>{" "}
                 <span className="block color-primary-dark xl:inline">
                   online business
                 </span>
-              </h1>
+              </ThemeHeading>
               <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
                 Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui
                 lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat
@@ -35,14 +37,10 @@ export default function Hero() {
               </p>
               <div className="mt-10 sm:mt-8 md:mt-12 lg:mt-14 flex-center-center lg:justify-start space-x-3">
                 <div>
-                  <a href="#" className="primary-button">
-                    Get started
-                  </a>
+                  <ThemeButton type="primary">Get Started</ThemeButton>
                 </div>
                 <div>
-                  <a href="#" className="secondary-button medium-button">
-                    Live Demo
-                  </a>
+                  <ThemeButton type="secondary">Live Demo</ThemeButton>
                 </div>
               </div>
             </div>
