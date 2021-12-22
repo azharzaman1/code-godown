@@ -8,7 +8,7 @@ import {
   SET_FILE_NAME,
   SET_SNIPPET_NAME,
 } from "../../redux/slices/appSlice";
-import { TWText } from "../../files/theming/TWComponents";
+import ThemeText from "../Generic/Text";
 
 const PreEditor = () => {
   const dispatch = useDispatch();
@@ -20,13 +20,9 @@ const PreEditor = () => {
     <Paper className="addingNewSnippet__intialPhaseContainer pt-4 pb-8 px-4 my-4 mx-4">
       <form>
         <div className="flex flex-col space-y-2 mt-4">
-          <TWText
-            dark={themePreference === "dark"}
-            component="label"
-            htmlFor="snippet_name_input"
-          >
+          <ThemeText component="label" htmlFor="snippet_name_input">
             Snippet name
-          </TWText>
+          </ThemeText>
           <input
             type="text"
             placeholder="e.g. Snippet #1"
@@ -37,13 +33,9 @@ const PreEditor = () => {
           />
         </div>
         <div className="flex flex-col space-y-2 mt-4">
-          <TWText
-            dark={themePreference === "dark"}
-            component="label"
-            htmlFor="file_name_input"
-          >
+          <ThemeText component="label" htmlFor="file_name_input">
             File name
-          </TWText>
+          </ThemeText>
           <input
             type="text"
             placeholder="e.g. index.html"

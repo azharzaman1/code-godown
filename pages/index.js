@@ -9,9 +9,7 @@ export default function Home() {
       tranparentHeader={true}
       themeSwitch={false}
     >
-      <main className="w-full">
-        <Hero />
-      </main>
+      <Hero />
     </Layout>
   );
 }

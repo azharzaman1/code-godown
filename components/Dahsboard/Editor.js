@@ -76,9 +76,7 @@ const MonacoEditor = () => {
   // will change a tab in snippet
   const handleEditorChange = (value, e) => {
     const restOfSnippet = snippet.filter((tab) => tab.key !== activeTabIndex);
-    console.log("Rest", restOfSnippet);
     let snippetToSet = [...restOfSnippet, { ...activeTab, code: value }];
-    console.log("change snippetToSet", snippetToSet);
     dispatch(SET_SNIPPET(snippetToSet.sort((a, b) => a.key - b.key)));
   };
 
@@ -105,7 +103,6 @@ const MonacoEditor = () => {
       };
       console.log("fileToAdd", fileToAdd);
       let snippetToSet = [...snippet, fileToAdd];
-      console.log("snippetToSet", snippetToSet);
       dispatch(SET_SNIPPET(snippetToSet));
       dispatch(SET_EDITOR_ACTIVE_TAB_INDEX(fileKey));
       setAddingNewFile(false);

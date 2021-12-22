@@ -73,6 +73,10 @@ const dashboard = () => {
         SET_SNIPPET([
           {
             snippetName: snippetName,
+            snippetLabel: {
+              label: "",
+              key: "",
+            },
             key: snippetArr?.length,
             fileName: fileName,
             code: `// start coding here`,
