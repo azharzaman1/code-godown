@@ -49,9 +49,14 @@ const SaveSnippet = () => {
   const dark = themePreference === "dark";
 
   const handleFileDelete = (key) => {
-    if (snippet.length > 1) {
-      const restOfSnippet = snippet?.filter((file) => file.key !== key);
-      dispatch(SET_SNIPPET(restOfSnippet));
+    if (snippet?.files?.length > 1) {
+      const restOfFiles = snippet?.files?.filter((file) => file.key !== key);
+      dispatch(
+        SET_SNIPPET({
+          ...snippet,
+          files: restOfFiles?.sort((a, b) => a.key - b.key),
+        })
+      );
     } else {
       enqueueSnackbar(`Snippet must contain atleast 1 file`, {
         variant: "info",
@@ -62,6 +67,27 @@ const SaveSnippet = () => {
   const handleTagsGen = () => {
     const tagsArr = splitAtCharacter(tagsString, ",");
     console.log(tagsArr);
+
+    let tagsToAdd = [];
+
+    tagsArr?.forEach((tagName, index) => {
+      tagsToAdd.push({
+        name: tagName,
+        key: index,
+        str: tagName.replace(/\s/g, "_").toLowerCase(),
+      });
+    });
+
+    dispatch(
+      SET_SNIPPET({
+        ...snippet,
+        snippetInfo: {
+          ...snippet?.snippetInfo,
+          snippetTags: tagsToAdd,
+        },
+      })
+    );
+
     setTags(tagsArr);
   };
 
@@ -94,6 +120,19 @@ const SaveSnippet = () => {
     setAddingLabel(false);
   };
 
+  const handleIsPrivateChange = (e) => {
+    dispatch(
+      SET_SNIPPET({
+        ...snippet,
+        snippetInfo: {
+          ...snippet?.snippetInfo,
+          isPrivate: e.target.value,
+        },
+      })
+    );
+    setIsPrivate(e.target.value);
+  };
+
   return (
     <Paper className="addingNewSnippet__intialPhaseContainer pt-4 pb-8 px-4 my-4 mx-4">
       <form>
@@ -111,9 +150,9 @@ const SaveSnippet = () => {
           />
         </div>
         <div className="flex flex-col space-y-2 mt-6 max-w-sm">
-          <ThemeText>File{snippet.length > 1 && "s"}</ThemeText>
+          <ThemeText>File{snippet?.files?.length > 1 && "s"}</ThemeText>
           <Stack direction="row" spacing={1}>
-            {snippet?.map(({ key, fileName }) => (
+            {snippet?.files?.map(({ key, fileName }) => (
               <Chip
                 key={key}
                 label={fileName}
@@ -223,7 +262,7 @@ const SaveSnippet = () => {
             sx={{
               borderColor: "text.primary",
             }}
-            onChange={(e) => setIsPrivate(e.target.value)}
+            onChange={handleIsPrivateChange}
             {...label} // spreading labels
           />
           <ThemeText>Is private?</ThemeText>

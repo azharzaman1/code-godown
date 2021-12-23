@@ -6,7 +6,6 @@ import ThemeButton from "../Generic/Button";
 import { PlusIcon } from "@heroicons/react/outline";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserFromDB } from "../../redux/slices/userSlice";
-import { useState } from "react";
 import {
   SET_SNIPPET,
   selectSnippet,
@@ -23,25 +22,24 @@ const SnippetLabels = ({ onButtonClick }) => {
   const dispatch = useDispatch();
 
   const onSelectChange = (e) => {
-    // let restOfSnippet = snippet.filter((file) => file.key != 0);
-    // let fileToEdit = snippet.find((file) => file.key == 0);
-
-    // const selectedLabel = userInDB?.labels?.find(
-    //   (label) => label.key == e.target.value - 1
-    // );
-    // dispatch(
-    //   SET_SNIPPET([
-    //     {
-    //       ...fileToEdit,
-    //       snippetLabel: {
-    //         label: labelName,
-    //         key: 0,
-    //         uid: selectedLabel ? selectedLabel?.uid : "uid",
-    //       },
-    //     },
-    //     ...restOfSnippet,
-    //   ])
-    // );
+    const selectedLabel = userInDB?.labels?.find(
+      (label) => label.key == e.target.value - 1
+    );
+    dispatch(
+      SET_SNIPPET({
+        ...snippet,
+        snippetInfo: {
+          ...snippet?.snippetInfo,
+          snippetLabels: [
+            {
+              label: labelName ? labelName : selectedLabel?.name,
+              key: 0,
+              uid: selectedLabel ? selectedLabel?.uid : "uid",
+            },
+          ],
+        },
+      })
+    );
     dispatch(SET_SELECTED_LABEL_KEY(e.target.value));
   };
 

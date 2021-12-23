@@ -19,12 +19,12 @@ import {
   selectSnippetName,
   selectTheme,
   SET_SNIPPET,
-  SET_UNFILLED_TAB_INDEXS,
 } from "../redux/slices/appSlice";
 import { extractExtentionAndLanguage, fetcher } from "../files/utils";
 import useSWR from "swr";
 import { useSnackbar } from "notistack";
 import ThemeButton from "../components/Generic/Button";
+import { NIL as NIL_UUID, v4 as uuidv4 } from "uuid";
 
 const dashboard = () => {
   const dispatch = useDispatch();
@@ -70,21 +70,32 @@ const dashboard = () => {
         data
       );
       dispatch(
-        SET_SNIPPET([
-          {
-            snippetName: snippetName,
-            snippetLabel: {
-              label: "",
-              key: "",
-            },
-            key: snippetArr?.length,
-            fileName: fileName,
-            code: `// start coding here`,
-            extention: fileExtention,
-            language: language ? language : "unknown",
-            languageExtentions: language?.extensions,
+        SET_SNIPPET({
+          snippetName: snippetName,
+          uid: uuidv4(),
+          snippetInfo: {
+            snippetLabels: [
+              {
+                label: undefined,
+                key: undefined,
+                uid: NIL_UUID,
+              },
+            ],
+            snippetTags: [],
+            isPrivate: undefined,
           },
-        ])
+          files: [
+            {
+              snippetName: snippetName,
+              key: snippetArr?.length,
+              fileName: fileName,
+              code: `// start coding here`,
+              extention: fileExtention,
+              language: language ? language : "unknown",
+              languageExtentions: language?.extensions,
+            },
+          ],
+        })
       );
       router.push({
         pathname: "/dashboard",
@@ -247,12 +258,12 @@ const dashboard = () => {
                 <div className="flex space-x-2">
                   {/* Header Dynamic Buttons */}
                   {savingSnippet && (
-                    <ThemeButton type="icon" onClick={handleBackDirect}>
+                    <ThemeButton type="icon-text" onClick={handleBackDirect}>
                       <ArrowLeftIcon className="h-4 pr-2" /> Back
                     </ThemeButton>
                   )}
                   {!displaySnippets && (
-                    <ThemeButton type="icon" onClick={handleDiscard}>
+                    <ThemeButton type="icon-text" onClick={handleDiscard}>
                       <XIcon className="h-4 pr-2" /> Discard
                     </ThemeButton>
                   )}

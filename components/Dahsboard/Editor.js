@@ -26,7 +26,7 @@ const MonacoEditor = () => {
   const themePreference = useSelector(selectTheme);
   const activeTabIndex = useSelector(selectActiveTabIndex);
   const [activeTab, setActiveTab] = useState(
-    snippet?.find((tab) => tab.key == activeTabIndex)
+    snippet?.files?.find((tab) => tab.key == activeTabIndex)
   );
   const snippetName = useSelector(selectSnippetName);
   const [addingNewFile, setAddingNewFile] = useState(false);
@@ -44,10 +44,10 @@ const MonacoEditor = () => {
   useEffect(() => {
     let mounted = true;
     if (mounted) {
-      setActiveTab(snippet?.find((tab) => tab.key == activeTabIndex));
+      setActiveTab(snippet?.files?.find((tab) => tab.key == activeTabIndex));
       console.log(
         "Lang",
-        snippet
+        snippet?.files
           ?.find((tab) => tab.key == activeTabIndex)
           ?.language.name.toLowerCase()
       );
@@ -75,9 +75,16 @@ const MonacoEditor = () => {
 
   // will change a tab in snippet
   const handleEditorChange = (value, e) => {
-    const restOfSnippet = snippet.filter((tab) => tab.key !== activeTabIndex);
-    let snippetToSet = [...restOfSnippet, { ...activeTab, code: value }];
-    dispatch(SET_SNIPPET(snippetToSet.sort((a, b) => a.key - b.key)));
+    const restOfFiles = snippet?.files?.filter(
+      (tab) => tab.key !== activeTabIndex
+    );
+    let snippetToSet = {
+      ...snippet,
+      files: [...restOfFiles, { ...activeTab, code: value }]?.sort(
+        (a, b) => a.key - b.key
+      ),
+    };
+    dispatch(SET_SNIPPET(snippetToSet));
   };
 
   // Add New File Handler
@@ -88,9 +95,9 @@ const MonacoEditor = () => {
         newFileName,
         data
       );
-      const fileKey = snippet?.at(-1)
-        ? snippet?.at(-1).key + 1
-        : snippet?.length;
+      const fileKey = snippet?.files?.at(-1)
+        ? snippet?.files?.at(-1).key + 1
+        : snippet?.files?.length;
 
       let fileToAdd = {
         snippetName: snippetName,
@@ -101,8 +108,7 @@ const MonacoEditor = () => {
         language: language ? language : "unknown",
         languageExtentions: language?.extensions,
       };
-      console.log("fileToAdd", fileToAdd);
-      let snippetToSet = [...snippet, fileToAdd];
+      let snippetToSet = { ...snippet, files: [...snippet?.files, fileToAdd] };
       dispatch(SET_SNIPPET(snippetToSet));
       dispatch(SET_EDITOR_ACTIVE_TAB_INDEX(fileKey));
       setAddingNewFile(false);
@@ -119,10 +125,16 @@ const MonacoEditor = () => {
 
   const handleFileDelete = () => {
     let tabToDeleteKey = activeTabIndex;
-    const restOfSnippet = snippet?.filter((tab) => tab.key !== tabToDeleteKey); // 1- Filter snippet tabs
-    dispatch(SET_UNFILLED_TAB_INDEXS(activeTabIndex));
-    dispatch(SET_SNIPPET(restOfSnippet.sort((a, b) => a.key - b.key)));
-    dispatch(SET_EDITOR_ACTIVE_TAB_INDEX(restOfSnippet[0]?.key));
+    const restOfFiles = snippet?.files?.filter(
+      (tab) => tab.key !== tabToDeleteKey
+    );
+    dispatch(
+      SET_SNIPPET({
+        ...snippet,
+        files: restOfFiles?.sort((a, b) => a.key - b.key),
+      })
+    );
+    dispatch(SET_EDITOR_ACTIVE_TAB_INDEX(restOfFiles[0]?.key));
     setOpen(false);
   };
 
@@ -130,7 +142,7 @@ const MonacoEditor = () => {
     <div className="editor-container w-full">
       <div className="editor-navigation text-white flex items-center select-none">
         {snippet &&
-          snippet.map(({ fileName, key }) => (
+          snippet?.files?.map(({ fileName, key }) => (
             <ThemeButton
               key={key}
               label={fileName}
@@ -175,7 +187,7 @@ const MonacoEditor = () => {
       </div>
 
       <div>
-        {snippet.length > 0 && (
+        {snippet?.files?.length > 0 && (
           <>
             <Editor
               height="90vh"

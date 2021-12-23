@@ -92,14 +92,6 @@ const ThemeButton = ({
       </div>
     );
 
-  <span
-    onClick={() => {
-      setOpen(true);
-    }}
-  >
-    {key === activeTabIndex && <XIcon className="h-5 text-gray-400" />}
-  </span>;
-
   return (
     <button
       className={`primary-button ${dark && "dark"} ${className}`}
