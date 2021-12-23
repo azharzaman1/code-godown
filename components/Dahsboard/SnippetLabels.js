@@ -11,37 +11,38 @@ import {
   SET_SNIPPET,
   selectSnippet,
   selectLabelName,
+  selectSelectedLabelKey,
+  SET_SELECTED_LABEL_KEY,
 } from "../../redux/slices/appSlice";
-import { NIL as NIL_UUID, v4 as uuidv4 } from "uuid";
 
 const SnippetLabels = ({ onButtonClick }) => {
   const userInDB = useSelector(selectUserFromDB);
   const labelName = useSelector(selectLabelName);
   const snippet = useSelector(selectSnippet);
-  const [value, setValue] = useState(0);
+  const value = useSelector(selectSelectedLabelKey);
   const dispatch = useDispatch();
 
   const onSelectChange = (e) => {
-    setValue(e.target.value);
-    let restOfSnippet = snippet.filter((file) => file.key != 0);
-    let fileToEdit = snippet.find((file) => file.key == 0);
+    // let restOfSnippet = snippet.filter((file) => file.key != 0);
+    // let fileToEdit = snippet.find((file) => file.key == 0);
 
-    const selecteddLabel = userInDB?.labels?.find(
-      (label) => label.key == e.target.value - 1
-    );
-    dispatch(
-      SET_SNIPPET([
-        {
-          ...fileToEdit,
-          snippetLabel: {
-            label: labelName,
-            key: 0,
-            uid: selecteddLabel ? selecteddLabel?.uid : "uid",
-          },
-        },
-        ...restOfSnippet,
-      ])
-    );
+    // const selectedLabel = userInDB?.labels?.find(
+    //   (label) => label.key == e.target.value - 1
+    // );
+    // dispatch(
+    //   SET_SNIPPET([
+    //     {
+    //       ...fileToEdit,
+    //       snippetLabel: {
+    //         label: labelName,
+    //         key: 0,
+    //         uid: selectedLabel ? selectedLabel?.uid : "uid",
+    //       },
+    //     },
+    //     ...restOfSnippet,
+    //   ])
+    // );
+    dispatch(SET_SELECTED_LABEL_KEY(e.target.value));
   };
 
   return (

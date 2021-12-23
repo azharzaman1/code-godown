@@ -11,6 +11,7 @@ export const appSlice = createSlice({
     editorActiveTabIndex: 0,
     unfilledTabIndexs: [],
     labelName: "",
+    selectedLabelKey: 0,
   },
   reducers: {
     SET_DASHBOARD_STATE: (state, action) => {
@@ -68,6 +69,12 @@ export const appSlice = createSlice({
         labelName: action.payload,
       };
     },
+    SET_SELECTED_LABEL_KEY: (state, action) => {
+      return {
+        ...state,
+        selectedLabelKey: action.payload,
+      };
+    },
   },
 });
 
@@ -81,6 +88,7 @@ export const {
   SET_UNFILLED_TAB_INDEXS,
   RESSET_SNIPPET,
   SET_LABEL_NAME,
+  SET_SELECTED_LABEL_KEY,
 } = appSlice.actions;
 
 export const selectDashboardState = (state) => state.appStore.dashboardState;
@@ -93,5 +101,7 @@ export const selectActiveTabIndex = (state) =>
 export const selectUnfilledTabIndexs = (state) =>
   state.appStore.unfilledTabIndexs;
 export const selectLabelName = (state) => state.appStore.labelName;
+export const selectSelectedLabelKey = (state) =>
+  state.appStore.selectedLabelKey;
 
 export default appSlice.reducer;

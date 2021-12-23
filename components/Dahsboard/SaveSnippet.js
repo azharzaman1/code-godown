@@ -13,6 +13,7 @@ import {
   selectSnippetName,
   selectTheme,
   SET_LABEL_NAME,
+  SET_SELECTED_LABEL_KEY,
   SET_SNIPPET,
   SET_SNIPPET_NAME,
 } from "../../redux/slices/appSlice";
@@ -71,8 +72,6 @@ const SaveSnippet = () => {
   };
 
   const handleLabelAddition = () => {
-    setAddingLabel(false);
-
     const docRef = doc(db, "users", user?.uid);
     let previousLabels = userInDB?.labels ? userInDB?.labels : [];
     setDoc(
@@ -91,6 +90,8 @@ const SaveSnippet = () => {
       },
       { merge: true }
     );
+    dispatch(SET_SELECTED_LABEL_KEY(previousLabels?.length + 1));
+    setAddingLabel(false);
   };
 
   return (
@@ -180,7 +181,6 @@ const SaveSnippet = () => {
                     key={i}
                     label={name}
                     color="primary"
-                    variant="outlined"
                     onDelete={() => {
                       handleTagDelete(name);
                     }}
@@ -224,7 +224,7 @@ const SaveSnippet = () => {
               borderColor: "text.primary",
             }}
             onChange={(e) => setIsPrivate(e.target.value)}
-            {...label}
+            {...label} // spreading labels
           />
           <ThemeText>Is private?</ThemeText>
         </div>
