@@ -157,11 +157,11 @@ const authentication = () => {
       });
   };
 
-  const continueWithGoogle = async () => {
-    console.log("start");
-    await signInWithPopup(auth, googleAuthProvider)
+  const continueWithGoogle = () => {
+    signInWithPopup(auth, googleAuthProvider)
       .then((result) => {
-        if (result) {
+        let userAlreadyRegistered = false;
+        if (result && !userAlreadyRegistered) {
           const user = result?.user;
           const token =
             GoogleAuthProvider.credentialFromResult(result).accessToken;
@@ -184,12 +184,11 @@ const authentication = () => {
             },
             snippets: [],
           });
-
-          enqueueSnackbar(`Login Successful`, {
-            variant: "success",
-          });
-          router.replace("/");
         }
+        enqueueSnackbar(`Login Successful`, {
+          variant: "success",
+        });
+        router.replace("/");
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -204,7 +203,8 @@ const authentication = () => {
   const continueWithGH = () => {
     signInWithPopup(auth, githubAuthProvider)
       .then((result) => {
-        if (result) {
+        let userAlreadyRegistered = false;
+        if (result && !userAlreadyRegistered) {
           const user = result?.user;
           const token =
             GithubAuthProvider.credentialFromResult(result).accessToken;
@@ -227,12 +227,11 @@ const authentication = () => {
             },
             snippets: [],
           });
-
-          enqueueSnackbar(`Login Successful`, {
-            variant: "success",
-          });
-          router.replace("/");
         }
+        enqueueSnackbar(`Login Successful`, {
+          variant: "success",
+        });
+        router.replace("/");
       })
       .catch((error) => {
         // Handle Errors here.

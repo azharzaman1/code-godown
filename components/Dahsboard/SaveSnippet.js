@@ -1,3 +1,22 @@
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useSnackbar } from "notistack";
+import { Edit } from "@mui/icons-material";
+import ThemeText from "../Generic/Text";
+import ThemeButton from "../Generic/Button";
+import SnippetLabels from "./SnippetLabels";
+import { splitAtCharacter } from "../../files/utils";
+import {
+  selectLabelName,
+  selectSnippet,
+  selectSnippetName,
+  selectTheme,
+  SET_LABEL_NAME,
+  SET_SELECTED_LABEL_KEY,
+  SET_SNIPPET,
+  SET_SNIPPET_NAME,
+} from "../../redux/slices/appSlice";
 import {
   Checkbox,
   Chip,
@@ -6,38 +25,38 @@ import {
   Stack,
   Tooltip,
 } from "@mui/material";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import {
-  selectSnippet,
-  selectSnippetName,
-  selectTheme,
-  SET_SNIPPET,
-  SET_SNIPPET_NAME,
-} from "../../redux/slices/appSlice";
-import { TWText } from "../../files/theming/TWComponents";
-import { useState } from "react";
-import ThemeButton from "../Generic/Button";
-import { splitAtCharacter } from "../../files/utils";
-import { Edit } from "@mui/icons-material";
-import { useSnackbar } from "notistack";
+import { PlusIcon } from "@heroicons/react/outline";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../../client/firebase";
+import { selectUser, selectUserFromDB } from "../../redux/slices/userSlice";
+import { NIL as NIL_UUID, v4 as uuidv4 } from "uuid";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 const SaveSnippet = () => {
   const dispatch = useDispatch();
+  const user = useSelector(selectUser);
   const snippet = useSelector(selectSnippet);
   const snippetName = useSelector(selectSnippetName);
   const themePreference = useSelector(selectTheme);
-  const dark = themePreference === "dark";
+  const [isPrivate, setIsPrivate] = useState(true);
   const [tagsString, setTagsString] = useState("");
   const [tags, setTags] = useState([]);
+  const [addingLabel, setAddingLabel] = useState(false);
+  const labelName = useSelector(selectLabelName);
+  const userInDB = useSelector(selectUserFromDB);
   const { enqueueSnackbar } = useSnackbar();
+  const dark = themePreference === "dark";
 
   const handleFileDelete = (key) => {
-    if (snippet.length > 1) {
-      const restOfSnippet = snippet?.filter((file) => file.key !== key);
-      dispatch(SET_SNIPPET(restOfSnippet));
+    if (snippet?.files?.length > 1) {
+      const restOfFiles = snippet?.files?.filter((file) => file.key !== key);
+      dispatch(
+        SET_SNIPPET({
+          ...snippet,
+          files: restOfFiles?.sort((a, b) => a.key - b.key),
+        })
+      );
     } else {
       enqueueSnackbar(`Snippet must contain atleast 1 file`, {
         variant: "info",
@@ -48,6 +67,27 @@ const SaveSnippet = () => {
   const handleTagsGen = () => {
     const tagsArr = splitAtCharacter(tagsString, ",");
     console.log(tagsArr);
+
+    let tagsToAdd = [];
+
+    tagsArr?.forEach((tagName, index) => {
+      tagsToAdd.push({
+        name: tagName,
+        key: index,
+        str: tagName.replace(/\s/g, "_").toLowerCase(),
+      });
+    });
+
+    dispatch(
+      SET_SNIPPET({
+        ...snippet,
+        snippetInfo: {
+          ...snippet?.snippetInfo,
+          snippetTags: tagsToAdd,
+        },
+      })
+    );
+
     setTags(tagsArr);
   };
 
@@ -57,32 +97,62 @@ const SaveSnippet = () => {
     setTagsString(restOfTags.join(","));
   };
 
+  const handleLabelAddition = () => {
+    const docRef = doc(db, "users", user?.uid);
+    let previousLabels = userInDB?.labels ? userInDB?.labels : [];
+    setDoc(
+      docRef,
+      {
+        labels: [
+          ...previousLabels,
+          {
+            name: labelName,
+            snippets: [],
+            createAt: new Date(),
+            key: previousLabels?.length,
+            uid: `label_${uuidv4()}`,
+          },
+        ],
+      },
+      { merge: true }
+    );
+    dispatch(SET_SELECTED_LABEL_KEY(previousLabels?.length + 1));
+    setAddingLabel(false);
+  };
+
+  const handleIsPrivateChange = (e) => {
+    dispatch(
+      SET_SNIPPET({
+        ...snippet,
+        snippetInfo: {
+          ...snippet?.snippetInfo,
+          isPrivate: e.target.value,
+        },
+      })
+    );
+    setIsPrivate(e.target.value);
+  };
+
   return (
     <Paper className="addingNewSnippet__intialPhaseContainer pt-4 pb-8 px-4 my-4 mx-4">
       <form>
-        <div className="flex flex-col space-y-2 mt-4">
-          <TWText
-            dark={themePreference === "dark"}
-            component="label"
-            htmlFor="snippet_name_input"
-          >
+        <div className="flex flex-col space-y-2 mt-6">
+          <ThemeText component="label" htmlFor="snippet_name_input">
             Snippet name
-          </TWText>
+          </ThemeText>
           <input
-            type="text"
+            type="ThemeText"
             placeholder="e.g. Snippet #1"
             id="snippet_name_input"
-            className={`input max-w-sm ${themePreference === "dark" && "dark"}`}
+            className={`input max-w-sm ${dark && "dark"}`}
             value={snippetName}
             onChange={(e) => dispatch(SET_SNIPPET_NAME(e.target.value))}
           />
         </div>
-        <div className="flex flex-col space-y-2 mt-4 max-w-sm">
-          <TWText dark={themePreference === "dark"}>
-            File{snippet.length > 1 && "s"}
-          </TWText>
+        <div className="flex flex-col space-y-2 mt-6 max-w-sm">
+          <ThemeText>File{snippet?.files?.length > 1 && "s"}</ThemeText>
           <Stack direction="row" spacing={1}>
-            {snippet?.map(({ key, fileName }) => (
+            {snippet?.files?.map(({ key, fileName }) => (
               <Chip
                 key={key}
                 label={fileName}
@@ -93,14 +163,55 @@ const SaveSnippet = () => {
           </Stack>
         </div>
 
-        <div className="flex flex-col space-y-2 mt-4">
-          <TWText
-            dark={themePreference === "dark"}
-            component="label"
-            htmlFor="snippet_name_input"
-          >
+        <div className="flex flex-col space-y-2 mt-6 max-w-sm">
+          <ThemeText>Labels</ThemeText>
+          {userInDB?.labels?.length > 0 && !addingLabel ? (
+            <SnippetLabels
+              onButtonClick={() => {
+                setAddingLabel(true);
+                dispatch(SET_LABEL_NAME(""));
+              }}
+            />
+          ) : (
+            <>
+              {addingLabel ? (
+                <>
+                  <input
+                    type="text"
+                    placeholder="e.g. Font-end-dev snippets etc."
+                    id="tags_input"
+                    className={`input max-w-sm ${dark && "dark"}`}
+                    value={labelName}
+                    onChange={(e) => dispatch(SET_LABEL_NAME(e.target.value))}
+                  />
+                  {labelName.length > 0 && (
+                    <ThemeButton
+                      type={dark ? "text" : "primary"}
+                      size={dark && "small"}
+                      className="text-center max-w-sm mt-3"
+                      onClick={handleLabelAddition}
+                    >
+                      Add label
+                    </ThemeButton>
+                  )}
+                </>
+              ) : (
+                <ThemeButton
+                  type="icon"
+                  className="w-40 justify-evenly"
+                  onClick={() => setAddingLabel(true)}
+                >
+                  <PlusIcon className="h-5" /> Create label
+                </ThemeButton>
+              )}
+            </>
+          )}
+        </div>
+
+        <div className="flex flex-col space-y-2 mt-6">
+          <ThemeText component="label" htmlFor="snippet_name_input">
             Tags
-          </TWText>
+          </ThemeText>
           {tags.length > 0 ? (
             <>
               <Stack direction="row" spacing={1} alignItems="center">
@@ -109,7 +220,6 @@ const SaveSnippet = () => {
                     key={i}
                     label={name}
                     color="primary"
-                    variant="outlined"
                     onDelete={() => {
                       handleTagDelete(name);
                     }}
@@ -128,9 +238,7 @@ const SaveSnippet = () => {
                 type="text"
                 placeholder="e.g. JavsScript,ReactJs,Components"
                 id="tags_input"
-                className={`input max-w-sm ${
-                  themePreference === "dark" && "dark"
-                }`}
+                className={`input max-w-sm ${dark && "dark"}`}
                 value={tagsString}
                 onChange={(e) => setTagsString(e.target.value)}
               />
@@ -147,9 +255,17 @@ const SaveSnippet = () => {
             </>
           )}
         </div>
-        <div className="flex items-center space-x mt-4">
-          <Checkbox color="primary" {...label} defaultChecked />
-          <TWText dark={themePreference === "dark"}>Is private?</TWText>
+        <div className="flex items-center space-x mt-6">
+          <Checkbox
+            color="primary"
+            value={isPrivate}
+            sx={{
+              borderColor: "text.primary",
+            }}
+            onChange={handleIsPrivateChange}
+            {...label} // spreading labels
+          />
+          <ThemeText>Is private?</ThemeText>
         </div>
       </form>
     </Paper>

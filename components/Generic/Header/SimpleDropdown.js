@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { ChevronDownIcon } from "@heroicons/react/outline";
 import { Code } from "@mui/icons-material";
 import { ListItemIcon } from "@mui/material";
-import { TWText } from "../../../files/theming/TWComponents";
+import ThemeText from "../Text";
 
 export default function SimpleDropdown({ label, dropdownData, dark }) {
   const themePreference = useSelector(selectTheme);
@@ -83,7 +83,7 @@ export default function SimpleDropdown({ label, dropdownData, dark }) {
                 <Code />
               </ListItemIcon>
               <div className="flex flex-col">
-                <TWText dark={themePreference === "dark"}>{name}</TWText>
+                <ThemeText>{name}</ThemeText>
                 <span className={`mt-2 text-gray-400 text-sm`}>
                   {description}
                 </span>

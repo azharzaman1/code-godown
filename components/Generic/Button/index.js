@@ -17,6 +17,7 @@ const ThemeButton = ({
 }) => {
   const theme = useSelector(selectTheme);
   const dark = theme === "dark";
+
   if (type === "primary")
     return (
       <a
@@ -61,6 +62,17 @@ const ThemeButton = ({
       </a>
     );
 
+  if (type === "icon-text")
+    return (
+      <a
+        href={href}
+        className={`icon-text-button ${dark && "dark"} ${className}`}
+        {...rest}
+      >
+        {children}
+      </a>
+    );
+
   if (type === "tab")
     return (
       <div
@@ -79,25 +91,6 @@ const ThemeButton = ({
         )}
       </div>
     );
-
-  // <div
-  //           key={key}
-  //           className={`tab-button ${
-  //             key === activeTabIndex && "active"
-  //           } flex items-center space-x-4`}
-  //           onClick={() => {
-  //             dispatch(SET_EDITOR_ACTIVE_TAB_INDEX(key));
-  //           }}
-  //         >
-  //   <span>{fileName}</span>
-  <span
-    onClick={() => {
-      setOpen(true);
-    }}
-  >
-    {key === activeTabIndex && <XIcon className="h-5 text-gray-400" />}
-  </span>;
-  //         </div>
 
   return (
     <button

@@ -51,8 +51,12 @@
 
   /* Buttons */
 
+  .button-shrink-transition {
+    @apply transition duration-200 hover:shadow-lg active:scale-90 select-none;
+  }
+
   .button-base {
-    @apply rounded-md shadow-md font-medium transition duration-200 hover:shadow-lg active:scale-90 cursor-pointer select-none;
+    @apply rounded-md shadow-md font-medium cursor-pointer select-none;
   }
 
   .primary-look {
@@ -72,7 +76,7 @@
   }
 
   .primary-button {
-    @apply button-base medium-button primary-look;
+    @apply button-base button-shrink-transition medium-button primary-look;
   }
 
   .primary-button.small {
@@ -80,7 +84,7 @@
   }
 
   .secondary-button {
-    @apply button-base secondary-look medium-button;
+    @apply button-base button-shrink-transition secondary-look medium-button;
   }
 
   .secondary-button.small {
@@ -88,7 +92,7 @@
   }
 
   .text-button {
-    @apply px-5 py-2 rounded-md bg-transparent hover:bg-gray-300 transition duration-150 text-gray-800 cursor-pointer;
+    @apply px-5 py-2 rounded-md bg-transparent hover:bg-gray-300 transition duration-150 text-gray-800 cursor-pointer button-shrink-transition;
   }
 
   .text-button.dark {
@@ -96,7 +100,15 @@
   }
 
   .icon-button {
-    @apply button-base primary-look flex-between-center py-2 px-3;
+    @apply button-base button-shrink-transition primary-look flex-between-center py-2 px-3;
+  }
+
+  .icon-text-button {
+    @apply button-base flex items-center justify-start py-2 px-3 shadow-none transition duration-100 hover:shadow-md active:scale-95;
+  }
+
+  .icon-text-button.shrink-transition {
+    @apply button-base button-shrink-transition flex items-center justify-start py-2 px-3;
   }
 
   .tab-button {

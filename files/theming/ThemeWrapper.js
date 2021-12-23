@@ -2,27 +2,12 @@ import React from "react";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { useSelector } from "react-redux";
 import { selectTheme } from "../../redux/slices/appSlice";
+import { getPalette } from "./palette";
 
 const ThemeWrapper = ({ children }) => {
   const themePreference = useSelector(selectTheme);
-
-  const muiPalette = {
-    primaryMain: "#E76F51",
-    primaryLight: "#d69b8c",
-    primaryDark: "#E24D28",
-    primaryColorContrast:
-      themePreference === "light"
-        ? "rgba(0,0,0,0.65)"
-        : "rgba(255, 255, 255, 0.80)",
-
-    bgDefault: themePreference === "light" ? "#f9f9f9" : "#1a202c",
-    bgLight: themePreference === "light" ? "#f9f9f9" : "#2D3748",
-
-    dividerColor:
-      themePreference === "light"
-        ? "rgba(100,100,100,0.10)"
-        : "rgba(150,150,150,0.125)",
-  };
+  const light = themePreference === "light";
+  const muiPalette = getPalette(light);
 
   const colorTheme = createTheme({
     palette: {
@@ -38,10 +23,47 @@ const ThemeWrapper = ({ children }) => {
         default: muiPalette.bgDefault,
         paper: muiPalette.bgLight,
       },
+      text: {
+        primary: muiPalette.primaryTextColor,
+      },
       divider: muiPalette.dividerColor,
     },
     shape: {
       borderRadius: "3px",
+    },
+    components: {
+      MuiCheckbox: {
+        styleOverrides: {
+          root: {
+            color: muiPalette.primaryTextColorContrast,
+          },
+        },
+      },
+      MuiListSubheader: {
+        styleOverrides: {
+          root: {
+            fontSize: "14px",
+            fontStyle: "normal",
+            fontWeight: "medium",
+            color: muiPalette.primaryTextColorContrast,
+          },
+        },
+      },
+      MuiSelect: {
+        styleOverrides: {
+          outlined: {
+            border: `2px solid ${muiPalette.primaryTextColor}`,
+          },
+        },
+      },
+      MuiMenuItem: {
+        styleOverrides: {
+          root: {
+            paddingTop: "10px",
+            paddingBottom: "10px",
+          },
+        },
+      },
     },
   });
   return (

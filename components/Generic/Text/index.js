@@ -1,12 +1,16 @@
-export const TWText = ({
+import { useSelector } from "react-redux";
+import { selectTheme } from "../../../redux/slices/appSlice";
+
+const ThemeText = ({
   type = "primary",
-  dark,
   component = "p",
   children,
   className,
   ...rest
 }) => {
   const Tag = component;
+  const themePreference = useSelector(selectTheme);
+  const dark = themePreference === "dark";
 
   if (type === "primary")
     return (
@@ -15,3 +19,5 @@ export const TWText = ({
       </Tag>
     );
 };
+
+export default ThemeText;

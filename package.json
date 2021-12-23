@@ -27,7 +27,8 @@
     "react-firebase-hooks": "^4.0.1",
     "react-minimal-side-navigation": "^1.9.2",
     "react-redux": "^7.2.6",
-    "swr": "^1.0.1"
+    "swr": "^1.0.1",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "autoprefixer": "^10.2.6",
