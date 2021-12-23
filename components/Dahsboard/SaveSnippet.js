@@ -29,7 +29,7 @@ import { PlusIcon } from "@heroicons/react/outline";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../client/firebase";
 import { selectUser, selectUserFromDB } from "../../redux/slices/userSlice";
-import { NIL as NIL_UUID, v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
