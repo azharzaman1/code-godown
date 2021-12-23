@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Loader from "../components/Generic/Loader";
 import Layout from "../components/Layout";
 import Container from "../files/Container";
-import { selectUserFromDB } from "../redux/slices/userSlice";
+import { selectUser, selectUserFromDB } from "../redux/slices/userSlice";
 import Navigation from "../components/Dahsboard/Navigation";
 import DashboardContentPanel from "../components/Dahsboard/DashboardContentPanel";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,12 +25,16 @@ import useSWR from "swr";
 import { useSnackbar } from "notistack";
 import ThemeButton from "../components/Generic/Button";
 import { NIL as NIL_UUID, v4 as uuidv4 } from "uuid";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { db } from "../client/firebase";
 
 const dashboard = () => {
   const dispatch = useDispatch();
+  const user = useSelector(selectUser);
   const snippetArr = useSelector(selectSnippet);
   const [dashboardLoading, setDashboardLoading] = useState(false);
   const userInDB = useSelector(selectUserFromDB);
+  const snippets = useSelector(selectUserFromDB)?.snippets;
   const snippetName = useSelector(selectSnippetName);
   const fileName = useSelector(selectFileName);
   const themePreference = useSelector(selectTheme);
@@ -72,17 +76,20 @@ const dashboard = () => {
       dispatch(
         SET_SNIPPET({
           snippetName: snippetName,
-          uid: uuidv4(),
+          uid: `snippet_${uuidv4()}`,
           snippetInfo: {
             snippetLabels: [
               {
-                label: undefined,
-                key: undefined,
-                uid: NIL_UUID,
+                label: "",
+                key: "",
+                uid: `label_${NIL_UUID}`,
               },
             ],
             snippetTags: [],
-            isPrivate: undefined,
+            createAt: new Date(),
+            lastUpdatedAt: new Date(),
+            snapshots: [],
+            isPrivate: false,
           },
           files: [
             {
@@ -93,6 +100,9 @@ const dashboard = () => {
               extention: fileExtention,
               language: language ? language : "unknown",
               languageExtentions: language?.extensions,
+              createdAt: new Date(),
+              lastUpdatedAt: new Date(),
+              snapshots: [],
             },
           ],
         })
@@ -111,8 +121,25 @@ const dashboard = () => {
     }
   };
 
-  const handleSnippetSave = () => {
-    console.log("Will save");
+  const handleSnippetSave = async () => {
+    let snippetsToSet = [snippetArr, ...snippets];
+    const docRef = doc(db, "users", user?.uid);
+    await setDoc(
+      docRef,
+      {
+        snippets: snippetsToSet,
+      },
+      { merge: true }
+    );
+    enqueueSnackbar(`Snippet saved successfully`, {
+      variant: "success",
+    });
+    router.push({
+      pathname: "/dashboard",
+      query: {
+        display: "snippets",
+      },
+    });
   };
 
   const handleDiscard = () => {

@@ -107,6 +107,9 @@ const MonacoEditor = () => {
         code: `// start coding here`,
         language: language ? language : "unknown",
         languageExtentions: language?.extensions,
+        createdAt: new Date(),
+        lastUpdatedAt: new Date(),
+        snapshots: [],
       };
       let snippetToSet = { ...snippet, files: [...snippet?.files, fileToAdd] };
       dispatch(SET_SNIPPET(snippetToSet));
