@@ -18,6 +18,13 @@ const ThemeText = ({
         {children}
       </Tag>
     );
+
+  if (type === "info")
+    return (
+      <Tag className={`info-text ${dark && "dark"} ${className}`} {...rest}>
+        {children}
+      </Tag>
+    );
 };
 
 export default ThemeText;

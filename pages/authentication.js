@@ -20,7 +20,7 @@ import {
   googleAuthProvider,
 } from "../client/firebase";
 import { validateEmail, validatePassword } from "../files/utils";
-import { doc, serverTimestamp, setDoc } from "@firebase/firestore";
+import { doc, serverTimestamp, setDoc, getDoc } from "@firebase/firestore";
 import { useSnackbar } from "notistack";
 
 const authentication = () => {
@@ -161,6 +161,12 @@ const authentication = () => {
     signInWithPopup(auth, googleAuthProvider)
       .then((result) => {
         let userAlreadyRegistered = false;
+        const docRef = doc(db, "users", result?.user?.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          console.log("User data:", docSnap.data());
+          userAlreadyRegistered = true;
+        }
         if (result && !userAlreadyRegistered) {
           const user = result?.user;
           const token =
@@ -202,8 +208,14 @@ const authentication = () => {
 
   const continueWithGH = () => {
     signInWithPopup(auth, githubAuthProvider)
-      .then((result) => {
+      .then(async (result) => {
         let userAlreadyRegistered = false;
+        const docRef = doc(db, "users", result?.user?.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          console.log("User data:", docSnap.data());
+          userAlreadyRegistered = true;
+        }
         if (result && !userAlreadyRegistered) {
           const user = result?.user;
           const token =

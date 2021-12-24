@@ -39,7 +39,7 @@ const SaveSnippet = () => {
   const snippet = useSelector(selectSnippet);
   const snippetName = useSelector(selectSnippetName);
   const themePreference = useSelector(selectTheme);
-  const [isPrivate, setIsPrivate] = useState(true);
+  const [isPrivate, setIsPrivate] = useState(false);
   const [tagsString, setTagsString] = useState("");
   const [tags, setTags] = useState([]);
   const [addingLabel, setAddingLabel] = useState(false);
@@ -126,11 +126,12 @@ const SaveSnippet = () => {
         ...snippet,
         snippetInfo: {
           ...snippet?.snippetInfo,
-          isPrivate: e.target.value,
+          isPrivate: !isPrivate,
         },
       })
     );
-    setIsPrivate(e.target.value);
+    console.log(!isPrivate);
+    setIsPrivate(!isPrivate);
   };
 
   return (

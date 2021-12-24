@@ -17,7 +17,7 @@ const PreEditor = () => {
   const themePreference = useSelector(selectTheme);
 
   return (
-    <Paper className="addingNewSnippet__intialPhaseContainer pt-4 pb-8 px-4 my-4 mx-4">
+    <Paper className="addingNewSnippet__intialPhaseContainer pt-4 pb-8 px-4 my-1 mx-4">
       <form>
         <div className="flex flex-col space-y-2 mt-4">
           <ThemeText component="label" htmlFor="snippet_name_input">
