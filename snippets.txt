@@ -1,2 +1,0 @@
-const themePreference = useSelector(selectTheme);
- ${themePreference === "dark" && "dark"}

@@ -191,19 +191,18 @@ const MonacoEditor = () => {
 
       <div>
         {snippet?.files?.length > 0 && (
-          <>
-            <Editor
-              height="90vh"
-              defaultLanguage={activeTab?.language.name.toLowerCase()}
-              defaultValue={activeTab?.code}
-              path={activeTab?.fileName}
-              onChange={handleEditorChange}
-              onMount={handleEditorDidMount}
-              theme={themePreference === "dark" ? "vs-dark" : "light"}
-            />
-          </>
+          <Editor
+            height="75vh"
+            defaultLanguage={activeTab?.language.name.toLowerCase()}
+            defaultValue={activeTab?.code}
+            path={activeTab?.fileName}
+            onChange={handleEditorChange}
+            onMount={handleEditorDidMount}
+            theme={themePreference === "dark" ? "vs-dark" : "light"}
+          />
         )}
       </div>
+      {/* File delete confirmation dialog */}
       <Dialog
         title={
           "Are you sure, you want to delete this file. This action is irreversible"

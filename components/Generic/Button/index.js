@@ -8,6 +8,7 @@ const ThemeButton = ({
   href,
   type = "primary",
   size = "medium",
+  isDark,
 
   label, // only for tab button
   active, // only for tab button
@@ -16,7 +17,7 @@ const ThemeButton = ({
   ...rest
 }) => {
   const theme = useSelector(selectTheme);
-  const dark = theme === "dark";
+  const dark = isDark ? isDark : theme === "dark";
 
   if (type === "primary")
     return (

@@ -145,7 +145,11 @@ const Header = ({
               </div>
             ) : (
               <>
-                <ThemeButton type="text" onClick={handleLoginRedirect}>
+                <ThemeButton
+                  type="text"
+                  isDark={variant !== "light"}
+                  onClick={handleLoginRedirect}
+                >
                   Login
                 </ThemeButton>
                 <ThemeButton
