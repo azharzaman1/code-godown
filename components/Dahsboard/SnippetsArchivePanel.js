@@ -16,7 +16,7 @@ const SnippetsArchivePanel = () => {
       <div className="archivePanel__right w-full md:w-5/6 bg-gray-800">
         <Grid
           container
-          spacing={{ xs: 2, md: 3 }}
+          spacing={{ xs: 1, md: 2 }}
           columns={{ xs: 4, sm: 8, md: 12 }}
         >
           {snippets?.map(({ snippetName, uid, snippetInfo, files }) => (
