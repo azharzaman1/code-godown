@@ -100,6 +100,7 @@ const SaveSnippet = () => {
   const handleLabelAddition = () => {
     const docRef = doc(db, "users", user?.uid);
     let previousLabels = userInDB?.labels ? userInDB?.labels : [];
+    let uid = `label_${uuidv4()}`;
     setDoc(
       docRef,
       {
@@ -110,11 +111,26 @@ const SaveSnippet = () => {
             snippets: [],
             createAt: new Date(),
             key: previousLabels?.length,
-            uid: `label_${uuidv4()}`,
+            uid: uid,
           },
         ],
       },
       { merge: true }
+    );
+    dispatch(
+      SET_SNIPPET({
+        ...snippet,
+        snippetInfo: {
+          ...snippet?.snippetInfo,
+          snippetLabels: [
+            {
+              label: labelName,
+              key: 0,
+              uid: uid,
+            },
+          ],
+        },
+      })
     );
     dispatch(SET_SELECTED_LABEL_KEY(previousLabels?.length + 1));
     setAddingLabel(false);

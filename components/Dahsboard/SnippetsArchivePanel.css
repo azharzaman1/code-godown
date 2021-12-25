@@ -1,0 +1,14 @@
+.snippet__card *::-webkit-scrollbar {
+  width: 0px;
+  height: 5px;
+}
+.snippet__card *::-webkit-scrollbar-track {
+  background: var(--background-light);
+}
+.snippet__card *::-webkit-scrollbar-thumb {
+  background-color: rgba(153, 153, 153, 0.4);
+  border-radius: 5px;
+}
+.snippet__card *::-webkit-scrollbar-thumb:hover {
+  background-color: #999;
+}

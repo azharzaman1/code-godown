@@ -157,7 +157,7 @@
     @apply text-xs text-gray-500 font-normal;
   }
   .info-text.dark {
-    @apply text-gray-300;
+    @apply text-gray-400;
   }
   .text-semibold {
     @apply text-[16px] font-semibold text-gray-800;
