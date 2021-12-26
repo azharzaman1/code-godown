@@ -12,6 +12,7 @@ export const appSlice = createSlice({
     unfilledTabIndexs: [],
     labelName: "",
     selectedLabelKey: 0,
+    syntaxTheme: "atomOneDark",
   },
   reducers: {
     SET_DASHBOARD_STATE: (state, action) => {
@@ -75,6 +76,12 @@ export const appSlice = createSlice({
         selectedLabelKey: action.payload,
       };
     },
+    SET_SYNTAX_THEME: (state, action) => {
+      return {
+        ...state,
+        syntaxTheme: action.payload,
+      };
+    },
   },
 });
 
@@ -89,6 +96,7 @@ export const {
   RESSET_SNIPPET,
   SET_LABEL_NAME,
   SET_SELECTED_LABEL_KEY,
+  SET_SYNTAX_THEME,
 } = appSlice.actions;
 
 export const selectDashboardState = (state) => state.appStore.dashboardState;
@@ -103,5 +111,6 @@ export const selectUnfilledTabIndexs = (state) =>
 export const selectLabelName = (state) => state.appStore.labelName;
 export const selectSelectedLabelKey = (state) =>
   state.appStore.selectedLabelKey;
+export const selectSyntaxTheme = (state) => state.appStore.syntaxTheme;
 
 export default appSlice.reducer;

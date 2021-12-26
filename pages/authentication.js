@@ -164,7 +164,6 @@ const authentication = () => {
         const docRef = doc(db, "users", result?.user?.uid);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          console.log("User data:", docSnap.data());
           userAlreadyRegistered = true;
         }
         if (result && !userAlreadyRegistered) {
@@ -203,7 +202,6 @@ const authentication = () => {
           variant: "error",
         });
       });
-    console.log("end");
   };
 
   const continueWithGH = () => {
@@ -213,7 +211,6 @@ const authentication = () => {
         const docRef = doc(db, "users", result?.user?.uid);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          console.log("User data:", docSnap.data());
           userAlreadyRegistered = true;
         }
         if (result && !userAlreadyRegistered) {

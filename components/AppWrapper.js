@@ -17,7 +17,6 @@ const AppWrapper = ({ children }) => {
         const source = doc.metadata.hasPendingWrites ? "Local" : "Server";
         if (doc.data()) {
           const data = doc.data();
-          console.log(source, " data: ", data);
           dispatch(
             SET_USER_FROM_DB({
               ...data,

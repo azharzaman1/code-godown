@@ -34,9 +34,6 @@ const MonacoEditor = () => {
   const [newFileName, setNewFileName] = useState("");
   const { data, error } = useSWR("/api/programming-langs", fetcher);
 
-  console.log("Active Tab Index", activeTabIndex);
-  console.log("Active Tab", activeTab);
-
   const router = useRouter();
   const { display } = router.query;
 
@@ -45,12 +42,6 @@ const MonacoEditor = () => {
     let mounted = true;
     if (mounted) {
       setActiveTab(snippet?.files?.find((tab) => tab.key == activeTabIndex));
-      console.log(
-        "Lang",
-        snippet?.files
-          ?.find((tab) => tab.key == activeTabIndex)
-          ?.language.name.toLowerCase()
-      );
     }
     return () => {
       mounted = false;
@@ -60,12 +51,6 @@ const MonacoEditor = () => {
   // Preparing Editor
 
   const monaco = useMonaco();
-
-  useEffect(() => {
-    if (monaco) {
-      console.log("here is the monaco isntance:", monaco);
-    }
-  }, [monaco]);
 
   const editorRef = useRef(null);
 

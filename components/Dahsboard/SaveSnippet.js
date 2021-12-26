@@ -66,10 +66,7 @@ const SaveSnippet = () => {
 
   const handleTagsGen = () => {
     const tagsArr = splitAtCharacter(tagsString, ",");
-    console.log(tagsArr);
-
     let tagsToAdd = [];
-
     tagsArr?.forEach((tagName, index) => {
       tagsToAdd.push({
         name: tagName,
@@ -146,7 +143,6 @@ const SaveSnippet = () => {
         },
       })
     );
-    console.log(!isPrivate);
     setIsPrivate(!isPrivate);
   };
 
