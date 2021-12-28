@@ -1,10 +1,15 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { auth, db } from "../client/firebase";
-import { doc, onSnapshot } from "@firebase/firestore";
+import { doc, onSnapshot, collection } from "@firebase/firestore";
 import { onAuthStateChanged } from "@firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { LOGOUT, SETUSER, SET_USER_FROM_DB } from "../redux/slices/userSlice";
+import {
+  LOGOUT,
+  SETUSER,
+  SET_SNIPPETS,
+  SET_USER_FROM_DB,
+} from "../redux/slices/userSlice";
 
 const AppWrapper = ({ children }) => {
   const dispatch = useDispatch();
@@ -30,7 +35,21 @@ const AppWrapper = ({ children }) => {
           );
         }
       });
+
+      let snippetsCollection = collection(db, "users", user?.uid, "snippets");
+
+      onSnapshot(snippetsCollection, (querySnapshot) =>
+        dispatch(
+          SET_SNIPPETS(
+            querySnapshot.docs.map((doc) => ({
+              id: doc.id,
+              data: doc.data(),
+            }))
+          )
+        )
+      );
     }
+
     return () => {
       mounted = false;
     };

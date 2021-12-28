@@ -94,7 +94,8 @@ const Header = ({
           </div>
 
           <div className="flex space-x-2 items-center">
-            {themeSwitch && (
+            {/* Disabling Theme Switch  {Default : 'Dark'} */}
+            {/* {themeSwitch && (
               <div className="cursor-pointer">
                 <IconButton
                   colorScheme="teal"
@@ -114,7 +115,7 @@ const Header = ({
                   }
                 />
               </div>
-            )}
+            )} */}
 
             {user ? (
               <div className="cursor-pointer">

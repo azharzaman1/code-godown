@@ -24,7 +24,7 @@ import useSWR from "swr";
 import { useSnackbar } from "notistack";
 import ThemeButton from "../components/Generic/Button";
 import { NIL as NIL_UUID, v4 as uuidv4 } from "uuid";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../client/firebase";
 import ThemeSwitch from "../components/Dahsboard/ThemeSwitch";
 import SyntaxThemes from "../files/theming/SyntaxThemes";
@@ -126,13 +126,9 @@ const dashboard = () => {
     let snippetsToSet = [snippetArr, ...snippets];
     console.log("<", snippetsToSet);
     const docRef = doc(db, "users", user?.uid);
-    await setDoc(
-      docRef,
-      {
-        snippets: snippetsToSet,
-      },
-      { merge: true }
-    );
+    await updateDoc(docRef, {
+      snippets: snippetsToSet,
+    });
     dispatch(RESSET_SNIPPET());
     enqueueSnackbar(`Snippet saved successfully`, {
       variant: "success",
