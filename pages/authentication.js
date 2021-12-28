@@ -159,7 +159,7 @@ const authentication = () => {
 
   const continueWithGoogle = () => {
     signInWithPopup(auth, googleAuthProvider)
-      .then((result) => {
+      .then(async (result) => {
         let userAlreadyRegistered = false;
         const docRef = doc(db, "users", result?.user?.uid);
         const docSnap = await getDoc(docRef);

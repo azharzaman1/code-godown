@@ -2,9 +2,12 @@ const themePreference = useSelector(selectTheme);
  ${themePreference === "dark" && "dark"}
 
  Aditions:
+ Skeleton Screens
 
  Improvements: 
  Multiple Labels Selection per Snippet
 
 Fixes:
+Auth repetitive Messages
+GH auth error display
  
