@@ -7,11 +7,4 @@ const themePreference = useSelector(selectTheme);
  Multiple Labels Selection per Snippet
 
 Fixes:
- create first file within editor
- Limit lenght of Files, Tags on Snippet Save Screen
-
- Language change of syntax highlighter
-
- new created label dont register
-
  

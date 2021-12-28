@@ -1,13 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export const appSlice = createSlice({
-  name: "user",
+  name: "app",
   initialState: {
-    dashboardState: "snippets_display",
     snippetName: "New Snippet",
     fileName: "",
     themePreference: "dark",
-    snippet: [],
+    snippet: {},
     editorActiveTabIndex: 0,
     unfilledTabIndexs: [],
     labelName: "",
@@ -15,12 +14,6 @@ export const appSlice = createSlice({
     syntaxTheme: "atomOneDark",
   },
   reducers: {
-    SET_DASHBOARD_STATE: (state, action) => {
-      return {
-        ...state,
-        dashboardState: action.payload,
-      };
-    },
     SET_SNIPPET_NAME: (state, action) => {
       return {
         ...state,
@@ -99,7 +92,6 @@ export const {
   SET_SYNTAX_THEME,
 } = appSlice.actions;
 
-export const selectDashboardState = (state) => state.appStore.dashboardState;
 export const selectSnippetName = (state) => state.appStore.snippetName;
 export const selectFileName = (state) => state.appStore.fileName;
 export const selectTheme = (state) => state.appStore.themePreference;

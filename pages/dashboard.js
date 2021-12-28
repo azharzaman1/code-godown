@@ -95,7 +95,7 @@ const dashboard = () => {
           files: [
             {
               snippetName: snippetName,
-              key: snippetArr?.length,
+              key: 0,
               fileName: fileName,
               code: `// start coding here`,
               extention: fileExtention,
@@ -287,7 +287,12 @@ const dashboard = () => {
               </div>
             </Paper>
             <div className="dashboard__content mt-1 shadow min-h-[600px]">
-              {displaySnippets && <SnippetsArchivePanel />}
+              {displaySnippets || snippetArr?.files?.length < 1 ? (
+                <SnippetsArchivePanel />
+              ) : (
+                <></>
+              )}
+
               {addingSnippetInfo || addingCodeToSnippet || savingSnippet ? (
                 <AddNewSnippetPanel />
               ) : (

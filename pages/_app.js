@@ -8,6 +8,7 @@ import "../styles/tailwind-theming.css";
 import "tailwindcss/tailwind.css";
 import "../components/Generic/Loader.css";
 import "../components/Dahsboard/SnippetsArchivePanel.css";
+import "../components/Dahsboard/SaveSnippet.css";
 import ThemeWrapper from "../files/theming/ThemeWrapper";
 import { ChakraProvider } from "@chakra-ui/react";
 
