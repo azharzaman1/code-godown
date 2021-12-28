@@ -124,6 +124,7 @@ const dashboard = () => {
 
   const handleSnippetSave = async () => {
     let snippetsToSet = [snippetArr, ...snippets];
+    console.log("<", snippetsToSet);
     const docRef = doc(db, "users", user?.uid);
     await setDoc(
       docRef,

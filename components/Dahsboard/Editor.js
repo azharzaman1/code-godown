@@ -18,14 +18,15 @@ import Dialog from "../Generic/Dialog";
 import useSWR from "swr";
 import ThemeButton from "../Generic/Button";
 import { NIL as NIL_UUID, v4 as uuidv4 } from "uuid";
+import { useSnackbar } from "notistack";
 
 const MonacoEditor = () => {
   const dispatch = useDispatch();
-  let snippet = useSelector(selectSnippet);
+  let snippetObj = useSelector(selectSnippet);
   const themePreference = useSelector(selectTheme);
   const activeTabIndex = useSelector(selectActiveTabIndex);
   const [activeTab, setActiveTab] = useState(
-    snippet?.files?.find((tab) => tab.key == activeTabIndex)
+    snippetObj?.files?.find((tab) => tab.key == activeTabIndex)
   );
   const [addingNewFile, setAddingNewFile] = useState(false);
   const [dialogOpen, setOpen] = useState(false);
@@ -34,33 +35,20 @@ const MonacoEditor = () => {
 
   const router = useRouter();
 
-  const { snippetName } = router.query;
+  const enqueueSnackbar = useSnackbar();
 
-  // useEffect(() => {
-  //   let mounted = true;
-
-  //   if (mounted) {
-  //     if (snippet?.files?.length < 1) {
-  //       router.replace({
-  //         pathname: "/dashboard",
-  //         query: {
-  //           display: "snippets",
-  //         },
-  //       });
-  //     }
-  //   }
-  // }, [router, snippet?.files]);
+  const { snippet } = router.query;
 
   // Switch Active Tab
   useEffect(() => {
     let mounted = true;
     if (mounted) {
-      setActiveTab(snippet?.files?.find((tab) => tab.key == activeTabIndex));
+      setActiveTab(snippetObj?.files?.find((tab) => tab.key == activeTabIndex));
     }
     return () => {
       mounted = false;
     };
-  }, [snippet, activeTabIndex]);
+  }, [snippetObj, activeTabIndex]);
 
   // Preparing Editor
 
@@ -74,11 +62,11 @@ const MonacoEditor = () => {
 
   // will change a tab in snippet
   const handleEditorChange = (value, e) => {
-    const restOfFiles = snippet?.files?.filter(
+    const restOfFiles = snippetObj?.files?.filter(
       (tab) => tab.key !== activeTabIndex
     );
     let snippetToSet = {
-      ...snippet,
+      ...snippetObj,
       files: [...restOfFiles, { ...activeTab, code: value }]?.sort(
         (a, b) => a.key - b.key
       ),
@@ -97,16 +85,16 @@ const MonacoEditor = () => {
 
       let snippetToSet;
       let fileKey;
-      if (snippet?.files?.length > 0) {
+      if (snippetObj?.files?.length > 0) {
         // normal behaviour
-        fileKey = snippet?.files?.at(-1).key + 1;
+        fileKey = snippetObj?.files?.at(-1).key + 1;
         snippetToSet = {
-          ...snippet,
+          ...snippetObj,
           files: [
-            ...snippet?.files,
+            ...snippetObj?.files,
             {
-              snippetName: snippetName,
-              key: snippet?.files?.at(-1).key + 1,
+              snippetName: snippetObj,
+              key: snippetObj?.files?.at(-1).key + 1,
               extention: fileExtention,
               fileName: newFileName,
               code: `// start coding here`,
@@ -123,7 +111,7 @@ const MonacoEditor = () => {
         console.log("altered called");
         fileKey = 0;
         snippetToSet = {
-          snippetName: snippetName,
+          snippetName: snippet,
           uid: `snippet_${uuidv4()}`,
           snippetInfo: {
             snippetLabels: [
@@ -141,7 +129,7 @@ const MonacoEditor = () => {
           },
           files: [
             {
-              snippetName: snippetName,
+              snippetName: snippet,
               key: 0,
               extention: fileExtention,
               fileName: newFileName,
@@ -171,12 +159,12 @@ const MonacoEditor = () => {
 
   const handleFileDelete = () => {
     let tabToDeleteKey = activeTabIndex;
-    const restOfFiles = snippet?.files?.filter(
+    const restOfFiles = snippetObj?.files?.filter(
       (tab) => tab.key !== tabToDeleteKey
     );
     dispatch(
       SET_SNIPPET({
-        ...snippet,
+        ...snippetObj,
         files: restOfFiles?.sort((a, b) => a.key - b.key),
       })
     );
@@ -187,8 +175,8 @@ const MonacoEditor = () => {
   return (
     <div className="editor-container w-full">
       <div className="editor-navigation text-white flex items-center select-none">
-        {snippet &&
-          snippet?.files?.map(({ fileName, key }) => (
+        {snippetObj &&
+          snippetObj?.files?.map(({ fileName, key }) => (
             <ThemeButton
               key={key}
               label={fileName}
@@ -233,7 +221,7 @@ const MonacoEditor = () => {
       </div>
 
       <div>
-        {snippet?.files?.length > 0 && (
+        {snippetObj?.files?.length > 0 && (
           <Editor
             height="75vh"
             defaultLanguage={

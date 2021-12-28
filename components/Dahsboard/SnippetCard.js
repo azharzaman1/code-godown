@@ -1,13 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Chip,
-  Divider,
-  Grid,
-  IconButton,
-  Paper,
-  Stack,
-  Tooltip,
-} from "@mui/material";
+import { Chip, Grid, IconButton, Paper, Stack, Tooltip } from "@mui/material";
 import { experimentalStyled as styled } from "@mui/material/styles";
 import {
   Delete,
@@ -168,7 +160,7 @@ const SnippetCard = ({ name, uid, info, files, ...rest }) => {
             {snippetFiles?.map(({ fileName, key, downloadButton, onClick }) => (
               <>
                 {downloadButton ? (
-                  <Tooltip title="Download file">
+                  <Tooltip title="Download file" key={key}>
                     <IconButton color="primary" size="small" onClick={onClick}>
                       <Download fontSize="small" sx={{ color: "gray" }} />
                     </IconButton>
