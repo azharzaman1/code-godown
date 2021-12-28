@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Chip,
   Divider,
@@ -7,39 +8,74 @@ import {
   Stack,
   Tooltip,
 } from "@mui/material";
-import ThemeHeading from "../Generic/Heading";
 import { experimentalStyled as styled } from "@mui/material/styles";
-import ThemeText from "../Generic/Text";
-import { Delete, Edit, Lock, Person, Share } from "@mui/icons-material";
-import SyntaxHighlighter from "react-syntax-highlighter";
 import {
-  a11yDark,
-  atomOneDark,
-  atomOneDarkReasonable,
-  atomOneLight,
-  far,
-  github,
-  githubGist,
-  gradientDark,
-  tomorrowNightBlue,
-  schoolBook,
-} from "react-syntax-highlighter/dist/esm/styles/hljs";
-import { useState } from "react";
+  Delete,
+  Download,
+  Edit,
+  Lock,
+  Person,
+  Share,
+} from "@mui/icons-material";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import atomOneDark from "react-syntax-highlighter/dist/cjs/styles/hljs/atom-one-dark";
+import atomOneLight from "react-syntax-highlighter/dist/cjs/styles/hljs/atom-one-light";
+import a11yDark from "react-syntax-highlighter/dist/cjs/styles/hljs/a11y-dark";
+import a11yLight from "react-syntax-highlighter/dist/cjs/styles/hljs/a11y-light";
+import far from "react-syntax-highlighter/dist/cjs/styles/hljs/far";
+import github from "react-syntax-highlighter/dist/cjs/styles/hljs/github";
+import githubGist from "react-syntax-highlighter/dist/cjs/styles/hljs/github-gist";
+import gradientDark from "react-syntax-highlighter/dist/cjs/styles/hljs/gradient-dark";
+import tomorrowNightBlue from "react-syntax-highlighter/dist/cjs/styles/hljs/tomorrow-night-blue";
+import schoolBook from "react-syntax-highlighter/dist/cjs/styles/hljs/school-book";
+import ThemeHeading from "../Generic/Heading";
+import ThemeText from "../Generic/Text";
+import { useSelector } from "react-redux";
+import { selectSyntaxTheme } from "../../redux/slices/appSlice";
+
+const syntaxThemes = {
+  atomOneDark: atomOneDark,
+  atomOneLight: atomOneLight,
+  a11yDark: a11yDark,
+  a11yLight: a11yLight,
+  far: far,
+  github: github,
+  githubGist: githubGist,
+  gradientDark: gradientDark,
+  tomorrowNightBlue: tomorrowNightBlue,
+  schoolBook: schoolBook,
+};
 
 const Card = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
 }));
 
 const SnippetCard = ({ name, uid, info, files, ...rest }) => {
-  const [activeFile, setActiveFile] = useState(() => files[0]);
+  const syntaxTheme = useSelector(selectSyntaxTheme);
+  let [snippetFiles, setSnippetFiles] = useState(() => files);
+  const [activeFile, setActiveFile] = useState(() => snippetFiles[0]);
   const { createAt, isPrivate, snippetTags, snippetLabels } = info;
   const createdAtStr = new Date(createAt.toDate()).toLocaleString();
+
+  useEffect(() => {
+    let p1 = snippetFiles.slice(0, activeFile.key + 1);
+    let p2 = snippetFiles.slice(activeFile.key + 1);
+    p1.push({
+      downloadButton: true,
+      onClick: () => handleFileDownload,
+    });
+    // setSnippetFiles(p1.concat(p2));
+  }, [activeFile]);
+
+  const handleFileDownload = () => {};
 
   const handleSnippetDelete = () => {};
 
   const handleSnippetShare = () => {};
 
   const handleSnippetEdit = () => {};
+
+  const handleSnippetDownload = () => {};
 
   return (
     <Grid item xs={2} sm={4} md={4} {...rest}>
@@ -78,6 +114,15 @@ const SnippetCard = ({ name, uid, info, files, ...rest }) => {
                   <Delete fontSize="inherit" />
                 </IconButton>
               </Tooltip>
+              <Tooltip title="Download snippet">
+                <IconButton
+                  size="small"
+                  color="primary"
+                  onClick={handleSnippetDownload}
+                >
+                  <Download fontSize="inherit" />
+                </IconButton>
+              </Tooltip>
               <Tooltip title="Share snippet">
                 <IconButton
                   color="primary"
@@ -102,8 +147,8 @@ const SnippetCard = ({ name, uid, info, files, ...rest }) => {
 
         <div className="snippetCard__body pt-2">
           <SyntaxHighlighter
-            language="javascript"
-            style={atomOneDark}
+            language={activeFile?.language?.name?.toLowerCase() || "javascript"}
+            style={syntaxThemes[syntaxTheme]}
             showLineNumbers
             lineNumberStyle={{ fontSize: "10px" }}
             className="max-h-[375px] min-h-[375px]"
@@ -120,24 +165,32 @@ const SnippetCard = ({ name, uid, info, files, ...rest }) => {
             className="mt-3 w-full overflow-x-scroll"
           >
             <ThemeText className="text-xs mb-2">Files:</ThemeText>
-            {files?.map(({ fileName, key }) => (
-              <Chip
-                key={key}
-                color={activeFile.key == key ? "primary" : "default"}
-                label={fileName}
-                variant="outlined"
-                size="small"
-                sx={{
-                  marginBottom: "8px !important",
-                }}
-                onClick={() => {
-                  setActiveFile(files[key]);
-                }}
-              />
+            {snippetFiles?.map(({ fileName, key, downloadButton, onClick }) => (
+              <>
+                {downloadButton ? (
+                  <Tooltip title="Download file">
+                    <IconButton color="primary" size="small" onClick={onClick}>
+                      <Download fontSize="small" sx={{ color: "gray" }} />
+                    </IconButton>
+                  </Tooltip>
+                ) : (
+                  <Chip
+                    key={key}
+                    color={activeFile.key == key ? "primary" : "default"}
+                    label={fileName}
+                    variant="outlined"
+                    size="small"
+                    sx={{
+                      marginBottom: "8px !important",
+                    }}
+                    onClick={() => {
+                      setActiveFile(snippetFiles[key]);
+                    }}
+                  />
+                )}
+              </>
             ))}
           </Stack>
-
-          {/* <Divider flexItem sx={{ marginBottom: "10px", marginTop: "10px" }} /> */}
 
           <Stack direction="column" spacing={2}>
             {snippetLabels && (

@@ -6,19 +6,18 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import {
   selectActiveTabIndex,
-  selectFileName,
   selectSnippet,
   selectSnippetName,
   selectTheme,
   SET_EDITOR_ACTIVE_TAB_INDEX,
   SET_SNIPPET,
-  SET_UNFILLED_TAB_INDEXS,
 } from "../../redux/slices/appSlice";
-import { PlusIcon, XIcon } from "@heroicons/react/outline";
+import { PlusIcon } from "@heroicons/react/outline";
 import { extractExtentionAndLanguage, fetcher } from "../../files/utils";
 import Dialog from "../Generic/Dialog";
 import useSWR from "swr";
 import ThemeButton from "../Generic/Button";
+import { NIL as NIL_UUID, v4 as uuidv4 } from "uuid";
 
 const MonacoEditor = () => {
   const dispatch = useDispatch();
@@ -28,29 +27,35 @@ const MonacoEditor = () => {
   const [activeTab, setActiveTab] = useState(
     snippet?.files?.find((tab) => tab.key == activeTabIndex)
   );
-  const snippetName = useSelector(selectSnippetName);
   const [addingNewFile, setAddingNewFile] = useState(false);
   const [dialogOpen, setOpen] = useState(false);
   const [newFileName, setNewFileName] = useState("");
   const { data, error } = useSWR("/api/programming-langs", fetcher);
 
-  console.log("Active Tab Index", activeTabIndex);
-  console.log("Active Tab", activeTab);
-
   const router = useRouter();
-  const { display } = router.query;
+
+  const { snippetName } = router.query;
+
+  // useEffect(() => {
+  //   let mounted = true;
+
+  //   if (mounted) {
+  //     if (snippet?.files?.length < 1) {
+  //       router.replace({
+  //         pathname: "/dashboard",
+  //         query: {
+  //           display: "snippets",
+  //         },
+  //       });
+  //     }
+  //   }
+  // }, [router, snippet?.files]);
 
   // Switch Active Tab
   useEffect(() => {
     let mounted = true;
     if (mounted) {
       setActiveTab(snippet?.files?.find((tab) => tab.key == activeTabIndex));
-      console.log(
-        "Lang",
-        snippet?.files
-          ?.find((tab) => tab.key == activeTabIndex)
-          ?.language.name.toLowerCase()
-      );
     }
     return () => {
       mounted = false;
@@ -60,12 +65,6 @@ const MonacoEditor = () => {
   // Preparing Editor
 
   const monaco = useMonaco();
-
-  useEffect(() => {
-    if (monaco) {
-      console.log("here is the monaco isntance:", monaco);
-    }
-  }, [monaco]);
 
   const editorRef = useRef(null);
 
@@ -95,23 +94,67 @@ const MonacoEditor = () => {
         newFileName,
         data
       );
-      const fileKey = snippet?.files?.at(-1)
-        ? snippet?.files?.at(-1).key + 1
-        : snippet?.files?.length;
 
-      let fileToAdd = {
-        snippetName: snippetName,
-        key: fileKey,
-        extention: fileExtention,
-        fileName: newFileName,
-        code: `// start coding here`,
-        language: language ? language : "unknown",
-        languageExtentions: language?.extensions,
-        createdAt: new Date(),
-        lastUpdatedAt: new Date(),
-        snapshots: [],
-      };
-      let snippetToSet = { ...snippet, files: [...snippet?.files, fileToAdd] };
+      let snippetToSet;
+      let fileKey;
+      if (snippet?.files?.length > 0) {
+        // normal behaviour
+        fileKey = snippet?.files?.at(-1).key + 1;
+        snippetToSet = {
+          ...snippet,
+          files: [
+            ...snippet?.files,
+            {
+              snippetName: snippetName,
+              key: snippet?.files?.at(-1).key + 1,
+              extention: fileExtention,
+              fileName: newFileName,
+              code: `// start coding here`,
+              language: language ? language : "unknown",
+              languageExtentions: language?.extensions,
+              createdAt: new Date(),
+              lastUpdatedAt: new Date(),
+              snapshots: [],
+            },
+          ],
+        };
+      } else {
+        // if page refreshed by user
+        console.log("altered called");
+        fileKey = 0;
+        snippetToSet = {
+          snippetName: snippetName,
+          uid: `snippet_${uuidv4()}`,
+          snippetInfo: {
+            snippetLabels: [
+              {
+                label: "",
+                key: "",
+                uid: `label_${NIL_UUID}`,
+              },
+            ],
+            snippetTags: [],
+            createAt: new Date(),
+            lastUpdatedAt: new Date(),
+            snapshots: [],
+            isPrivate: false,
+          },
+          files: [
+            {
+              snippetName: snippetName,
+              key: 0,
+              extention: fileExtention,
+              fileName: newFileName,
+              code: `// start coding here`,
+              language: language ? language : "unknown",
+              languageExtentions: language?.extensions,
+              createdAt: new Date(),
+              lastUpdatedAt: new Date(),
+              snapshots: [],
+            },
+          ],
+        };
+      }
       dispatch(SET_SNIPPET(snippetToSet));
       dispatch(SET_EDITOR_ACTIVE_TAB_INDEX(fileKey));
       setAddingNewFile(false);
@@ -193,12 +236,15 @@ const MonacoEditor = () => {
         {snippet?.files?.length > 0 && (
           <Editor
             height="75vh"
-            defaultLanguage={activeTab?.language.name.toLowerCase()}
+            defaultLanguage={
+              activeTab?.language?.name?.toLowerCase() || "javascript"
+            }
             defaultValue={activeTab?.code}
             path={activeTab?.fileName}
             onChange={handleEditorChange}
             onMount={handleEditorDidMount}
             theme={themePreference === "dark" ? "vs-dark" : "light"}
+            loading={<h1>Loading...</h1>}
           />
         )}
       </div>

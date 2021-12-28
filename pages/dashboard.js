@@ -5,13 +5,12 @@ import Loader from "../components/Generic/Loader";
 import Layout from "../components/Layout";
 import Container from "../files/Container";
 import { selectUser, selectUserFromDB } from "../redux/slices/userSlice";
-import Navigation from "../components/Dahsboard/Navigation";
 import SnippetsArchivePanel from "../components/Dahsboard/SnippetsArchivePanel";
 import { useDispatch, useSelector } from "react-redux";
 import { Save, Send } from "@mui/icons-material";
 import AddNewSnippetPanel from "../components/Dahsboard/AddNewSnippetPanel";
 import { useRouter } from "next/dist/client/router";
-import { IconButton, Paper, Tooltip } from "@mui/material";
+import { Paper } from "@mui/material";
 import {
   RESSET_SNIPPET,
   selectFileName,
@@ -25,8 +24,10 @@ import useSWR from "swr";
 import { useSnackbar } from "notistack";
 import ThemeButton from "../components/Generic/Button";
 import { NIL as NIL_UUID, v4 as uuidv4 } from "uuid";
-import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { db } from "../client/firebase";
+import ThemeSwitch from "../components/Dahsboard/ThemeSwitch";
+import SyntaxThemes from "../files/theming/SyntaxThemes";
 
 const dashboard = () => {
   const dispatch = useDispatch();
@@ -94,7 +95,7 @@ const dashboard = () => {
           files: [
             {
               snippetName: snippetName,
-              key: snippetArr?.length,
+              key: 0,
               fileName: fileName,
               code: `// start coding here`,
               extention: fileExtention,
@@ -251,6 +252,7 @@ const dashboard = () => {
               )}
 
               <div className="flex space-x-2">
+                {displaySnippets && <ThemeSwitch themes={SyntaxThemes} />}
                 {/* Header Dynamic Buttons */}
                 {savingSnippet && (
                   <ThemeButton type="icon-text" onClick={handleBackDirect}>
@@ -285,7 +287,12 @@ const dashboard = () => {
               </div>
             </Paper>
             <div className="dashboard__content mt-1 shadow min-h-[600px]">
-              {displaySnippets && <SnippetsArchivePanel />}
+              {displaySnippets || snippetArr?.files?.length < 1 ? (
+                <SnippetsArchivePanel />
+              ) : (
+                <></>
+              )}
+
               {addingSnippetInfo || addingCodeToSnippet || savingSnippet ? (
                 <AddNewSnippetPanel />
               ) : (

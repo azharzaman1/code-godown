@@ -1,25 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export const appSlice = createSlice({
-  name: "user",
+  name: "app",
   initialState: {
-    dashboardState: "snippets_display",
     snippetName: "New Snippet",
     fileName: "",
     themePreference: "dark",
-    snippet: [],
+    snippet: {},
     editorActiveTabIndex: 0,
     unfilledTabIndexs: [],
     labelName: "",
     selectedLabelKey: 0,
+    syntaxTheme: "atomOneDark",
   },
   reducers: {
-    SET_DASHBOARD_STATE: (state, action) => {
-      return {
-        ...state,
-        dashboardState: action.payload,
-      };
-    },
     SET_SNIPPET_NAME: (state, action) => {
       return {
         ...state,
@@ -75,6 +69,12 @@ export const appSlice = createSlice({
         selectedLabelKey: action.payload,
       };
     },
+    SET_SYNTAX_THEME: (state, action) => {
+      return {
+        ...state,
+        syntaxTheme: action.payload,
+      };
+    },
   },
 });
 
@@ -89,9 +89,9 @@ export const {
   RESSET_SNIPPET,
   SET_LABEL_NAME,
   SET_SELECTED_LABEL_KEY,
+  SET_SYNTAX_THEME,
 } = appSlice.actions;
 
-export const selectDashboardState = (state) => state.appStore.dashboardState;
 export const selectSnippetName = (state) => state.appStore.snippetName;
 export const selectFileName = (state) => state.appStore.fileName;
 export const selectTheme = (state) => state.appStore.themePreference;
@@ -103,5 +103,6 @@ export const selectUnfilledTabIndexs = (state) =>
 export const selectLabelName = (state) => state.appStore.labelName;
 export const selectSelectedLabelKey = (state) =>
   state.appStore.selectedLabelKey;
+export const selectSyntaxTheme = (state) => state.appStore.syntaxTheme;
 
 export default appSlice.reducer;

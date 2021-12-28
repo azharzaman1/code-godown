@@ -66,10 +66,7 @@ const SaveSnippet = () => {
 
   const handleTagsGen = () => {
     const tagsArr = splitAtCharacter(tagsString, ",");
-    console.log(tagsArr);
-
     let tagsToAdd = [];
-
     tagsArr?.forEach((tagName, index) => {
       tagsToAdd.push({
         name: tagName,
@@ -146,13 +143,12 @@ const SaveSnippet = () => {
         },
       })
     );
-    console.log(!isPrivate);
     setIsPrivate(!isPrivate);
   };
 
   return (
     <Paper className="addingNewSnippet__intialPhaseContainer pt-4 pb-8 px-4 my-4 mx-4">
-      <form>
+      <form className="w-[400px] m-w-[90vw]">
         <div className="flex flex-col space-y-2 mt-6">
           <ThemeText component="label" htmlFor="snippet_name_input">
             Snippet name
@@ -161,26 +157,27 @@ const SaveSnippet = () => {
             type="ThemeText"
             placeholder="e.g. Snippet #1"
             id="snippet_name_input"
-            className={`input max-w-sm ${dark && "dark"}`}
+            className={`input w-full ${dark && "dark"}`}
             value={snippetName}
             onChange={(e) => dispatch(SET_SNIPPET_NAME(e.target.value))}
           />
         </div>
-        <div className="flex flex-col space-y-2 mt-6 max-w-sm">
+        <div className="flex flex-col space-y-2 mt-6">
           <ThemeText>File{snippet?.files?.length > 1 && "s"}</ThemeText>
-          <Stack direction="row" spacing={1}>
+          <Stack direction="row" spacing={1} sx={{ overflowX: "scroll" }}>
             {snippet?.files?.map(({ key, fileName }) => (
               <Chip
                 key={key}
                 label={fileName}
                 color="primary"
                 onDelete={() => handleFileDelete(key)}
+                className="mb-2"
               />
             ))}
           </Stack>
         </div>
 
-        <div className="flex flex-col space-y-2 mt-6 max-w-sm">
+        <div className="flex flex-col space-y-2 mt-6">
           <ThemeText>Labels</ThemeText>
           {userInDB?.labels?.length > 0 && !addingLabel ? (
             <SnippetLabels
@@ -197,7 +194,7 @@ const SaveSnippet = () => {
                     type="text"
                     placeholder="e.g. Font-end-dev snippets etc."
                     id="tags_input"
-                    className={`input max-w-sm ${dark && "dark"}`}
+                    className={`input w-full ${dark && "dark"}`}
                     value={labelName}
                     onChange={(e) => dispatch(SET_LABEL_NAME(e.target.value))}
                   />
@@ -231,7 +228,12 @@ const SaveSnippet = () => {
           </ThemeText>
           {tags.length > 0 ? (
             <>
-              <Stack direction="row" spacing={1} alignItems="center">
+              <Stack
+                direction="row"
+                spacing={1}
+                alignItems="center"
+                sx={{ overflowX: "scroll" }}
+              >
                 {tags?.map((name, i) => (
                   <Chip
                     key={i}
@@ -240,6 +242,7 @@ const SaveSnippet = () => {
                     onDelete={() => {
                       handleTagDelete(name);
                     }}
+                    className="mb-2"
                   />
                 ))}
                 <Tooltip title="Edit" placement="right">
@@ -255,7 +258,7 @@ const SaveSnippet = () => {
                 type="text"
                 placeholder="e.g. JavsScript,ReactJs,Components"
                 id="tags_input"
-                className={`input max-w-sm ${dark && "dark"}`}
+                className={`input w-full ${dark && "dark"}`}
                 value={tagsString}
                 onChange={(e) => setTagsString(e.target.value)}
               />
@@ -263,7 +266,7 @@ const SaveSnippet = () => {
                 <ThemeButton
                   type={dark ? "text" : "primary"}
                   size={dark && "small"}
-                  className="text-center max-w-sm mt-3"
+                  className="text-center mt-3"
                   onClick={handleTagsGen}
                 >
                   Add
