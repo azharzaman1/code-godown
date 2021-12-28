@@ -1,8 +1,6 @@
-import { Box, Grid, Paper } from "@mui/material";
+import { Grid } from "@mui/material";
 import { useSelector } from "react-redux";
 import { selectUserFromDB } from "../../redux/slices/userSlice";
-import ThemeHeading from "../Generic/Heading";
-import ThemeText from "../Generic/Text";
 import Navigation from "./Navigation";
 import SnippetCard from "./SnippetCard";
 

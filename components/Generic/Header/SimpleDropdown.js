@@ -71,7 +71,7 @@ export default function SimpleDropdown({ label, dropdownData, dark }) {
           },
         }}
       >
-        {dropdownData.map(({ name, description, imgSrc, href }) => (
+        {dropdownData?.map(({ name, description, imgSrc, href }) => (
           <MenuItem
             key={description.trim()}
             href={href}

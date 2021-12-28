@@ -8,7 +8,6 @@ export const appSlice = createSlice({
     themePreference: "dark",
     snippet: {},
     editorActiveTabIndex: 0,
-    unfilledTabIndexs: [],
     labelName: "",
     selectedLabelKey: 0,
     syntaxTheme: "atomOneDark",
@@ -44,17 +43,15 @@ export const appSlice = createSlice({
         editorActiveTabIndex: action.payload,
       };
     },
-    SET_UNFILLED_TAB_INDEXS: (state, action) => {
-      return {
-        ...state,
-        unfilledTabIndexs: [...state.unfilledTabIndexs, action.payload],
-      };
-    },
     RESSET_SNIPPET: (state, action) => {
       return {
         ...state,
-        unfilledTabIndexs: [],
-        snippet: [],
+        snippet: {},
+        snippetName: "",
+        fileName: "",
+        selectedLabelKey: 0,
+        labelName: "",
+        editorActiveTabIndex: 0,
       };
     },
     SET_LABEL_NAME: (state, action) => {
@@ -85,7 +82,6 @@ export const {
   SET_THEME,
   SET_SNIPPET,
   SET_EDITOR_ACTIVE_TAB_INDEX,
-  SET_UNFILLED_TAB_INDEXS,
   RESSET_SNIPPET,
   SET_LABEL_NAME,
   SET_SELECTED_LABEL_KEY,
@@ -98,8 +94,6 @@ export const selectTheme = (state) => state.appStore.themePreference;
 export const selectSnippet = (state) => state.appStore.snippet;
 export const selectActiveTabIndex = (state) =>
   state.appStore.editorActiveTabIndex;
-export const selectUnfilledTabIndexs = (state) =>
-  state.appStore.unfilledTabIndexs;
 export const selectLabelName = (state) => state.appStore.labelName;
 export const selectSelectedLabelKey = (state) =>
   state.appStore.selectedLabelKey;
