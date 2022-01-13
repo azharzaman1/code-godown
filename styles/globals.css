@@ -1,14 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --primary: #e76f51;
   --primary-light: #d69b8c;
   --primary-dark: #e24d28;
   --primaryText-accent: rgba(255, 255, 255, 0.87);
 
-  --background-main: #1a202c;
-  --background-light: #2d3748;
+  --background-main: #252c48;
+  --background-light: #394264;
   --background-accent: #011627;
 }
 
 .dahsboardLeft__navigation * {
   user-select: none !important;
+}
+
+.asfa {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }

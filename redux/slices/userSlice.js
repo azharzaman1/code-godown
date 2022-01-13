@@ -6,6 +6,7 @@ export const userSlice = createSlice({
     currentUser: null,
     userInDB: null,
     loggedOutRecently: false,
+    snippets: [],
   },
   reducers: {
     SETUSER: (state, action) => {
@@ -23,6 +24,13 @@ export const userSlice = createSlice({
       };
     },
 
+    SET_SNIPPETS: (state, action) => {
+      return {
+        ...state,
+        snippets: action.payload,
+      };
+    },
+
     LOGOUT: (state, action) => {
       return {
         ...state,
@@ -33,11 +41,13 @@ export const userSlice = createSlice({
   },
 });
 
-export const { SETUSER, LOGOUT, SET_USER_FROM_DB } = userSlice.actions;
+export const { SETUSER, LOGOUT, SET_USER_FROM_DB, SET_SNIPPETS } =
+  userSlice.actions;
 
 export const selectUser = (state) => state.userStore.currentUser;
 export const selectUserFromDB = (state) => state.userStore.userInDB;
 export const selectLoggedOutState = (state) =>
   state.userStore.loggedOutRecently;
+export const selectSnippets = (state) => state.userStore.snippets;
 
 export default userSlice.reducer;

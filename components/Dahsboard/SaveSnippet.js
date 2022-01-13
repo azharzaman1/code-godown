@@ -30,6 +30,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../client/firebase";
 import { selectUser, selectUserFromDB } from "../../redux/slices/userSlice";
 import { v4 as uuidv4 } from "uuid";
+import { useRouter } from "next/dist/client/router";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -47,6 +48,10 @@ const SaveSnippet = () => {
   const userInDB = useSelector(selectUserFromDB);
   const { enqueueSnackbar } = useSnackbar();
   const dark = themePreference === "dark";
+
+  const router = useRouter();
+
+  const { display, updating } = router.query;
 
   const handleFileDelete = (key) => {
     if (snippet?.files?.length > 1) {

@@ -10,6 +10,23 @@ import {
   Share,
 } from "@mui/icons-material";
 import SyntaxHighlighter from "react-syntax-highlighter";
+import ThemeHeading from "../Generic/Heading";
+import ThemeText from "../Generic/Text";
+import { useSelector } from "react-redux";
+import {
+  selectSyntaxTheme,
+  SET_DASHBOARD_LOADING,
+  SET_SNIPPET,
+  SET_SNIPPET_NAME,
+} from "../../redux/slices/appSlice";
+import Dialog from "../Generic/Dialog";
+import { deleteDoc, doc } from "firebase/firestore";
+import { auth, db } from "../../client/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useSnackbar } from "notistack";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/dist/client/router";
+import { selectSnippets } from "../../redux/slices/userSlice";
 import atomOneDark from "react-syntax-highlighter/dist/cjs/styles/hljs/atom-one-dark";
 import atomOneLight from "react-syntax-highlighter/dist/cjs/styles/hljs/atom-one-light";
 import a11yDark from "react-syntax-highlighter/dist/cjs/styles/hljs/a11y-dark";
@@ -20,10 +37,7 @@ import githubGist from "react-syntax-highlighter/dist/cjs/styles/hljs/github-gis
 import gradientDark from "react-syntax-highlighter/dist/cjs/styles/hljs/gradient-dark";
 import tomorrowNightBlue from "react-syntax-highlighter/dist/cjs/styles/hljs/tomorrow-night-blue";
 import schoolBook from "react-syntax-highlighter/dist/cjs/styles/hljs/school-book";
-import ThemeHeading from "../Generic/Heading";
-import ThemeText from "../Generic/Text";
-import { useSelector } from "react-redux";
-import { selectSyntaxTheme } from "../../redux/slices/appSlice";
+import ThemeChip from "../Generic/Chip";
 
 const syntaxThemes = {
   atomOneDark: atomOneDark,
@@ -43,11 +57,18 @@ const Card = styled(Paper)(({ theme }) => ({
 }));
 
 const SnippetCard = ({ name, uid, info, files, ...rest }) => {
+  const dispatch = useDispatch();
   const syntaxTheme = useSelector(selectSyntaxTheme);
+  const snippets = useSelector(selectSnippets);
   let [snippetFiles, setSnippetFiles] = useState(() => files);
   const [activeFile, setActiveFile] = useState(() => snippetFiles[0]);
   const { createAt, isPrivate, snippetTags, snippetLabels } = info;
   const createdAtStr = new Date(createAt.toDate()).toLocaleString();
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [user, loading, error] = useAuthState(auth);
+  const [snippetToDeleteUID, setSnippetToDeleteUID] = useState("");
+  const enqueueSnackbar = useSnackbar();
+  const router = useRouter();
 
   useEffect(() => {
     let p1 = snippetFiles.slice(0, activeFile.key + 1);
@@ -61,17 +82,38 @@ const SnippetCard = ({ name, uid, info, files, ...rest }) => {
 
   const handleFileDownload = () => {};
 
-  const handleSnippetDelete = () => {};
+  const handleSnippetDelete = async () => {
+    await deleteDoc(
+      doc(db, "users", user?.uid, "snippets", snippetToDeleteUID)
+    );
 
-  const handleSnippetShare = () => {};
+    enqueueSnackbar(`Snippet was deleted successfully!`, {
+      variant: "info",
+    });
+  };
 
-  const handleSnippetEdit = () => {};
+  const handleSnippetShare = () => {
+    setDialogOpen(true);
+  };
+
+  const handleSnippetEdit = (uid) => {
+    dispatch(SET_DASHBOARD_LOADING(true));
+    const snippetToEdit = snippets?.find((snippet) => snippet.id === uid);
+    dispatch(SET_SNIPPET(snippetToEdit?.data));
+    dispatch(SET_SNIPPET_NAME(snippetToEdit?.data?.snippetName));
+    router.push({
+      pathname: "/dashboard",
+      query: {
+        display: "edit-snippet",
+      },
+    });
+  };
 
   const handleSnippetDownload = () => {};
 
   return (
     <Grid item xs={2} sm={4} md={4} {...rest}>
-      <Card className="snippet__card min-h-[595px] flex flex-col">
+      <Card className="snippet__card min-h-[500px] flex flex-col">
         <div className="snippetCard__header">
           <div className="flex items-center">
             <ThemeHeading type={"tertiary"}>{name}</ThemeHeading>
@@ -101,7 +143,10 @@ const SnippetCard = ({ name, uid, info, files, ...rest }) => {
                 <IconButton
                   size="small"
                   color="primary"
-                  onClick={handleSnippetDelete}
+                  onClick={() => {
+                    setDialogOpen(true);
+                    setSnippetToDeleteUID(uid);
+                  }}
                 >
                   <Delete fontSize="inherit" />
                 </IconButton>
@@ -128,7 +173,7 @@ const SnippetCard = ({ name, uid, info, files, ...rest }) => {
                 <IconButton
                   color="primary"
                   size="small"
-                  onClick={handleSnippetEdit}
+                  onClick={() => handleSnippetEdit(uid)}
                 >
                   <Edit fontSize="inherit" />
                 </IconButton>
@@ -184,7 +229,7 @@ const SnippetCard = ({ name, uid, info, files, ...rest }) => {
             ))}
           </Stack>
 
-          <Stack direction="column" spacing={2}>
+          {/* <Stack direction="column" spacing={2}>
             {snippetLabels && (
               <Stack
                 direction="row"
@@ -193,21 +238,8 @@ const SnippetCard = ({ name, uid, info, files, ...rest }) => {
                 className="mt-3 w-full overflow-x-scroll"
               >
                 <ThemeText className="text-xs mb-2">Labels:</ThemeText>
-                {snippetLabels?.map(({ label, key, uid }) => (
-                  <>
-                    {label && (
-                      <Chip
-                        key={uid}
-                        label={label}
-                        size="small"
-                        variant="outlined"
-                        onClick={() => {}}
-                        sx={{
-                          marginBottom: "8px !important",
-                        }}
-                      />
-                    )}
-                  </>
+                {snippetLabels?.map(({ label, uid }) => (
+                  <ThemeChip key={uid}>{label}</ThemeChip>
                 ))}
               </Stack>
             )}
@@ -234,9 +266,27 @@ const SnippetCard = ({ name, uid, info, files, ...rest }) => {
                 ))}
               </Stack>
             )}
-          </Stack>
+          </Stack> */}
         </div>
       </Card>
+      {/* For delete */}
+      <Dialog
+        title="Are you sure, you want to delete this file. This action can not be undone!"
+        open={dialogOpen}
+        setOpen={setDialogOpen}
+        dialogActions={[
+          {
+            label: "Cancel",
+            action: () => {
+              setDialogOpen(false);
+            },
+          },
+          {
+            label: "Delete",
+            action: handleSnippetDelete,
+          },
+        ]}
+      />
     </Grid>
   );
 };

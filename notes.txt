@@ -11,3 +11,5 @@ Fixes:
 Auth repetitive Messages
 GH auth error display
  
+
+ dateExample: Timestamp.fromDate(new Date("December 10, 1815")),
