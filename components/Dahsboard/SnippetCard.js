@@ -113,7 +113,7 @@ const SnippetCard = ({ name, uid, info, files, ...rest }) => {
 
   return (
     <Grid item xs={2} sm={4} md={4} {...rest}>
-      <Card className="snippet__card min-h-[595px] flex flex-col">
+      <Card className="snippet__card min-h-[500px] flex flex-col">
         <div className="snippetCard__header">
           <div className="flex items-center">
             <ThemeHeading type={"tertiary"}>{name}</ThemeHeading>
@@ -229,7 +229,7 @@ const SnippetCard = ({ name, uid, info, files, ...rest }) => {
             ))}
           </Stack>
 
-          <Stack direction="column" spacing={2}>
+          {/* <Stack direction="column" spacing={2}>
             {snippetLabels && (
               <Stack
                 direction="row"
@@ -266,7 +266,7 @@ const SnippetCard = ({ name, uid, info, files, ...rest }) => {
                 ))}
               </Stack>
             )}
-          </Stack>
+          </Stack> */}
         </div>
       </Card>
       {/* For delete */}
