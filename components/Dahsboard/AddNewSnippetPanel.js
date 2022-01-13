@@ -10,11 +10,12 @@ const AddNewSnippetPanel = () => {
   const addingSnippetInfo = display === "add-new-snippet-info";
   const addingCodeToSnippet = display === "adding-code-to-snippet";
   const savingSnippet = display === "saving-snippet";
+  const editingSnippet = display === "edit-snippet";
 
   return (
     <>
       {addingSnippetInfo && <PreEditor />}
-      {addingCodeToSnippet && <Editor />}
+      {addingCodeToSnippet || editingSnippet ? <Editor /> : null}
       {savingSnippet && <SaveSnippet />}
     </>
   );

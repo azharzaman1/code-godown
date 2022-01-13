@@ -7,7 +7,6 @@ import { useDispatch } from "react-redux";
 import {
   selectActiveTabIndex,
   selectSnippet,
-  selectSnippetName,
   selectTheme,
   SET_EDITOR_ACTIVE_TAB_INDEX,
   SET_SNIPPET,
@@ -239,7 +238,7 @@ const MonacoEditor = () => {
       {/* File delete confirmation dialog */}
       <Dialog
         title={
-          "Are you sure, you want to delete this file. This action is irreversible"
+          "Are you sure, you want to delete this file. This action can not be undone!"
         }
         open={dialogOpen}
         setOpen={setOpen}

@@ -11,6 +11,8 @@ export const appSlice = createSlice({
     labelName: "",
     selectedLabelKey: 0,
     syntaxTheme: "atomOneDark",
+    loading: false,
+    dashboardLoading: true,
   },
   reducers: {
     SET_SNIPPET_NAME: (state, action) => {
@@ -72,6 +74,18 @@ export const appSlice = createSlice({
         syntaxTheme: action.payload,
       };
     },
+    SET_LOADING: (state, action) => {
+      return {
+        ...state,
+        loading: action.payload,
+      };
+    },
+    SET_DASHBOARD_LOADING: (state, action) => {
+      return {
+        ...state,
+        dashboardLoading: action.payload,
+      };
+    },
   },
 });
 
@@ -86,6 +100,8 @@ export const {
   SET_LABEL_NAME,
   SET_SELECTED_LABEL_KEY,
   SET_SYNTAX_THEME,
+  SET_LOADING,
+  SET_DASHBOARD_LOADING,
 } = appSlice.actions;
 
 export const selectSnippetName = (state) => state.appStore.snippetName;
@@ -98,5 +114,8 @@ export const selectLabelName = (state) => state.appStore.labelName;
 export const selectSelectedLabelKey = (state) =>
   state.appStore.selectedLabelKey;
 export const selectSyntaxTheme = (state) => state.appStore.syntaxTheme;
+export const selectLoading = (state) => state.appStore.loading;
+export const selectDashboardLoading = (state) =>
+  state.appStore.dashboardLoading;
 
 export default appSlice.reducer;
