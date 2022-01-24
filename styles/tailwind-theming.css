@@ -142,7 +142,7 @@
   }
 
   .tertiary-heading.dark {
-    @apply text-gray-300;
+    @apply text-primaryText;
   }
 
   /* Text */

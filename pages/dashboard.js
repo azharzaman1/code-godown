@@ -3,7 +3,7 @@ import { SearchIcon } from "@heroicons/react/solid";
 import { useEffect, useState } from "react";
 import Loader from "../components/Generic/Loader";
 import Layout from "../components/Layout";
-import Container from "../files/Container";
+import Container from "../components/Generic/Container";
 import { selectUser, selectUserFromDB } from "../redux/slices/userSlice";
 import SnippetsArchivePanel from "../components/Dahsboard/SnippetsArchivePanel";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,6 +18,7 @@ import {
   selectSnippetName,
   selectTheme,
   SET_SNIPPET,
+  SET_THEME,
 } from "../redux/slices/appSlice";
 import { extractExtentionAndLanguage, fetcher } from "../files/utils";
 import useSWR from "swr";
@@ -27,7 +28,7 @@ import { NIL as NIL_UUID, v4 as uuidv4 } from "uuid";
 import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../client/firebase";
 import ThemeSwitch from "../components/Dahsboard/ThemeSwitch";
-import SyntaxThemes from "../files/theming/SyntaxThemes";
+import SyntaxThemes from "../theming/SyntaxThemes";
 
 const dashboard = () => {
   const dispatch = useDispatch();
@@ -57,6 +58,7 @@ const dashboard = () => {
     setTimeout(() => {
       setDashboardLoading(false);
     }, 1000);
+    dispatch(SET_THEME("dark"));
   }, []);
 
   const handleAddSnippet = () => {

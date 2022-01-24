@@ -1,8 +1,14 @@
-import { Popover } from "@headlessui/react";
 import ThemeButton from "./Generic/Button";
 import ThemeHeading from "./Generic/Heading";
+import { Popover } from "@headlessui/react";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 export default function Hero() {
+  const theme = useTheme();
+  const isDesktop = useMediaQuery("(min-width:960px)");
+  const isMobile = useMediaQuery("(max-width:400px)");
+
   return (
     <div className="relative bg-white overflow-hidden py-20">
       <div className="max-w-7xl mx-auto">
@@ -29,23 +35,35 @@ export default function Hero() {
                   className="block xl:inline"
                   data-testid="hero-main-heading"
                 >
-                  Data to enrich your
+                  Save. Edit. Share.
                 </span>{" "}
                 <span className="block color-primary-dark xl:inline">
-                  online business
+                  your code snippets
                 </span>
               </ThemeHeading>
-              <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
+              <p className="mt-3 font-sans text-primaryTextLight sm:mt-5 text-sm sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-lg lg:mx-0">
                 Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui
                 lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat
                 fugiat aliqua.
               </p>
               <div className="mt-10 sm:mt-8 md:mt-12 lg:mt-14 flex-center-center lg:justify-start space-x-3">
                 <div>
-                  <ThemeButton type="primary">Get Started</ThemeButton>
+                  <ThemeButton type="primary" size="medium">
+                    Live Demo
+                  </ThemeButton>
                 </div>
                 <div>
-                  <ThemeButton type="secondary">Live Demo</ThemeButton>
+                  <ThemeButton
+                    size={isMobile ? "small" : "medium"}
+                    type="secondary"
+                  >
+                    Get Started
+                  </ThemeButton>
+                </div>
+                <div>
+                  <ThemeButton type="text" isDark={false} size="medium">
+                    Login
+                  </ThemeButton>
                 </div>
               </div>
             </div>

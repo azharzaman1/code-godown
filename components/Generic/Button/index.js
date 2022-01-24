@@ -7,8 +7,9 @@ const ThemeButton = ({
   className,
   href,
   type = "primary",
-  size = "medium",
+  size,
   isDark,
+  shrink = true,
 
   label, // only for tab button
   active, // only for tab button
@@ -18,12 +19,20 @@ const ThemeButton = ({
 }) => {
   const theme = useSelector(selectTheme);
   const dark = isDark ? isDark : theme === "dark";
+  const sizeClasses =
+    !size || size === "medium"
+      ? "px-8 py-3.5"
+      : size === "small"
+      ? "px-5 py-2.5"
+      : "px-10 py-4";
 
   if (type === "primary")
     return (
       <a
         href={href}
-        className={`primary-button ${dark && "dark"} ${size} ${className}`}
+        className={`${className} ${size} ${dark && "dark"} ${
+          shrink && "button-shrink-transition"
+        } ${sizeClasses} rounded-md shadow-md font-medium cursor-pointer select-none bg-[#e76f51] text-white hover:bg-[#e24d28]`}
         {...rest}
       >
         {children}
@@ -34,7 +43,9 @@ const ThemeButton = ({
     return (
       <a
         href={href}
-        className={`secondary-button ${dark && "dark"} ${className}`}
+        className={`${className} ${dark && "dark"} ${sizeClasses} ${
+          shrink && "button-shrink-transition"
+        } rounded-md shadow-md font-medium cursor-pointer select-none bg-[#e76f510e] border-[#e24d28] border-2 text-primaryTextLight hover:bg-[#e76f51] hover:text-white hover:border-[#e76f51]`}
         {...rest}
       >
         {children}
@@ -45,7 +56,9 @@ const ThemeButton = ({
     return (
       <a
         href={href}
-        className={`text-button ${dark && "dark"} ${className}`}
+        className={`${
+          dark && "dark"
+        } ${className} ${sizeClasses} rounded-md bg-transparent hover:bg-[#e76f513b] hover:border-gray-400 transition duration-150 text-primaryTextLight cursor-pointer button-shrink-transition`}
         {...rest}
       >
         {children}

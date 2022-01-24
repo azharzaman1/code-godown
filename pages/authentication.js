@@ -1,7 +1,7 @@
 import { useRouter } from "next/dist/client/router";
 import { useState } from "react";
 import Layout from "../components/Layout";
-import Container from "../files/Container";
+import Container from "../components/Generic/Container";
 import Divider from "@mui/material/Divider";
 import { GitHub, Google } from "@mui/icons-material";
 import { EyeIcon, EyeOffIcon } from "@heroicons/react/outline";
@@ -165,6 +165,10 @@ const authentication = () => {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           userAlreadyRegistered = true;
+          enqueueSnackbar(`Login Successful`, {
+            variant: "success",
+          });
+          router.replace("/");
         }
         if (result && !userAlreadyRegistered) {
           const user = result?.user;
@@ -172,8 +176,7 @@ const authentication = () => {
             GoogleAuthProvider.credentialFromResult(result).accessToken;
           // Setting to db
           const docRef = doc(db, "users", user.uid);
-
-          setDoc(docRef, {
+          await setDoc(docRef, {
             userDetails: {
               userID: user.uid,
               fullName: "",
@@ -189,11 +192,12 @@ const authentication = () => {
             },
             snippets: [],
           });
+
+          enqueueSnackbar(`Login Successful`, {
+            variant: "success",
+          });
+          router.replace("/");
         }
-        enqueueSnackbar(`Login Successful`, {
-          variant: "success",
-        });
-        router.replace("/");
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -263,6 +267,26 @@ const authentication = () => {
           </div>
 
           <div className="bg-white shadow-lg rounded-lg py-8 px-6 w-full h-full select-none border">
+            {mode !== "reset-password" && (
+              <>
+                <div className="providersAuth-section flex-evenly-center mb-6">
+                  <button
+                    onClick={continueWithGH}
+                    className="button-base w-1/3 py-3 border"
+                  >
+                    <GitHub fontSize="medium" className="icon" />
+                  </button>
+                  <button
+                    onClick={continueWithGoogle}
+                    className="button-base w-1/3 py-3 border"
+                  >
+                    <Google fontSize="medium" className="icon" />
+                  </button>
+                </div>
+                <Divider>OR</Divider>
+              </>
+            )}
+
             <form
               noValidate
               onSubmit={
@@ -273,26 +297,6 @@ const authentication = () => {
                   : passwordResetRequest
               }
             >
-              {mode !== "reset-password" && (
-                <>
-                  <div className="providersAuth-section flex-evenly-center mb-6">
-                    <button
-                      onClick={continueWithGH}
-                      className="button-base w-1/3 py-3 border"
-                    >
-                      <GitHub fontSize="medium" className="icon" />
-                    </button>
-                    <button
-                      onClick={continueWithGoogle}
-                      className="button-base w-1/3 py-3 border"
-                    >
-                      <Google fontSize="medium" className="icon" />
-                    </button>
-                  </div>
-                  <Divider>OR</Divider>
-                </>
-              )}
-
               {mode === "register" && (
                 <>
                   <div className="flex flex-col space-y-2 w-full">
@@ -375,7 +379,7 @@ const authentication = () => {
               )}
               <button
                 type="submit"
-                className="primary-button-small mt-3 w-full"
+                className="primary-button w-full small mt-3"
               >
                 {formAction}
               </button>

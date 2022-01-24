@@ -116,7 +116,7 @@ const SnippetCard = ({ name, uid, info, files, ...rest }) => {
       <Card className="snippet__card min-h-[500px] flex flex-col">
         <div className="snippetCard__header">
           <div className="flex items-center">
-            <ThemeHeading type={"tertiary"}>{name}</ThemeHeading>
+            <ThemeHeading type="tertiary">{name}</ThemeHeading>
             <Tooltip title={isPrivate ? "Private" : "Public"}>
               {isPrivate ? (
                 <Lock
@@ -186,9 +186,9 @@ const SnippetCard = ({ name, uid, info, files, ...rest }) => {
           <SyntaxHighlighter
             language={activeFile?.language?.name?.toLowerCase() || "javascript"}
             style={syntaxThemes[syntaxTheme]}
-            showLineNumbers
             lineNumberStyle={{ fontSize: "10px" }}
             className="max-h-[375px] min-h-[375px]"
+            // showLineNumbers
           >
             {activeFile?.code}
           </SyntaxHighlighter>

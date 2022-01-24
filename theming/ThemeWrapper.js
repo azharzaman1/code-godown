@@ -1,7 +1,7 @@
 import React from "react";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { useSelector } from "react-redux";
-import { selectTheme } from "../../redux/slices/appSlice";
+import { selectTheme } from "../redux/slices/appSlice";
 import { getPalette } from "./palette";
 
 const ThemeWrapper = ({ children }) => {
@@ -14,17 +14,24 @@ const ThemeWrapper = ({ children }) => {
       type: themePreference,
 
       primary: {
+        main: muiPalette.primary,
         dark: muiPalette.primaryDark,
-        main: muiPalette.primaryMain,
         light: muiPalette.primaryLight,
-        contrastText: muiPalette.primaryColorContrast,
+        contrastText: muiPalette.primaryText,
       },
+
+      secondary: {
+        main: muiPalette.secondary,
+      },
+
       background: {
-        default: muiPalette.bgDefault,
-        paper: muiPalette.bgLight,
+        default: muiPalette.background,
+        paper: muiPalette.backgroundLight,
       },
+
       text: {
-        primary: muiPalette.primaryTextColor,
+        primary: muiPalette.primaryText,
+        secondary: muiPalette.secondaryText,
       },
       divider: muiPalette.dividerColor,
     },
@@ -35,7 +42,7 @@ const ThemeWrapper = ({ children }) => {
       MuiCheckbox: {
         styleOverrides: {
           root: {
-            color: muiPalette.primaryTextColorContrast,
+            color: muiPalette.primaryText,
           },
         },
       },
@@ -45,14 +52,14 @@ const ThemeWrapper = ({ children }) => {
             fontSize: "14px",
             fontStyle: "normal",
             fontWeight: "medium",
-            color: muiPalette.primaryTextColorContrast,
+            color: muiPalette.primaryText,
           },
         },
       },
       MuiSelect: {
         styleOverrides: {
           outlined: {
-            border: `2px solid ${muiPalette.primaryTextColor}`,
+            border: `2px solid ${muiPalette.primaryText}`,
           },
         },
       },
