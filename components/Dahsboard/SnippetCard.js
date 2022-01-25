@@ -93,7 +93,7 @@ const SnippetCard = ({ name, uid, info, files, ...rest }) => {
   };
 
   const handleSnippetShare = () => {
-    setDialogOpen(true);
+    // setDialogOpen(true);
   };
 
   const handleSnippetEdit = (uid) => {
@@ -227,7 +227,8 @@ const SnippetCard = ({ name, uid, info, files, ...rest }) => {
       </Card>
       {/* For delete */}
       <Dialog
-        title="Are you sure, you want to delete this file. This action can not be undone!"
+        title="Delete Snippet"
+        dialogContent="Are you sure, This action can not be undone for now."
         open={dialogOpen}
         setOpen={setDialogOpen}
         dialogActions={[
