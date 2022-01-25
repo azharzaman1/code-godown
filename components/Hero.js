@@ -3,6 +3,7 @@ import ThemeHeading from "./Generic/Heading";
 import { Popover } from "@headlessui/react";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { PlusIcon } from "@heroicons/react/outline";
 
 export default function Hero() {
   const theme = useTheme();
@@ -60,11 +61,11 @@ export default function Hero() {
                     Get Started
                   </ThemeButton>
                 </div>
-                <div>
-                  <ThemeButton type="text" isDark={false} size="medium">
-                    Login
-                  </ThemeButton>
-                </div>
+                <ThemeButton
+                  type="icon"
+                  text="Create label"
+                  icon={<PlusIcon className="h-5" />}
+                />
               </div>
             </div>
           </main>

@@ -64,13 +64,12 @@ const SnippetLabels = ({ onButtonClick }) => {
           <div>
             <Divider />
             <div>
-              <ThemeButton
-                type="icon-text"
-                className="mt-1"
+              <button
+                className="mt-1 rounded-md font-medium cursor-pointer select-none flex items-center justify-start py-2 px-3 shadow-none transition duration-100 hover:shadow-md active:scale-95"
                 onClick={onButtonClick}
               >
                 <PlusIcon className="h-5 mr-3" /> Create label
-              </ThemeButton>
+              </button>
             </div>
           </div>
         )}

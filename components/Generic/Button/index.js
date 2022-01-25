@@ -9,6 +9,9 @@ const ThemeButton = ({
   type = "primary",
   size,
   isDark,
+  text,
+  icon,
+  afterIcon,
   shrink = true,
 
   label, // only for tab button
@@ -30,9 +33,9 @@ const ThemeButton = ({
     return (
       <a
         href={href}
-        className={`${className} ${size} ${dark && "dark"} ${
-          shrink && "button-shrink-transition"
-        } ${sizeClasses} rounded-md shadow-md font-medium cursor-pointer select-none bg-[#e76f51] text-white hover:bg-[#e24d28]`}
+        className={`${className} ${size} ${
+          dark && "dark"
+        } ${sizeClasses} rounded-md shadow-md font-medium cursor-pointer select-none bg-primary text-white hover:bg-primaryDark transition-colors duration-150`}
         {...rest}
       >
         {children}
@@ -43,9 +46,9 @@ const ThemeButton = ({
     return (
       <a
         href={href}
-        className={`${className} ${dark && "dark"} ${sizeClasses} ${
-          shrink && "button-shrink-transition"
-        } rounded-md shadow-md font-medium cursor-pointer select-none bg-[#e76f510e] border-[#e24d28] border-2 text-primaryTextLight hover:bg-[#e76f51] hover:text-white hover:border-[#e76f51]`}
+        className={`${className} ${
+          dark && "dark"
+        } ${sizeClasses} rounded-md shadow-md font-medium cursor-pointer select-none bg-[#e76f510e] border-primaryDark border-2 text-primaryTextLight hover:bg-primary hover:text-white hover:border-primary transition-colors duration-150`}
         {...rest}
       >
         {children}
@@ -56,9 +59,9 @@ const ThemeButton = ({
     return (
       <a
         href={href}
-        className={`${
+        className={`text-button ${
           dark && "dark"
-        } ${className} ${sizeClasses} rounded-md bg-transparent hover:bg-[#e76f513b] hover:border-gray-400 transition duration-150 text-primaryTextLight cursor-pointer button-shrink-transition`}
+        } ${className} ${sizeClasses} rounded-md bg-transparent hover:bg-[#e76f513b] hover:border-gray-400 text-primaryTextLight cursor-pointer button-shrink-transition transition-colors duration-150`}
         {...rest}
       >
         {children}
@@ -69,21 +72,14 @@ const ThemeButton = ({
     return (
       <a
         href={href}
-        className={`icon-button ${dark && "dark"} ${className}`}
+        className={`${className} ${
+          dark && "dark"
+        } ${sizeClasses} flex-between-center px-5 py-3 space-x-2 bg-primary text-white hover:bg-primaryDark rounded-md shadow-md font-medium cursor-pointer select-none transition-colors duration-150`}
         {...rest}
       >
-        {children}
-      </a>
-    );
-
-  if (type === "icon-text")
-    return (
-      <a
-        href={href}
-        className={`icon-text-button ${dark && "dark"} ${className}`}
-        {...rest}
-      >
-        {children}
+        <span>{icon}</span>
+        <span>{text}</span>
+        <span>{afterIcon}</span>
       </a>
     );
 
@@ -105,15 +101,6 @@ const ThemeButton = ({
         )}
       </div>
     );
-
-  return (
-    <button
-      className={`primary-button ${dark && "dark"} ${className}`}
-      {...rest}
-    >
-      {children}
-    </button>
-  );
 };
 
 export default ThemeButton;

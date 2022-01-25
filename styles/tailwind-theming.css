@@ -79,20 +79,8 @@
     @apply button-base button-shrink-transition medium-button primary-look;
   }
 
-  .primary-button.small {
-    @apply small-button;
-  }
-
   .secondary-button {
     @apply button-base button-shrink-transition secondary-look medium-button;
-  }
-
-  .secondary-button.small {
-    @apply small-button;
-  }
-
-  .text-button {
-    @apply px-5 py-2 rounded-md bg-transparent hover:bg-gray-300 transition duration-150 text-gray-800 cursor-pointer button-shrink-transition;
   }
 
   .text-button.dark {

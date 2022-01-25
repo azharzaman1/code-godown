@@ -125,12 +125,15 @@ const dashboard = () => {
   };
 
   const handleSnippetSave = async () => {
-    let snippetsToSet = [snippetArr, ...snippets];
-    console.log("<", snippetsToSet);
-    const docRef = doc(db, "users", user?.uid);
-    await updateDoc(docRef, {
-      snippets: snippetsToSet,
-    });
+    const snippetRef = doc(
+      db,
+      "users",
+      user?.uid,
+      "snippets",
+      `snippet_${uuidv4()}`
+    );
+    await setDoc(snippetRef, snippetArr);
+
     dispatch(RESSET_SNIPPET());
     enqueueSnackbar(`Snippet saved successfully`, {
       variant: "success",
@@ -254,32 +257,51 @@ const dashboard = () => {
                 {displaySnippets && <ThemeSwitch themes={SyntaxThemes} />}
                 {/* Header Dynamic Buttons */}
                 {savingSnippet && (
-                  <ThemeButton type="icon-text" onClick={handleBackDirect}>
-                    <ArrowLeftIcon className="h-4 pr-2" /> Back
-                  </ThemeButton>
+                  <ThemeButton
+                    type="icon"
+                    size="small"
+                    icon={<ArrowLeftIcon className="h-5" />}
+                    text="Back"
+                    onClick={handleBackDirect}
+                  />
                 )}
                 {!displaySnippets && (
-                  <ThemeButton type="icon-text" onClick={handleDiscard}>
-                    <XIcon className="h-4 pr-2" /> Discard
-                  </ThemeButton>
+                  <ThemeButton
+                    type="icon"
+                    size="small"
+                    icon={<XIcon className="h-5" />}
+                    text="Discard"
+                    onClick={handleDiscard}
+                  />
                 )}
                 {displaySnippets && (
-                  <ThemeButton type="icon" onClick={handleAddSnippet}>
-                    <PlusIcon className="h-4 pr-2" /> Add New
-                  </ThemeButton>
+                  <ThemeButton
+                    type="icon"
+                    size="small"
+                    icon={<PlusIcon className="h-5" />}
+                    text="Add Snippet"
+                    onClick={handleAddSnippet}
+                  />
                 )}
                 {addingSnippetInfo || addingCodeToSnippet || savingSnippet ? (
-                  <ThemeButton type="icon" onClick={mainButtonAction}>
-                    {savingSnippet && (
-                      <Save fontSize="medium" className="pr-2" />
-                    )}
-                    {mainButtonTitle}
-                    {addingSnippetInfo || addingCodeToSnippet ? (
-                      <Send fontSize="medium" className="pl-2" />
-                    ) : (
-                      <></>
-                    )}
-                  </ThemeButton>
+                  <ThemeButton
+                    type="icon"
+                    size="small"
+                    text={mainButtonTitle}
+                    icon={
+                      savingSnippet && (
+                        <Save fontSize="medium" className="h-5" />
+                      )
+                    }
+                    afterIcon={
+                      addingSnippetInfo || addingCodeToSnippet ? (
+                        <Send fontSize="medium" className="h-5" />
+                      ) : (
+                        false
+                      )
+                    }
+                    onClick={mainButtonAction}
+                  />
                 ) : (
                   <></>
                 )}

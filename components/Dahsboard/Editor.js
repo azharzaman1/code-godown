@@ -34,7 +34,7 @@ const MonacoEditor = () => {
 
   const router = useRouter();
 
-  const enqueueSnackbar = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
 
   const { snippet } = router.query;
 
