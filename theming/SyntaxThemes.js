@@ -7,6 +7,6 @@ export default [
   { name: "Github", key: "github" },
   { name: "Github Gist", key: "githubGist" },
   { name: "Gradient Dark", key: "gradientDark" },
-  { name: "Tomorrow Nufgt Blue", key: "tomorrowNightBlue" },
+  { name: "Tomorrow Night Blue", key: "tomorrowNightBlue" },
   { name: "School Book", key: "schoolBook" },
 ];

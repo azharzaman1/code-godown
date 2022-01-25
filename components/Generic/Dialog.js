@@ -7,6 +7,7 @@ import Slide from "@mui/material/Slide";
 import { useSelector } from "react-redux";
 import { selectTheme } from "../../redux/slices/appSlice";
 import ThemeButton from "./Button";
+import { Divider } from "@mui/material";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -34,19 +35,16 @@ function MuiDialog({
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle
-          className={`tertiary-heading ${themePreference === "dark" && "dark"}`}
-        >
-          {title}
-        </DialogTitle>
+        <DialogTitle>{title}</DialogTitle>
         <DialogContent>{dialogContent}</DialogContent>
+        <Divider />
         {dialogActions && (
           <DialogActions>
             {dialogActions.map(({ label, action }) => (
               <ThemeButton
                 key={label.trim()}
-                type={dark ? "text" : "primary"}
-                size={!dark && "small"}
+                type="text"
+                size="small"
                 onClick={action}
               >
                 {label}

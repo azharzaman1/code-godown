@@ -7,18 +7,22 @@ const ThemeHeading = ({ type, className, children, ...rest }) => {
 
   if (type === "primary" || !type)
     return (
-      <h2
-        className={`primary-heading ${dark && "dark"} ${className}`}
+      <h1
+        className={`primary-heading ${className} ${
+          dark && "dark"
+        } text-4xl tracking-tight font-extrabold text-primaryTextLight sm:text-5xl md:text-6xl`}
         {...rest}
       >
         {children}
-      </h2>
+      </h1>
     );
 
   if (type === "secondary")
     return (
       <h2
-        className={`secondary-heading ${dark && "dark"} ${className}`}
+        className={`secondary-heading ${className} ${
+          dark && "dark"
+        } text-xl tracking-tight font-bold text-primaryTextLight sm:text-2xl md:text-4xl`}
         {...rest}
       >
         {children}
@@ -28,7 +32,9 @@ const ThemeHeading = ({ type, className, children, ...rest }) => {
   if (type === "tertiary")
     return (
       <h2
-        className={`tertiary-heading ${dark && "dark"} ${className}`}
+        className={`tertiary-heading ${className} ${
+          dark && "dark"
+        } text-lg font-medium text-primaryTextLight sm:text-lg md:text-xl`}
         {...rest}
       >
         {children}

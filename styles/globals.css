@@ -4,9 +4,15 @@
 
 :root {
   --primary: #e76f51;
-  --primary-light: #d69b8c;
+  --primary-light: #c78c7d;
   --primary-dark: #e24d28;
-  --primaryText-accent: rgba(255, 255, 255, 0.87);
+  --secondary: "#38bdf8";
+
+  --primaryText-light: "#0f172a";
+  --primaryText-dark: "#e2e8f0";
+
+  --secondaryText-light: "#0f172a";
+  --secondaryText-dark: "#a0aec0";
 
   --background-main: #252c48;
   --background-light: #394264;

@@ -19,7 +19,7 @@ const Header = ({
   navigation = [],
   transparentEffect,
   variant,
-  themeSwitch = true,
+  themeSwitch = false,
 }) => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -150,25 +150,20 @@ const Header = ({
                   type="text"
                   isDark={variant !== "light"}
                   onClick={handleLoginRedirect}
+                  size="small"
                 >
                   Login
                 </ThemeButton>
                 <ThemeButton
                   className="m-7 md:m-0"
                   onClick={handleRegisterRedirect}
+                  type="primary"
                   size="small"
                 >
                   Signup
                 </ThemeButton>
               </>
             )}
-          </div>
-
-          <div className="flex items-center md:hidden">
-            <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
-              <span className="sr-only">Open main menu</span>
-              <MenuIcon className="h-6 w-6" aria-hidden="true" />
-            </Popover.Button>
           </div>
         </div>
       </nav>

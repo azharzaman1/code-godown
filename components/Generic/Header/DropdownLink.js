@@ -15,7 +15,7 @@ const DropdownLink = ({ dropdownData, label, dropdownTrigger }) => {
           <Popover.Button
             className={classNames(
               open ? "text-gray-900" : "text-gray-500",
-              "group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none"
+              "group bg-white rounded-md inline-flex items-center font-medium hover:text-gray-900 focus:outline-none"
             )}
           >
             <span>{label}</span>
@@ -49,9 +49,7 @@ const DropdownLink = ({ dropdownData, label, dropdownTrigger }) => {
                     >
                       {imgSrc && <Image src={imgSrc} height="40" width="40" />}
                       <div className="ml-4">
-                        <p className="text-base font-medium text-gray-900">
-                          {name}
-                        </p>
+                        <p className="font-medium text-gray-900">{name}</p>
                         <p className="mt-1 text-sm text-gray-500">
                           {description}
                         </p>

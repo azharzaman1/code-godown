@@ -7,8 +7,12 @@ const ThemeButton = ({
   className,
   href,
   type = "primary",
-  size = "medium",
+  size,
   isDark,
+  text,
+  icon,
+  afterIcon,
+  shrink = true,
 
   label, // only for tab button
   active, // only for tab button
@@ -18,12 +22,20 @@ const ThemeButton = ({
 }) => {
   const theme = useSelector(selectTheme);
   const dark = isDark ? isDark : theme === "dark";
+  const sizeClasses =
+    !size || size === "medium"
+      ? "px-8 py-3.5"
+      : size === "small"
+      ? "px-5 py-2.5"
+      : "px-10 py-4";
 
   if (type === "primary")
     return (
       <a
         href={href}
-        className={`primary-button ${dark && "dark"} ${size} ${className}`}
+        className={`${className} ${size} ${
+          dark && "dark"
+        } ${sizeClasses} rounded-md shadow-md font-medium cursor-pointer select-none bg-primary text-white hover:bg-primaryDark transition-colors duration-150`}
         {...rest}
       >
         {children}
@@ -34,7 +46,9 @@ const ThemeButton = ({
     return (
       <a
         href={href}
-        className={`secondary-button ${dark && "dark"} ${className}`}
+        className={`${className} ${
+          dark && "dark"
+        } ${sizeClasses} rounded-md shadow-md font-medium cursor-pointer select-none bg-[#e76f510e] border-primaryDark border-2 text-primaryTextLight hover:bg-primary hover:text-white hover:border-primary transition-colors duration-150`}
         {...rest}
       >
         {children}
@@ -45,7 +59,9 @@ const ThemeButton = ({
     return (
       <a
         href={href}
-        className={`text-button ${dark && "dark"} ${className}`}
+        className={`text-button ${
+          dark && "dark"
+        } ${className} ${sizeClasses} rounded-md bg-transparent hover:bg-[#e76f513b] hover:border-gray-400 text-primaryTextLight cursor-pointer button-shrink-transition transition-colors duration-150`}
         {...rest}
       >
         {children}
@@ -56,21 +72,14 @@ const ThemeButton = ({
     return (
       <a
         href={href}
-        className={`icon-button ${dark && "dark"} ${className}`}
+        className={`${className} ${
+          dark && "dark"
+        } ${sizeClasses} flex-between-center px-5 py-3 space-x-2 bg-primary text-white hover:bg-primaryDark rounded-md shadow-md font-medium cursor-pointer select-none transition-colors duration-150`}
         {...rest}
       >
-        {children}
-      </a>
-    );
-
-  if (type === "icon-text")
-    return (
-      <a
-        href={href}
-        className={`icon-text-button ${dark && "dark"} ${className}`}
-        {...rest}
-      >
-        {children}
+        <span>{icon}</span>
+        <span>{text}</span>
+        <span>{afterIcon}</span>
       </a>
     );
 
@@ -92,15 +101,6 @@ const ThemeButton = ({
         )}
       </div>
     );
-
-  return (
-    <button
-      className={`primary-button ${dark && "dark"} ${className}`}
-      {...rest}
-    >
-      {children}
-    </button>
-  );
 };
 
 export default ThemeButton;
