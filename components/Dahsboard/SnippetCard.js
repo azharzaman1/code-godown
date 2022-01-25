@@ -112,19 +112,15 @@ const SnippetCard = ({ name, uid, info, files, ...rest }) => {
   const handleSnippetDownload = () => {};
 
   return (
-    <Grid item xs={2} sm={4} md={4} {...rest}>
+    <Grid item xs={12} sm={4} md={4} {...rest}>
       <Card className="snippet__card min-h-[500px] flex flex-col">
         <div className="snippetCard__header">
           <div className="flex items-center">
             <ThemeHeading type="tertiary">{name}</ThemeHeading>
-            <Tooltip title={isPrivate ? "Private" : "Public"}>
-              {isPrivate ? (
+            <Tooltip title="Private">
+              {isPrivate && (
                 <Lock
                   sx={{ fontSize: "14px", marginLeft: "9px", marginTop: "2px" }}
-                />
-              ) : (
-                <Person
-                  sx={{ fontSize: "16px", marginLeft: "9px", marginTop: "2px" }}
                 />
               )}
             </Tooltip>
@@ -201,7 +197,6 @@ const SnippetCard = ({ name, uid, info, files, ...rest }) => {
             alignItems="center"
             className="mt-3 w-full overflow-x-scroll"
           >
-            <ThemeText className="text-xs mb-2">Files:</ThemeText>
             {snippetFiles?.map(({ fileName, key, downloadButton, onClick }) => (
               <>
                 {downloadButton ? (
@@ -213,9 +208,9 @@ const SnippetCard = ({ name, uid, info, files, ...rest }) => {
                 ) : (
                   <Chip
                     key={key}
-                    color={activeFile.key == key ? "primary" : "default"}
+                    color="primary"
                     label={fileName}
-                    variant="outlined"
+                    variant={activeFile.key == key ? "" : "outlined"}
                     size="small"
                     sx={{
                       marginBottom: "8px !important",
@@ -228,45 +223,6 @@ const SnippetCard = ({ name, uid, info, files, ...rest }) => {
               </>
             ))}
           </Stack>
-
-          {/* <Stack direction="column" spacing={2}>
-            {snippetLabels && (
-              <Stack
-                direction="row"
-                spacing={1}
-                alignItems="center"
-                className="mt-3 w-full overflow-x-scroll"
-              >
-                <ThemeText className="text-xs mb-2">Labels:</ThemeText>
-                {snippetLabels?.map(({ label, uid }) => (
-                  <ThemeChip key={uid}>{label}</ThemeChip>
-                ))}
-              </Stack>
-            )}
-
-            {snippetTags && (
-              <Stack
-                direction="row"
-                spacing={1}
-                alignItems="center"
-                className="flex-wrap"
-                className="mt-3 w-full overflow-x-scroll"
-              >
-                <ThemeText className="text-xs mb-2">Tags:</ThemeText>
-                {snippetTags?.map(({ name, key, str }) => (
-                  <Chip
-                    key={key}
-                    label={name}
-                    variant="outlined"
-                    size="small"
-                    sx={{
-                      marginBottom: "8px !important",
-                    }}
-                  />
-                ))}
-              </Stack>
-            )}
-          </Stack> */}
         </div>
       </Card>
       {/* For delete */}

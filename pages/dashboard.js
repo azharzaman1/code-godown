@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Save, Send } from "@mui/icons-material";
 import AddNewSnippetPanel from "../components/Dahsboard/AddNewSnippetPanel";
 import { useRouter } from "next/dist/client/router";
-import { Paper } from "@mui/material";
+import { Paper, useMediaQuery, useTheme } from "@mui/material";
 import {
   RESSET_SNIPPET,
   selectFileName,
@@ -29,6 +29,7 @@ import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../client/firebase";
 import ThemeSwitch from "../components/Dahsboard/ThemeSwitch";
 import SyntaxThemes from "../theming/SyntaxThemes";
+import ThemeHeading from "../components/Generic/Heading";
 
 const dashboard = () => {
   const dispatch = useDispatch();
@@ -36,12 +37,15 @@ const dashboard = () => {
   const snippetArr = useSelector(selectSnippet);
   const [dashboardLoading, setDashboardLoading] = useState(false);
   const userInDB = useSelector(selectUserFromDB);
-  const snippets = useSelector(selectUserFromDB)?.snippets;
   const snippetName = useSelector(selectSnippetName);
   const fileName = useSelector(selectFileName);
   const themePreference = useSelector(selectTheme);
   const { data, error } = useSWR("/api/programming-langs", fetcher);
   const { enqueueSnackbar } = useSnackbar();
+
+  const theme = useTheme();
+  const isDesktop = useMediaQuery("(min-width:960px)");
+  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
 
   const router = useRouter();
   const { display, file, snippet } = router.query;
@@ -210,17 +214,13 @@ const dashboard = () => {
       ) : (
         <Container>
           <div className="dashboard mt-1 flex flex-col">
-            <Paper className="dashboard__contentHeader flex-between-center w-full px-4 h-16 rounded shadow">
-              <div className="">
+            <Paper className="dashboard__contentHeader flex-between-center w-full h-16 rounded shadow px-3 space-x-3">
+              <div className="hidden md:block">
                 <div className="flex space-x-2">
                   <div className="flex flex-col">
-                    <h3
-                      className={`tertiary-heading ${
-                        themePreference === "dark" && "dark"
-                      }`}
-                    >
+                    <ThemeHeading type="tertiary">
                       {dashboardHeaderTagline}
-                    </h3>
+                    </ThemeHeading>
                     {addingCodeToSnippet && (
                       <p
                         className={`info-text mt-1 ${
@@ -234,8 +234,8 @@ const dashboard = () => {
                 </div>
               </div>
               {displaySnippets && (
-                <div className="hidden md:block flex-1 max-w-[550px]">
-                  <form>
+                <div className="flex-1 max-w-[550px]">
+                  <form className="hidden lg:block">
                     <div className="flex-between-center rounded-md pl-3 border border-gray-600">
                       <input
                         type="text"
@@ -253,7 +253,10 @@ const dashboard = () => {
                 </div>
               )}
 
-              <div className="flex space-x-2">
+              <div className="flex items-center justify-evenly space-x-2">
+                <div className="lg:hidden">
+                  <SearchIcon className="cursor-pointer h-6 mr-2" />
+                </div>
                 {displaySnippets && <ThemeSwitch themes={SyntaxThemes} />}
                 {/* Header Dynamic Buttons */}
                 {savingSnippet && (

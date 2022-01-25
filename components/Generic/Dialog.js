@@ -35,7 +35,9 @@ function MuiDialog({
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle
-          className={`tertiary-heading ${themePreference === "dark" && "dark"}`}
+          className={`tertiary-heading text-lg font-medium text-primaryTextLight md:text-lg tracking-normal ${
+            themePreference === "dark" && "dark"
+          }`}
         >
           {title}
         </DialogTitle>
@@ -45,8 +47,8 @@ function MuiDialog({
             {dialogActions.map(({ label, action }) => (
               <ThemeButton
                 key={label.trim()}
-                type={dark ? "text" : "primary"}
-                size={!dark && "small"}
+                type="text"
+                size="small"
                 onClick={action}
               >
                 {label}

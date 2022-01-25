@@ -5,7 +5,7 @@ export const LayoutContainer = ({ children, className, ...rest }) => {
     <Container
       maxWidth={false}
       {...rest}
-      className={`w-full px-2 sm:px-3 md:px-5 lg:px-9 ${className}`}
+      className={`w-full px-2 sm:px-3 md:px-4 lg:px-7.5 ${className}`}
     >
       {children}
     </Container>
