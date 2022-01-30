@@ -10,6 +10,7 @@ const themePreference = useSelector(selectTheme);
 Fixes:
 Auth repetitive Messages
 GH auth error display
+Auth Design
  
 
  dateExample: Timestamp.fromDate(new Date("December 10, 1815")),

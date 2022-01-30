@@ -1,17 +1,16 @@
 import React from "react";
 import { createTheme, ThemeProvider } from "@mui/material";
-import { useSelector } from "react-redux";
-import { selectTheme } from "../redux/slices/appSlice";
 import { getPalette } from "./palette";
+import { useTheme } from "next-themes";
 
 const ThemeWrapper = ({ children }) => {
-  const themePreference = useSelector(selectTheme);
-  const light = themePreference === "light";
+  const { theme, setTheme } = useTheme();
+  const light = theme === "light";
   const muiPalette = getPalette(light);
 
   const colorTheme = createTheme({
     palette: {
-      type: themePreference,
+      type: theme,
 
       primary: {
         main: muiPalette.primary,
@@ -22,6 +21,9 @@ const ThemeWrapper = ({ children }) => {
 
       secondary: {
         main: muiPalette.secondary,
+        light: muiPalette.secondaryLight,
+        dark: muiPalette.secondaryDark,
+        contrastText: muiPalette.primaryText,
       },
 
       background: {
@@ -32,6 +34,7 @@ const ThemeWrapper = ({ children }) => {
       text: {
         primary: muiPalette.primaryText,
         secondary: muiPalette.secondaryText,
+        disabled: muiPalette.infoText,
       },
       divider: muiPalette.dividerColor,
     },
