@@ -1,14 +1,7 @@
 import { useEffect, useState } from "react";
 import { Chip, Grid, IconButton, Paper, Stack, Tooltip } from "@mui/material";
 import { experimentalStyled as styled } from "@mui/material/styles";
-import {
-  Delete,
-  Download,
-  Edit,
-  Lock,
-  Person,
-  Share,
-} from "@mui/icons-material";
+import { Delete, Download, Edit, Lock, Share } from "@mui/icons-material";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import ThemeHeading from "../Generic/Heading";
 import ThemeText from "../Generic/Text";
@@ -37,7 +30,6 @@ import githubGist from "react-syntax-highlighter/dist/cjs/styles/hljs/github-gis
 import gradientDark from "react-syntax-highlighter/dist/cjs/styles/hljs/gradient-dark";
 import tomorrowNightBlue from "react-syntax-highlighter/dist/cjs/styles/hljs/tomorrow-night-blue";
 import schoolBook from "react-syntax-highlighter/dist/cjs/styles/hljs/school-book";
-import ThemeChip from "../Generic/Chip";
 
 const syntaxThemes = {
   atomOneDark: atomOneDark,
@@ -184,7 +176,6 @@ const SnippetCard = ({ name, uid, info, files, ...rest }) => {
             style={syntaxThemes[syntaxTheme]}
             lineNumberStyle={{ fontSize: "10px" }}
             className="max-h-[375px] min-h-[375px]"
-            // showLineNumbers
           >
             {activeFile?.code}
           </SyntaxHighlighter>
