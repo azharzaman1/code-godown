@@ -27,20 +27,18 @@ export default function Header({ themeSwitch = false, variant = "dark" }) {
 
   const handleLoginRedirect = () => {
     router.push({
-      pathname: "/authentication",
-      query: {
-        mode: "login",
-      },
+      pathname: "/auth/login",
     });
   };
 
   const handleRegisterRedirect = () => {
     router.push({
-      pathname: "/authentication",
-      query: {
-        mode: "register",
-      },
+      pathname: "/auth/register",
     });
+  };
+
+  const handleLogout = () => {
+    auth.signOut();
   };
 
   const switchTheme = () => {
@@ -83,7 +81,7 @@ export default function Header({ themeSwitch = false, variant = "dark" }) {
 
             <a
               href="#"
-              className="text-sm md:text-base font-medium text-gray-900 dark:text-secondaryText hover:text-gray-900 hover:dark:text-primaryText transition duration-150"
+              className="text-sm md:text-base font-medium text-gray-500 dark:text-secondaryText hover:text-gray-900 hover:dark:text-primaryText transition duration-150"
             >
               Docs
             </a>
@@ -116,23 +114,22 @@ export default function Header({ themeSwitch = false, variant = "dark" }) {
               </div>
             )}
 
-            <div className="hidden md:flex items-center justify-end space-x-3">
-              <ThemeButton
-                type="text"
-                size="small"
-                // className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
-                onClick={handleLoginRedirect}
+            <div className="hidden md:flex items-center justify-end">
+              {!user && (
+                <button
+                  className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
+                  onClick={handleLoginRedirect}
+                >
+                  Sign in
+                </button>
+              )}
+
+              <button
+                className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+                onClick={!user ? handleRegisterRedirect : handleLogout}
               >
-                Sign in
-              </ThemeButton>
-              <ThemeButton
-                type="primary"
-                size="small"
-                // className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
-                onClick={handleRegisterRedirect}
-              >
-                Sign up
-              </ThemeButton>
+                {user ? "Logout" : "Sign up"}
+              </button>
             </div>
           </div>
         </div>

@@ -1,7 +1,5 @@
 import { useRouter } from "next/dist/client/router";
 import { useState } from "react";
-import Layout from "../components/Layout";
-import Container from "../components/Generic/Container";
 import Divider from "@mui/material/Divider";
 import { GitHub, Google } from "@mui/icons-material";
 import { EyeIcon, EyeOffIcon } from "@heroicons/react/outline";
@@ -9,21 +7,21 @@ import {
   createUserWithEmailAndPassword,
   GithubAuthProvider,
   GoogleAuthProvider,
-  sendPasswordResetEmail,
-  signInWithEmailAndPassword,
   signInWithPopup,
 } from "@firebase/auth";
+import { doc, serverTimestamp, setDoc, getDoc } from "@firebase/firestore";
+import { useSnackbar } from "notistack";
 import {
   auth,
   db,
   githubAuthProvider,
   googleAuthProvider,
-} from "../client/firebase";
-import { validateEmail, validatePassword } from "../files/utils";
-import { doc, serverTimestamp, setDoc, getDoc } from "@firebase/firestore";
-import { useSnackbar } from "notistack";
+} from "../../client/firebase";
+import { validateEmail, validatePassword } from "../../files/utils";
+import Layout from "../../components/Layout";
+import Container from "../../components/Generic/Container";
 
-const authentication = () => {
+const Register = () => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [password, setPassword] = useState("");
@@ -35,21 +33,6 @@ const authentication = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const router = useRouter();
-  const { mode } = router.query;
-
-  const formHeading =
-    mode === "register"
-      ? "Register"
-      : mode === "login"
-      ? "Welcome Back"
-      : "Reset password";
-
-  const formAction =
-    mode === "register"
-      ? "Create account"
-      : mode === "login"
-      ? "Login"
-      : "Send reset email";
 
   const signupWithEmailAndPassword = (e) => {
     e.preventDefault();
@@ -112,49 +95,6 @@ const authentication = () => {
         variant: "warning",
       });
     }
-  };
-
-  const signinWithEmailAndPassword = (e) => {
-    e.preventDefault();
-    // sigin
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        enqueueSnackbar(`Login Successful`, {
-          variant: "success",
-        });
-        router.replace("/");
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        enqueueSnackbar(`Error Code: ${errorCode}: ${errorMessage}`, {
-          variant: "error",
-        });
-      });
-  };
-
-  const passwordResetRequest = (e) => {
-    e.preventDefault();
-    // password reset request
-
-    sendPasswordResetEmail(auth, email)
-      .then(() => {
-        // Password reset email sent
-        enqueueSnackbar(
-          `Password reset email sent! Please follow instructions in the email`,
-          {
-            variant: "info",
-          }
-        );
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        enqueueSnackbar(`Error Code: ${errorCode}: ${errorMessage}`, {
-          variant: "error",
-        });
-      });
   };
 
   const continueWithGoogle = () => {
@@ -262,155 +202,98 @@ const authentication = () => {
         <div className="w-[450px] max-w-[90%] flex-center-center flex-col">
           <div className="form__header">
             <h3 className="secondary-heading mb-4 text-center">
-              {formHeading}
+              Create Account
             </h3>
           </div>
 
           <div className="bg-white shadow-lg rounded-lg py-8 px-6 w-full h-full select-none border">
-            {mode !== "reset-password" && (
-              <>
-                <div className="providersAuth-section flex-evenly-center mb-6">
-                  <button
-                    onClick={continueWithGH}
-                    className="button-base w-1/3 py-3 border"
-                  >
-                    <GitHub fontSize="medium" className="icon" />
-                  </button>
-                  <button
-                    onClick={continueWithGoogle}
-                    className="button-base w-1/3 py-3 border"
-                  >
-                    <Google fontSize="medium" className="icon" />
-                  </button>
-                </div>
-                <Divider>OR</Divider>
-              </>
-            )}
+            <div className="providersAuth-section flex-evenly-center mb-6">
+              <button
+                onClick={continueWithGH}
+                className="button-base w-1/3 py-3 border"
+              >
+                <GitHub fontSize="medium" className="icon" />
+              </button>
+              <button
+                onClick={continueWithGoogle}
+                className="button-base w-1/3 py-3 border"
+              >
+                <Google fontSize="medium" className="icon" />
+              </button>
+            </div>
+            <Divider>OR</Divider>
 
-            <form
-              noValidate
-              onSubmit={
-                mode === "register"
-                  ? signupWithEmailAndPassword
-                  : mode === "login"
-                  ? signinWithEmailAndPassword
-                  : passwordResetRequest
-              }
-            >
-              {mode === "register" && (
-                <>
-                  <div className="flex flex-col space-y-2 w-full">
-                    <input
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                      type="text"
-                      placeholder={nameError ? "e.g. Azhar Zaman" : "Your name"}
-                      className={`input ${
-                        nameError ? "border-red-400" : "border-[#dadada]"
-                      }`}
-                    />
-                  </div>
-                </>
-              )}
+            <form noValidate onSubmit={signupWithEmailAndPassword}>
+              <div className="flex flex-col space-y-2 w-full">
+                <input
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  type="text"
+                  placeholder={nameError ? "e.g. Azhar Zaman" : "Your name"}
+                  className={`input ${
+                    nameError ? "border-red-400" : "border-[#dadada]"
+                  }`}
+                />
+              </div>
+
               <div className="flex flex-col space-y-2">
                 <input
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   type="email"
                   placeholder={
-                    emailError && mode !== "login"
-                      ? "e.g. azhar@gmail.com"
-                      : "Valid email address"
+                    emailError ? "e.g. azhar@gmail.com" : "Valid email address"
                   }
                   className={`input ${
-                    emailError && mode !== "login"
-                      ? "border-red-400"
-                      : "border-[#dadada]"
+                    emailError ? "border-red-400" : "border-[#dadada]"
                   }`}
                 />
               </div>
-              {mode !== "reset-password" && (
-                <div
-                  className={`relative flex-between-center rounded-md ${
-                    passError && mode !== "login"
-                      ? "border-red-400"
-                      : "border-[#dadada]"
-                  } border-2 my-3 space-x-2`}
+
+              <div
+                className={`relative flex-between-center rounded-md ${
+                  passError ? "border-red-400" : "border-[#dadada]"
+                } border-2 my-3 space-x-2`}
+              >
+                <input
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  type={passwordShow ? "text" : "password"}
+                  placeholder="Min. 8 characters, atleast 1 letter & number"
+                  className="outline-none border-none text-gray-500 placeholder-gray-300 px-3 py-3 flex-1"
+                />
+
+                <span
+                  onClick={() => setPasswordShow((prevState) => !prevState)}
+                  className="absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer pr-2"
                 >
-                  <input
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    type={passwordShow ? "text" : "password"}
-                    placeholder={
-                      emailError && mode !== "login"
-                        ? "Min. 8 characters, atleast 1 letter & number"
-                        : "Your password"
-                    }
-                    className="outline-none border-none text-gray-500 placeholder-gray-300 px-3 py-3 flex-1"
-                  />
-                  <span
-                    onClick={() => setPasswordShow((prevState) => !prevState)}
-                    className="absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer pr-2"
-                  >
-                    {passwordShow ? (
-                      <EyeOffIcon className="h-6 icon" />
-                    ) : (
-                      <EyeIcon className="h-6 icon" />
-                    )}
-                  </span>
-                </div>
-              )}
-              {mode === "login" && (
-                <div className="flex justify-end mb-3">
-                  <span
-                    className="link"
-                    onClick={() => {
-                      router.push({
-                        pathname: "/authentication",
-                        query: {
-                          mode: "reset-password",
-                        },
-                      });
-                    }}
-                  >
-                    Forgot password? Reset
-                  </span>
-                </div>
-              )}
+                  {passwordShow ? (
+                    <EyeOffIcon className="h-6 icon" />
+                  ) : (
+                    <EyeIcon className="h-6 icon" />
+                  )}
+                </span>
+              </div>
+
               <button
                 type="submit"
                 className="primary-button w-full small mt-3"
               >
-                {formAction}
+                Signup
               </button>
             </form>
           </div>
+
           <div className="mt-3">
             <span
               className="link"
               onClick={() => {
-                if (mode === "register") {
-                  router.push({
-                    pathname: "/authentication",
-                    query: {
-                      mode: "login",
-                    },
-                  });
-                } else {
-                  router.push({
-                    pathname: "/authentication",
-                    query: {
-                      mode: "register",
-                    },
-                  });
-                }
+                router.push({
+                  pathname: "/auth/login",
+                });
               }}
             >
-              {mode === "login"
-                ? "Don't have an account? Signup"
-                : mode === "register"
-                ? "Already have an account? Login"
-                : "I know my password? Login"}
+              Already have an account? Login
             </span>
           </div>
         </div>
@@ -419,4 +302,4 @@ const authentication = () => {
   );
 };
 
-export default authentication;
+export default Register;
