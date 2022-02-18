@@ -1,7 +1,7 @@
 import Head from "next/head";
 import useSWR from "swr";
 import { fetcher } from "../files/utils";
-import Header from "./Generic/Header/Header";
+import Header from "./Generic/Header";
 
 const Layout = ({
   children,
@@ -26,14 +26,7 @@ const Layout = ({
         <meta name={descriptionName} content={description} />
         <link rel="icon" href={icon} />
       </Head>
-      {!hideHeader && (
-        <Header
-          navigation={navigation || data}
-          transparentEffect={tranparentHeader}
-          variant={headerVariant}
-          themeSwitch={themeSwitch}
-        />
-      )}
+      {!hideHeader && <Header />}
       <main>{children}</main>
     </div>
   );

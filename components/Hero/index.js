@@ -1,17 +1,10 @@
-import ThemeButton from "./Generic/Button";
-import ThemeHeading from "./Generic/Heading";
 import { Popover } from "@headlessui/react";
-import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { PlusIcon } from "@heroicons/react/outline";
+import ThemeButton from "../Generic/Button";
+import ThemeHeading from "../Generic/Heading";
 
 export default function Hero() {
-  const theme = useTheme();
-  const isDesktop = useMediaQuery("(min-width:960px)");
-  const isMobile = useMediaQuery("(max-width:400px)");
-
   return (
-    <div className="relative bg-white overflow-hidden py-20">
+    <div className="relative bg-gray-100 overflow-hidden py-20">
       <div className="max-w-7xl mx-auto">
         <div className="relative z-10 pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
           <svg
@@ -53,19 +46,6 @@ export default function Hero() {
                     Live Demo
                   </ThemeButton>
                 </div>
-                <div>
-                  <ThemeButton
-                    size={isMobile ? "small" : "medium"}
-                    type="secondary"
-                  >
-                    Get Started
-                  </ThemeButton>
-                </div>
-                <ThemeButton
-                  type="icon"
-                  text="Create label"
-                  icon={<PlusIcon className="h-5" />}
-                />
               </div>
             </div>
           </main>

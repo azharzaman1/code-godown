@@ -3,7 +3,7 @@
 export default function navigation(req, res) {
   res.status(200).json([
     {
-      name: "Portfolios",
+      name: "Other Projects",
       dropdown: true,
       dropdownItems: [
         {
@@ -35,29 +35,6 @@ export default function navigation(req, res) {
           description:
             "Get a better understading of where your traffic is coming from",
           href: "https://azhar-netflixclone.netlify.app",
-          imgSrc:
-            "https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg",
-        },
-      ],
-    },
-    {
-      name: "Upcoming Products",
-      href: "#",
-      dropdown: true,
-      dropdownItems: [
-        {
-          name: "Amazon Clone 2.0",
-          description:
-            "Get a better understading of where your traffic is coming from",
-          href: "#",
-          imgSrc:
-            "https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg",
-        },
-        {
-          name: "Airbnb Clone 2.0",
-          description:
-            "Get a better understading of where your traffic is coming from",
-          href: "https://azhar-airbnb-clone.netlify.app/",
           imgSrc:
             "https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg",
         },

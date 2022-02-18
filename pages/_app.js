@@ -10,7 +10,6 @@ import "../styles/tailwind-theming.css";
 import "../components/Generic/Loader.css";
 import "../components/Dahsboard/SnippetsArchivePanel.css";
 import "../components/Dahsboard/SaveSnippet.css";
-import "tailwindcss/tailwind.css";
 
 function MyApp({ Component, pageProps }) {
   return (

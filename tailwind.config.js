@@ -18,6 +18,13 @@ module.exports = {
         secondaryTextLight: "#334155",
         infoTextLight: "#1f2937",
       },
+      fontSize: {
+        xs: "11px",
+        sm: "13px",
+        base: "15px",
+        lg: "1.125rem",
+        xl: "1.25rem",
+      },
     },
     fontFamily: {
       sans: ["Inter", "Roboto", "sans-serif"],
