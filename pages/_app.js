@@ -1,16 +1,16 @@
 import Head from "next/head";
-import { Provider } from "react-redux";
-import store from "../redux/store";
+import ThemeWrapper from "../theming/ThemeWrapper";
 import AppWrapper from "../components/AppWrapper";
+import { Provider } from "react-redux";
 import { SnackbarProvider } from "notistack";
+import { ThemeProvider } from "next-themes";
+import store from "../redux/store";
 import "../styles/globals.css";
 import "../styles/tailwind-theming.css";
-import "tailwindcss/tailwind.css";
 import "../components/Generic/Loader.css";
 import "../components/Dahsboard/SnippetsArchivePanel.css";
 import "../components/Dahsboard/SaveSnippet.css";
-import ThemeWrapper from "../theming/ThemeWrapper";
-import { ChakraProvider } from "@chakra-ui/react";
+import "tailwindcss/tailwind.css";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -31,9 +31,8 @@ function MyApp({ Component, pageProps }) {
           rel="stylesheet"
         />
       </Head>
-
-      <Provider store={store}>
-        <ChakraProvider>
+      <ThemeProvider attribute="class">
+        <Provider store={store}>
           <ThemeWrapper>
             <SnackbarProvider maxSnack={3}>
               <AppWrapper>
@@ -41,8 +40,8 @@ function MyApp({ Component, pageProps }) {
               </AppWrapper>
             </SnackbarProvider>
           </ThemeWrapper>
-        </ChakraProvider>
-      </Provider>
+        </Provider>
+      </ThemeProvider>
     </>
   );
 }

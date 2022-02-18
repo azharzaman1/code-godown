@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Save, Send } from "@mui/icons-material";
 import AddNewSnippetPanel from "../components/Dahsboard/AddNewSnippetPanel";
 import { useRouter } from "next/dist/client/router";
-import { Paper, useMediaQuery, useTheme } from "@mui/material";
+import { Paper } from "@mui/material";
 import {
   RESSET_SNIPPET,
   selectFileName,
@@ -18,7 +18,6 @@ import {
   selectSnippetName,
   selectTheme,
   SET_SNIPPET,
-  SET_THEME,
 } from "../redux/slices/appSlice";
 import { extractExtentionAndLanguage, fetcher } from "../files/utils";
 import useSWR from "swr";
@@ -30,6 +29,7 @@ import { db } from "../client/firebase";
 import ThemeSwitch from "../components/Dahsboard/ThemeSwitch";
 import SyntaxThemes from "../theming/SyntaxThemes";
 import ThemeHeading from "../components/Generic/Heading";
+import { useTheme } from "next-themes";
 
 const dashboard = () => {
   const dispatch = useDispatch();
@@ -43,10 +43,6 @@ const dashboard = () => {
   const { data, error } = useSWR("/api/programming-langs", fetcher);
   const { enqueueSnackbar } = useSnackbar();
 
-  const theme = useTheme();
-  const isDesktop = useMediaQuery("(min-width:960px)");
-  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
-
   const router = useRouter();
   const { display, file, snippet } = router.query;
 
@@ -58,11 +54,15 @@ const dashboard = () => {
   const fileN = file || fileName || "file";
   const snippetN = snippet || snippetName || "New Snippet";
 
+  const { theme, setTheme } = useTheme();
+  useEffect(() => {
+    setTheme("dark");
+  }, [setTheme]);
+
   useEffect(() => {
     setTimeout(() => {
       setDashboardLoading(false);
     }, 1000);
-    dispatch(SET_THEME("dark"));
   }, []);
 
   const handleAddSnippet = () => {

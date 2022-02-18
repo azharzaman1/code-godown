@@ -11,22 +11,23 @@ import CustomizedDropdown from "./CustomizedDropdown";
 import { auth } from "../../../client/firebase";
 import { selectUserFromDB } from "../../../redux/slices/userSlice";
 import { selectTheme, SET_THEME } from "../../../redux/slices/appSlice";
-import { IconButton } from "@chakra-ui/react";
+import { IconButton } from "@mui/material";
 import SimpleDropdown from "./SimpleDropdown";
 import ThemeButton from "../Button";
+import { useTheme } from "next-themes";
 
 const Header = ({
   navigation = [],
   transparentEffect,
   variant,
-  themeSwitch = false,
+  themeSwitch = true,
 }) => {
   const router = useRouter();
-  const dispatch = useDispatch();
   const themePreference = useSelector(selectTheme);
   const userInDB = useSelector(selectUserFromDB);
   const [user, loading, error] = useAuthState(auth);
   console.log("Loading:", loading, "|", "Current user:", user);
+  const { theme, setTheme } = useTheme();
 
   const handleLoginRedirect = () => {
     router.push({
@@ -47,7 +48,7 @@ const Header = ({
   };
 
   const switchTheme = () => {
-    dispatch(SET_THEME(themePreference === "dark" ? "light" : "dark"));
+    setTheme(theme === "light" || theme === "system" ? "dark" : "light");
   };
 
   return (
@@ -98,22 +99,20 @@ const Header = ({
             {themeSwitch && (
               <div className="cursor-pointer">
                 <IconButton
-                  colorScheme="teal"
-                  aria-label="Call Segun"
-                  size="lg"
                   onClick={switchTheme}
-                  icon={
-                    themePreference === "dark" ? (
-                      <SunIcon
-                        className={`h-8 p-1 ${
-                          !transparentEffect && "text-gray-200"
-                        }`}
-                      />
-                    ) : (
-                      <MoonIcon className="h-8 p-1" />
-                    )
-                  }
-                />
+                  aria-label="fingerprint"
+                  color="secondary"
+                >
+                  {themePreference === "dark" ? (
+                    <SunIcon
+                      className={`h-8 p-1 ${
+                        !transparentEffect && "text-gray-200"
+                      }`}
+                    />
+                  ) : (
+                    <MoonIcon className="h-8 p-1" />
+                  )}
+                </IconButton>
               </div>
             )}
 

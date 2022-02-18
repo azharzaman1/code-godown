@@ -3,12 +3,13 @@ import Layout from "../components/Layout";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { SET_THEME } from "../redux/slices/appSlice";
+import { useTheme } from "next-themes";
 
 export default function Home() {
-  const dispatch = useDispatch();
+  const { theme, setTheme } = useTheme();
   useEffect(() => {
-    dispatch(SET_THEME("light"));
-  }, []);
+    setTheme("light");
+  }, [setTheme]);
 
   return (
     <Layout
