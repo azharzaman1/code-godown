@@ -1,7 +1,7 @@
 import Head from "next/head";
 import useSWR from "swr";
-import { fetcher } from "../files/utils";
-import Header from "./Generic/Header";
+import Header from "../../Generic/Header";
+import { fetcher } from "../../../files/utils";
 
 const Layout = ({
   children,

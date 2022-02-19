@@ -23,8 +23,6 @@ export default function Header({ themeSwitch = false, variant = "dark" }) {
   const [user, loading, error] = useAuthState(auth);
   const { theme, setTheme } = useTheme();
 
-  const darkHeader = variant === "dark";
-
   const handleLoginRedirect = () => {
     router.push({
       pathname: "/auth/login",

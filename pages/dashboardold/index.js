@@ -1,16 +1,23 @@
-import { ArrowLeftIcon, PlusIcon, XIcon } from "@heroicons/react/outline";
-import { SearchIcon } from "@heroicons/react/solid";
 import { useEffect, useState } from "react";
-import Loader from "../components/Generic/Loader";
-import Layout from "../components/Layout";
-import Container from "../components/Generic/Container";
-import { selectUser, selectUserFromDB } from "../redux/slices/userSlice";
-import SnippetsArchivePanel from "../components/Dahsboard/SnippetsArchivePanel";
 import { useDispatch, useSelector } from "react-redux";
 import { Save, Send } from "@mui/icons-material";
-import AddNewSnippetPanel from "../components/Dahsboard/AddNewSnippetPanel";
 import { useRouter } from "next/dist/client/router";
 import { Paper } from "@mui/material";
+import { useSnackbar } from "notistack";
+import { NIL as NIL_UUID, v4 as uuidv4 } from "uuid";
+import { doc, setDoc } from "firebase/firestore";
+import { useTheme } from "next-themes";
+import { ArrowLeftIcon, PlusIcon, XIcon } from "@heroicons/react/outline";
+import { SearchIcon } from "@heroicons/react/solid";
+import useSWR from "swr";
+
+import Layout from "../../components/Dahsboard/Layout";
+import Container from "../../components/Generic/Layout/Container";
+import Loader from "../../components/Generic/Loader";
+
+import { selectUser, selectUserFromDB } from "../../redux/slices/userSlice";
+import SnippetsArchivePanel from "../../components/Dahsboard/SnippetsArchivePanel";
+import AddNewSnippetPanel from "../../components/Dahsboard/AddNewSnippetPanel";
 import {
   RESSET_SNIPPET,
   selectFileName,
@@ -18,18 +25,13 @@ import {
   selectSnippetName,
   selectTheme,
   SET_SNIPPET,
-} from "../redux/slices/appSlice";
-import { extractExtentionAndLanguage, fetcher } from "../files/utils";
-import useSWR from "swr";
-import { useSnackbar } from "notistack";
-import ThemeButton from "../components/Generic/Button";
-import { NIL as NIL_UUID, v4 as uuidv4 } from "uuid";
-import { doc, setDoc, updateDoc } from "firebase/firestore";
-import { db } from "../client/firebase";
-import ThemeSwitch from "../components/Dahsboard/ThemeSwitch";
-import SyntaxThemes from "../theming/SyntaxThemes";
-import ThemeHeading from "../components/Generic/Heading";
-import { useTheme } from "next-themes";
+} from "../../redux/slices/appSlice";
+import { extractExtentionAndLanguage, fetcher } from "../../files/utils";
+import ThemeButton from "../../components/Generic/Button";
+import { db } from "../../client/firebase";
+import ThemeSwitch from "../../components/Dahsboard/ThemeSwitch";
+import SyntaxThemes from "../../theming/SyntaxThemes";
+import ThemeHeading from "../../components/Generic/Heading";
 
 const dashboard = () => {
   const dispatch = useDispatch();

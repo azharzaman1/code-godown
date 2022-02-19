@@ -1,7 +1,7 @@
 import { useRouter } from "next/dist/client/router";
 import { useEffect, useState } from "react";
-import Layout from "../../components/Layout";
-import Container from "../../components/Generic/Container";
+import Layout from "../../components/Dahsboard/Layout";
+import Container from "../../components/Generic/Layout/Container";
 import Divider from "@mui/material/Divider";
 import { GitHub, Google } from "@mui/icons-material";
 import { EyeIcon, EyeOffIcon } from "@heroicons/react/outline";
