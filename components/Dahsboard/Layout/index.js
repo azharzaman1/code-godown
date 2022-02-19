@@ -1,5 +1,7 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { selectDashboardCurrentState } from "../../../redux/slices/appSlice";
 import Header from "../../Generic/Header";
 import LayoutContainer from "../../Generic/Layout/Container";
 import Loader from "../../Generic/Loader";
@@ -15,6 +17,7 @@ const DashboardLayout = ({
   icon,
 }) => {
   const [dashboardLoading, setDashboardLoading] = useState(true);
+  const dashboardCurrentState = useSelector(selectDashboardCurrentState);
 
   useEffect(() => {
     setTimeout(() => {
@@ -22,8 +25,12 @@ const DashboardLayout = ({
     }, 2000);
   }, []);
 
+  const showSidebar = dashboardCurrentState === "displaySnippets";
+
   return (
-    <div className={`dashboard-container min-h-screen ${className}`}>
+    <div
+      className={`${className} dashboard-container bg-gray-100 dark:bg-backgroundV1 min-h-screen`}
+    >
       <Head>
         <title>{title || "Dashboard | Code Godown"}</title>
         <meta
@@ -45,10 +52,16 @@ const DashboardLayout = ({
             <LayoutContainer className="mt-1">
               <DashboardHeader />
               <div className="w-full flex flex-col space-y-2 md:flex-row md:space-y-0 mt-1 md:space-x-2">
-                <div className="w-full md:w-1/6 bg-backgroundV1 border border-gray-700">
-                  <Navigation />
-                </div>
-                <div className="w-full md:w-5/6 bg-backgroundV1 border border-gray-700">
+                {showSidebar && (
+                  <div className="w-full md:w-1/6 bg-backgroundV1 border border-gray-700">
+                    <Navigation />
+                  </div>
+                )}
+                <div
+                  className={`w-full ${
+                    showSidebar && "md:w-5/6"
+                  } p-1 sm:p-2 md:p-3 bg-backgroundV1 border border-gray-700`}
+                >
                   {children}
                 </div>
               </div>

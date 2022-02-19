@@ -152,7 +152,7 @@ const SaveSnippet = () => {
   };
 
   return (
-    <Paper className="addingNewSnippet__intialPhaseContainer pt-4 pb-8 px-4 my-4 mx-4">
+    <Paper className="addingNewSnippet__intialPhaseContainer pt-4 pb-8 px-4">
       <form className="w-[400px] m-w-[90vw]">
         <div className="flex flex-col space-y-2 mt-6">
           <ThemeText component="label" htmlFor="snippet_name_input">

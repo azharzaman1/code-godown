@@ -6,44 +6,43 @@ import ThemeButton from "../../../components/Generic/Button";
 import ThemeSwitch from "../../../components/Dahsboard/ThemeSwitch";
 import SyntaxThemes from "../../../theming/SyntaxThemes";
 import ThemeHeading from "../../../components/Generic/Heading";
-import { RESSET_SNIPPET, selectTheme } from "../../../redux/slices/appSlice";
+import {
+  RESSET_SNIPPET,
+  selectDashboardCurrentState,
+  selectSnippetName,
+  selectTheme,
+  SET_DASHBOARD_CURRENT_STATE,
+} from "../../../redux/slices/appSlice";
 import { selectUserFromDB } from "../../../redux/slices/userSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { doc } from "firebase/firestore";
 import { db } from "../../../client/firebase";
-import { fetcher } from "../../../files/utils";
-import useSWR from "swr";
 import { NIL as NIL_UUID, v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/router";
 
-const DashboardHeader = ({ dashboardMode = "snippets" }) => {
+const DashboardHeader = () => {
+  const dispatch = useDispatch();
+  const snippetName = useSelector(selectSnippetName);
   const userInDB = useSelector(selectUserFromDB);
   const themePreference = useSelector(selectTheme);
-  const displaySnippets = dashboardMode === "snippets";
-  const addingSnippetInfo = dashboardMode === "add-new-snippet-info";
-  const addingCodeToSnippet = dashboardMode === "adding-code-to-snippet";
-  const savingSnippet = dashboardMode === "saving-snippet";
-  const { data, error } = useSWR("/api/programming-langs", fetcher);
+  const dashboardCurrentState = useSelector(selectDashboardCurrentState);
+
+  const displaySnippets = dashboardCurrentState === "snippets";
+  const addingSnippetInfo =
+    dashboardCurrentState === "addNewSnippet_addingInfo";
+  const addingCodeToSnippet =
+    dashboardCurrentState === "addNewSnippet_addingCode";
+  const savingSnippet = dashboardCurrentState === "saving-snippet";
 
   const router = useRouter();
 
   const handleAddSnippet = () => {
-    router.push({
-      pathname: "/dashboard",
-      query: {
-        display: "add-new-snippet-info",
-      },
-    });
+    dispatch(SET_DASHBOARD_CURRENT_STATE("addNewSnippet_addingInfo"));
   };
 
   const handleDiscard = () => {
     dispatch(RESSET_SNIPPET());
-    router.push({
-      pathname: "/dashboard",
-      query: {
-        display: "snippets",
-      },
-    });
+    dispatch(SET_DASHBOARD_CURRENT_STATE("displaySnippets"));
   };
 
   const handleSnippetSave = async () => {
@@ -60,12 +59,7 @@ const DashboardHeader = ({ dashboardMode = "snippets" }) => {
     enqueueSnackbar(`Snippet saved successfully`, {
       variant: "success",
     });
-    router.push({
-      pathname: "/dashboard",
-      query: {
-        display: "snippets",
-      },
-    });
+    dispatch(SET_DASHBOARD_CURRENT_STATE("displaySnippets"));
   };
 
   const dashboardHeaderTagline = displaySnippets
@@ -91,22 +85,12 @@ const DashboardHeader = ({ dashboardMode = "snippets" }) => {
     ? handleContinueToPhase2
     : addingCodeToSnippet
     ? () => {
-        router.push({
-          pathname: "/dashboard",
-          query: {
-            display: "saving-snippet",
-          },
-        });
+        dispatch(SET_DASHBOARD_CURRENT_STATE("savingSnippet"));
       }
     : handleSnippetSave;
 
   const handleBackDirect = () => {
-    router.push({
-      pathname: "/dashboard",
-      query: {
-        display: "adding-code-to-snippet",
-      },
-    });
+    dispatch(SET_DASHBOARD_CURRENT_STATE("addNewSnippet_addingCode"));
   };
 
   return (

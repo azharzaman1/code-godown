@@ -28,6 +28,7 @@ Router?.events?.on("routeChangeComplete", progress.finish);
 Router?.events?.on("routeChangeError", progress.finish);
 
 function MyApp({ Component, pageProps }) {
+  const getLayout = Component.getLayout ?? ((page) => page);
   return (
     <>
       <Head>
@@ -46,13 +47,12 @@ function MyApp({ Component, pageProps }) {
           rel="stylesheet"
         />
       </Head>
+
       <ThemeProvider attribute="class">
         <Provider store={store}>
           <ThemeWrapper>
             <SnackbarProvider maxSnack={3}>
-              <AppWrapper>
-                <Component {...pageProps} />
-              </AppWrapper>
+              <AppWrapper>{getLayout(<Component {...pageProps} />)}</AppWrapper>
             </SnackbarProvider>
           </ThemeWrapper>
         </Provider>
