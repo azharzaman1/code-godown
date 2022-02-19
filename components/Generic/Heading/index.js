@@ -1,14 +1,8 @@
-import { useSelector } from "react-redux";
-import { selectTheme } from "../../../redux/slices/appSlice";
-
 const ThemeHeading = ({ type, className, children, ...rest }) => {
-  const theme = useSelector(selectTheme);
-  const dark = theme === "dark";
-
   if (type === "primary" || !type)
     return (
       <h1
-        className={`primary-heading ${className} text-4xl tracking-tight font-extrabold text-primaryTextLight dark:text-primaryText sm:text-5xl md:text-6xl`}
+        className={`${className} text-2xl sm:text-3xl md:text-4xl lg:text-6xl tracking-tight font-extrabold text-primaryTextLight dark:text-primaryText`}
         {...rest}
       >
         {children}
@@ -18,9 +12,7 @@ const ThemeHeading = ({ type, className, children, ...rest }) => {
   if (type === "secondary")
     return (
       <h2
-        className={`secondary-heading ${className} ${
-          dark && "dark"
-        } text-xl tracking-tight font-bold text-primaryTextLight dark:text-primaryText sm:text-2xl md:text-4xl`}
+        className={`secondary-heading ${className} text-lg sm:text-xl md:text-3xl tracking-tight font-bold text-primaryTextLight dark:text-primaryText`}
         {...rest}
       >
         {children}
@@ -30,9 +22,7 @@ const ThemeHeading = ({ type, className, children, ...rest }) => {
   if (type === "tertiary")
     return (
       <h2
-        className={`tertiary-heading ${className} ${
-          dark && "dark"
-        } text-lg font-medium text-primaryTextLight dark:text-primaryText sm:text-lg md:text-xl`}
+        className={`tertiary-heading ${className} text-base lg:text-lg font-medium text-primaryTextLight dark:text-primaryText`}
         {...rest}
       >
         {children}

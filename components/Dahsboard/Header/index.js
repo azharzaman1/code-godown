@@ -9,9 +9,12 @@ import ThemeHeading from "../../../components/Generic/Heading";
 import {
   RESSET_SNIPPET,
   selectDashboardCurrentState,
+  selectFileName,
+  selectSnippet,
   selectSnippetName,
   selectTheme,
   SET_DASHBOARD_CURRENT_STATE,
+  SET_SNIPPET,
 } from "../../../redux/slices/appSlice";
 import { selectUserFromDB } from "../../../redux/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,30 +22,90 @@ import { doc } from "firebase/firestore";
 import { db } from "../../../client/firebase";
 import { NIL as NIL_UUID, v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/router";
+import { useSnackbar } from "notistack";
+import { extractExtentionAndLanguage, fetcher } from "../../../files/utils";
+import useSWR from "swr";
 
 const DashboardHeader = () => {
+  const router = useRouter();
   const dispatch = useDispatch();
+  const snippetArr = useSelector(selectSnippet);
   const snippetName = useSelector(selectSnippetName);
+  const fileName = useSelector(selectFileName);
   const userInDB = useSelector(selectUserFromDB);
   const themePreference = useSelector(selectTheme);
   const dashboardCurrentState = useSelector(selectDashboardCurrentState);
+  const { data, error } = useSWR("/api/programming-langs", fetcher);
 
-  const displaySnippets = dashboardCurrentState === "snippets";
+  const fileN = fileName || "file";
+
+  const displaySnippets = dashboardCurrentState === "displaySnippets";
   const addingSnippetInfo =
     dashboardCurrentState === "addNewSnippet_addingInfo";
   const addingCodeToSnippet =
     dashboardCurrentState === "addNewSnippet_addingCode";
-  const savingSnippet = dashboardCurrentState === "saving-snippet";
+  const savingSnippet = dashboardCurrentState === "savingSnippet";
 
-  const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleAddSnippet = () => {
     dispatch(SET_DASHBOARD_CURRENT_STATE("addNewSnippet_addingInfo"));
+    router.push({
+      pathname: "/dashboard/add-snippet",
+    });
   };
 
   const handleDiscard = () => {
     dispatch(RESSET_SNIPPET());
+    router.push({ pathname: "/dashboard" });
     dispatch(SET_DASHBOARD_CURRENT_STATE("displaySnippets"));
+  };
+
+  const handlerDirectToCodePhase = () => {
+    if (fileName.includes(".")) {
+      const [fileExtention, language] = extractExtentionAndLanguage(
+        fileName,
+        data
+      );
+      const snippetTemplate = {
+        snippetName: snippetName,
+        uid: `snippet_${uuidv4()}`,
+        snippetInfo: {
+          snippetLabels: [
+            {
+              label: "",
+              key: "",
+              uid: `label_${NIL_UUID}`,
+            },
+          ],
+          snippetTags: [],
+          createAt: new Date(),
+          lastUpdatedAt: new Date(),
+          snapshots: [],
+          isPrivate: false,
+        },
+        files: [
+          {
+            snippetName: snippetName,
+            key: 0,
+            fileName: fileName,
+            code: `// start coding here`,
+            extention: fileExtention,
+            language: language ? language : "unknown",
+            languageExtentions: language?.extensions,
+            createdAt: new Date(),
+            lastUpdatedAt: new Date(),
+            snapshots: [],
+          },
+        ],
+      };
+      dispatch(SET_SNIPPET(snippetTemplate));
+      dispatch(SET_DASHBOARD_CURRENT_STATE("addNewSnippet_addingCode"));
+    } else {
+      enqueueSnackbar(`File name must contain extention, please recheck`, {
+        variant: "info",
+      });
+    }
   };
 
   const handleSnippetSave = async () => {
@@ -82,7 +145,7 @@ const DashboardHeader = () => {
     addingSnippetInfo || addingCodeToSnippet ? "Continue" : "Save Snippet";
 
   const mainButtonAction = addingSnippetInfo
-    ? handleContinueToPhase2
+    ? handlerDirectToCodePhase
     : addingCodeToSnippet
     ? () => {
         dispatch(SET_DASHBOARD_CURRENT_STATE("savingSnippet"));
@@ -107,7 +170,7 @@ const DashboardHeader = () => {
                   themePreference === "dark" && "dark"
                 }`}
               >
-                {snippetN}
+                {snippetName || "New Snippet"}
               </p>
             )}
           </div>

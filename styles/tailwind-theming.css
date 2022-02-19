@@ -107,20 +107,6 @@
     @apply bg-transparent text-[#e76f51] transition duration-100 pl-4 pr-3;
   }
 
-  /* Headings */
-
-  .primary-heading.dark {
-    @apply text-primaryText;
-  }
-
-  .secondary-heading.dark {
-    @apply text-primaryText;
-  }
-
-  .tertiary-heading.dark {
-    @apply text-primaryText;
-  }
-
   /* Text */
 
   .text {

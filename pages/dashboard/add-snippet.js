@@ -1,13 +1,19 @@
+import { useSelector } from "react-redux";
 import MonacoEditor from "../../components/Dahsboard/Editor";
 import Layout from "../../components/Dahsboard/Layout";
 import PreEditor from "../../components/Dahsboard/PreEditor";
 import SaveSnippet from "../../components/Dahsboard/SaveSnippet";
+import { selectDashboardCurrentState } from "../../redux/slices/appSlice";
 
-const AddNewSnippetPanel = ({ addSnippetPhase = "saving-snippet" }) => {
-  const addingSnippetInfo = addSnippetPhase === "add-new-snippet-info";
-  const addingCodeToSnippet = addSnippetPhase === "adding-code-to-snippet";
-  const savingSnippet = addSnippetPhase === "saving-snippet";
-  const editingSnippet = addSnippetPhase === "edit-snippet";
+const AddNewSnippetPanel = () => {
+  const dashboardCurrentState = useSelector(selectDashboardCurrentState);
+
+  const addingSnippetInfo =
+    dashboardCurrentState === "addNewSnippet_addingInfo";
+  const addingCodeToSnippet =
+    dashboardCurrentState === "addNewSnippet_addingCode";
+  const savingSnippet = dashboardCurrentState === "savingSnippet";
+  const editingSnippet = dashboardCurrentState === "editSnippet";
 
   return (
     <>
