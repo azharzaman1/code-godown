@@ -18,8 +18,8 @@ import {
   googleAuthProvider,
 } from "../../client/firebase";
 import { validateEmail, validatePassword } from "../../files/utils";
-import Layout from "../../components/Layout";
-import Container from "../../components/Generic/Container";
+import Layout from "../../components/Generic/Layout";
+import Container from "../../components/Generic/Layout/Container";
 
 const Register = () => {
   const [email, setEmail] = useState("");

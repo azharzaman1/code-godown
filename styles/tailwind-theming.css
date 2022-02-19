@@ -124,7 +124,7 @@
   /* Text */
 
   .text {
-    @apply text-[16px] text-gray-800;
+    @apply text-[16px] text-gray-800 dark:text-primaryText;
   }
   .text.dark {
     @apply text-gray-300;

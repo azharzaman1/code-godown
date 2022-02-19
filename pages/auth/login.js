@@ -1,6 +1,6 @@
 import { useRouter } from "next/dist/client/router";
 import { useEffect, useState } from "react";
-import Layout from "../../components/Dahsboard/Layout";
+import Layout from "../../components/Generic/Layout";
 import Container from "../../components/Generic/Layout/Container";
 import Divider from "@mui/material/Divider";
 import { GitHub, Google } from "@mui/icons-material";
