@@ -10,6 +10,7 @@ import {
   SupportIcon,
   ViewGridIcon,
 } from "@heroicons/react/outline";
+import { Dashboard, Logout, Settings } from "@mui/icons-material";
 
 export const solutions = [
   {
@@ -76,5 +77,24 @@ export const resources = [
     description: "Understand how we take your privacy seriously.",
     href: "#",
     icon: ShieldCheckIcon,
+  },
+];
+
+export const menu = [
+  {
+    name: "Dashboard",
+    href: "/dashboard",
+    icon: Dashboard,
+  },
+  {
+    name: "Settings",
+    href: "/settings",
+    icon: Settings,
+  },
+  {
+    name: "Logout",
+    href: "/dashboard",
+    icon: Logout,
+    onClick: () => {},
   },
 ];

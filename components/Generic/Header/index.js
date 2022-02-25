@@ -9,17 +9,18 @@ import { useTheme } from "next-themes";
 import { IconButton } from "@mui/material";
 import { MoonIcon, SunIcon } from "@heroicons/react/outline";
 import { selectTheme } from "../../../redux/slices/appSlice";
-import { selectUserFromDB } from "../../../redux/slices/userSlice";
+import { selectUserInDB } from "../../../redux/slices/userSlice";
 import { auth } from "../../../client/firebase";
 import MenuDropdown from "./MenuDropdown";
 import { callsToAction, resources, solutions } from "./data";
 import ThemeButton from "../Button";
 import { Button } from "primereact/button";
+import UserMenu from "./UserMenu";
 
 export default function Header({ themeSwitch = false, variant = "dark" }) {
   const router = useRouter();
   const themePreference = useSelector(selectTheme);
-  const userInDB = useSelector(selectUserFromDB);
+  const userInDB = useSelector(selectUserInDB);
   const [user, loading, error] = useAuthState(auth);
   const { theme, setTheme } = useTheme();
 
@@ -113,21 +114,24 @@ export default function Header({ themeSwitch = false, variant = "dark" }) {
             )}
 
             <div className="hidden md:flex items-center justify-end">
-              {!user && (
-                <button
-                  className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
-                  onClick={handleLoginRedirect}
-                >
-                  Sign in
-                </button>
+              {user ? (
+                <UserMenu />
+              ) : (
+                <>
+                  <button
+                    className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
+                    onClick={handleLoginRedirect}
+                  >
+                    Sign in
+                  </button>
+                  <button
+                    className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+                    onClick={handleRegisterRedirect}
+                  >
+                    Sign up
+                  </button>
+                </>
               )}
-
-              <button
-                className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
-                onClick={!user ? handleRegisterRedirect : handleLogout}
-              >
-                {user ? "Logout" : "Sign up"}
-              </button>
             </div>
           </div>
         </div>

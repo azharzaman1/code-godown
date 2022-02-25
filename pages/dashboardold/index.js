@@ -15,7 +15,7 @@ import Layout from "../../components/Dahsboard/Layout";
 import Container from "../../components/Generic/Layout/Container";
 import Loader from "../../components/Generic/Loader";
 
-import { selectUser, selectUserFromDB } from "../../redux/slices/userSlice";
+import { selectUser, selectUserInDB } from "../../redux/slices/userSlice";
 import SnippetsArchivePanel from "../../components/Dahsboard/SnippetsArchivePanel";
 import AddNewSnippetPanel from "../../components/Dahsboard/AddNewSnippetPanel";
 import {
@@ -38,7 +38,7 @@ const dashboard = () => {
   const user = useSelector(selectUser);
   const snippetArr = useSelector(selectSnippet);
   const [dashboardLoading, setDashboardLoading] = useState(false);
-  const userInDB = useSelector(selectUserFromDB);
+  const userInDB = useSelector(selectUserInDB);
   const snippetName = useSelector(selectSnippetName);
   const fileName = useSelector(selectFileName);
   const themePreference = useSelector(selectTheme);

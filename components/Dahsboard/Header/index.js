@@ -16,7 +16,7 @@ import {
   SET_DASHBOARD_CURRENT_STATE,
   SET_SNIPPET,
 } from "../../../redux/slices/appSlice";
-import { selectUserFromDB } from "../../../redux/slices/userSlice";
+import { selectUserInDB } from "../../../redux/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { doc } from "firebase/firestore";
 import { db } from "../../../client/firebase";
@@ -32,7 +32,7 @@ const DashboardHeader = () => {
   const snippetArr = useSelector(selectSnippet);
   const snippetName = useSelector(selectSnippetName);
   const fileName = useSelector(selectFileName);
-  const userInDB = useSelector(selectUserFromDB);
+  const userInDB = useSelector(selectUserInDB);
   const themePreference = useSelector(selectTheme);
   const dashboardCurrentState = useSelector(selectDashboardCurrentState);
   const { data, error } = useSWR("/api/programming-langs", fetcher);

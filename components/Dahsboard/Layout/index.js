@@ -1,12 +1,12 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { selectDashboardCurrentState } from "../../../redux/slices/appSlice";
 import Header from "../../Generic/Header";
 import LayoutContainer from "../../Generic/Layout/Container";
 import Loader from "../../Generic/Loader";
 import DashboardHeader from "../Header";
 import Navigation from "../Navigation";
+import { selectDashboardCurrentState } from "../../../redux/slices/appSlice";
 
 const DashboardLayout = ({
   children,
