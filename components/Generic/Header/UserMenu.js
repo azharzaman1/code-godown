@@ -1,19 +1,33 @@
 import Link from "next/link";
 import React, { useState, useRef, useEffect } from "react";
-import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
-import { Logout, Settings } from "@mui/icons-material";
-import { Divider } from "@mui/material";
+import { AccountCircle } from "@mui/icons-material";
 import { selectUserInDB } from "../../../redux/slices/userSlice";
 import Transition from "../../utils/Transition";
 import { menu } from "./data";
+import { useRouter } from "next/router";
 
 function UserMenu() {
+  const [userMenu, setUserMenu] = useState(menu);
   const userDetails = useSelector(selectUserInDB) || {};
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
+  useEffect(() => {
+    const logoutItem = userMenu.find((item) => item.name === "Logout");
+    logoutItem.onClick = () => {
+      console.log("hy");
+    };
+    const newMenu = userMenu.filter((item) => item.name !== "Logout");
+    setUserMenu([...newMenu, logoutItem]);
+  }, [menu]);
+
   const trigger = useRef(null);
   const dropdown = useRef(null);
+
+  function handleLogout(e) {
+    e.preventDefault();
+    console.log("logout");
+  }
 
   // close on click outside
   useEffect(() => {
@@ -49,13 +63,9 @@ function UserMenu() {
         onClick={() => setDropdownOpen(!dropdownOpen)}
         aria-expanded={dropdownOpen}
       >
-        <img
-          className="w-6 h-6 rounded-full"
-          src="https://i.ibb.co/7p7fG1y/avatar-placeholder.png"
-          alt="User"
-        />
         <div className="flex items-center truncate">
-          <span className="hidden md:block truncate ml-2 text-sm font-medium group-hover:text-slate-800">
+          <AccountCircle />
+          <span className="hidden md:block truncate ml-2 text-sm font-medium">
             {userDetails?.fullName || "Azhar Zaman"}
           </span>
           <svg
@@ -68,7 +78,7 @@ function UserMenu() {
       </button>
 
       <Transition
-        className="origin-top-right z-10 absolute top-full right-0 min-w-44 bg-white border border-slate-200 py-1.5 rounded shadow-lg overflow-hidden mt-1"
+        className="origin-top-right z-10 absolute top-full right-0 min-w-44 bg-white dark:bg-backgroundContrast border border-slate-200 dark:border-divider py-1.5 rounded shadow-lg overflow-hidden mt-1"
         show={dropdownOpen}
         enter="transition ease-out duration-200 transform"
         enterStart="opacity-0 -translate-y-2"
@@ -83,14 +93,9 @@ function UserMenu() {
           onBlur={() => setDropdownOpen(false)}
           className="w-[250px] max-w-[95vw]"
         >
-          <div className="pt-0.5 pb-2 px-3 mb-1 border-b border-slate-200">
-            <div className="font-medium text-slate-800">
-              {userDetails?.fullName || "Azhar Zaman"}
-            </div>
-          </div>
           <div className="main-menu">
-            {menu.map((item) => (
-              <div key={item.href}>{item.name}</div>
+            {userMenu?.map((item) => (
+              <MenuItem key={item.key} item={item} />
             ))}
           </div>
         </div>
@@ -98,5 +103,23 @@ function UserMenu() {
     </div>
   );
 }
+
+const MenuItem = ({ item }) => {
+  const router = useRouter();
+  return (
+    <div
+      onClick={() => {
+        if (item.href) {
+          router.push(item.href);
+        }
+
+        item.onClick && item.onClick();
+      }}
+      className="px-2 py-3 text-primaryTextLight dark:text-primaryText hover:bg-slate-100 dark:hover:bg-backgroundV1 cursor-pointer"
+    >
+      {item.name}
+    </div>
+  );
+};
 
 export default UserMenu;

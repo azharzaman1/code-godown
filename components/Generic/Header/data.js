@@ -82,18 +82,21 @@ export const resources = [
 
 export const menu = [
   {
+    key: 0,
     name: "Dashboard",
     href: "/dashboard",
     icon: Dashboard,
   },
   {
+    key: 1,
     name: "Settings",
     href: "/settings",
     icon: Settings,
   },
   {
+    key: 2,
     name: "Logout",
-    href: "/dashboard",
+    href: null,
     icon: Logout,
     onClick: () => {},
   },
