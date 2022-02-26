@@ -8,7 +8,7 @@ import { useTheme } from "next-themes";
 import { useRouter } from "next/router";
 import { Paper } from "@mui/material";
 import LayoutContainer from "../../Generic/Layout/Container";
-import "primereact/resources/themes/vela-blue/theme.css";
+// import "primereact/resources/themes/vela-blue/theme.css";
 
 const DashboardLayout = ({
   children,
@@ -47,9 +47,9 @@ const DashboardLayout = ({
         />
         <link rel="icon" href={icon || "/favicon.ico"} />
         {theme === "dark" ? (
-          <link rel="stylesheet" href="vela-orange/theme.css" />
+          <link rel="stylesheet" href="pr-dark-theme/theme.css" />
         ) : (
-          <link rel="stylesheet" href="saga-orange/theme.css" />
+          <link rel="stylesheet" href="pr-dark-theme/theme.css" />
         )}
       </Head>
       {dashboardLoading ? (
