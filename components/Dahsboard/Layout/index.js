@@ -7,6 +7,9 @@ import Loader from "../../Generic/Loader";
 import DashboardHeader from "../Header";
 import Navigation from "../Navigation";
 import { selectDashboardCurrentState } from "../../../redux/slices/appSlice";
+import { useTheme } from "next-themes";
+import "primereact/resources/themes/saga-orange/theme.css";
+import { useRouter } from "next/router";
 
 const DashboardLayout = ({
   children,
@@ -16,6 +19,7 @@ const DashboardLayout = ({
   descriptionName,
   icon,
 }) => {
+  const { theme, setTheme } = useTheme();
   const [dashboardLoading, setDashboardLoading] = useState(true);
   const dashboardCurrentState = useSelector(selectDashboardCurrentState);
 
@@ -25,7 +29,9 @@ const DashboardLayout = ({
     }, 2000);
   }, []);
 
-  const showSidebar = dashboardCurrentState === "displaySnippets";
+  const router = useRouter();
+
+  const showSidebar = router.asPath === "/dashboard";
 
   return (
     <div
@@ -40,6 +46,11 @@ const DashboardLayout = ({
           }
         />
         <link rel="icon" href={icon || "/favicon.ico"} />
+        {theme === "dark" ? (
+          <link rel="stylesheet" href="vela-blue/theme.css" />
+        ) : (
+          <link rel="stylesheet" href="lara-light-blue/theme.css" />
+        )}
       </Head>
       {dashboardLoading ? (
         <div className="loader-container w-full min-h-screen flex justify-center items-center">

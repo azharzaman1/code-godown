@@ -25,6 +25,7 @@ import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
 import { extractExtentionAndLanguage, fetcher } from "../../../files/utils";
 import useSWR from "swr";
+import { Button } from "primereact/button";
 
 const DashboardHeader = () => {
   const router = useRouter();
@@ -164,15 +165,6 @@ const DashboardHeader = () => {
             <ThemeHeading type="tertiary">
               {dashboardHeaderTagline}
             </ThemeHeading>
-            {addingCodeToSnippet && (
-              <p
-                className={`info-text mt-1 ${
-                  themePreference === "dark" && "dark"
-                }`}
-              >
-                {snippetName || "New Snippet"}
-              </p>
-            )}
           </div>
         </div>
       </div>
@@ -203,45 +195,38 @@ const DashboardHeader = () => {
         {displaySnippets && <ThemeSwitch themes={SyntaxThemes} />}
         {/* Header Dynamic Buttons */}
         {savingSnippet && (
-          <ThemeButton
-            type="icon"
-            size="small"
-            icon={<ArrowLeftIcon className="h-5" />}
-            text="Back"
+          <Button
+            label="Back"
+            icon="pi pi-arrow-circle-left"
+            className="p-button-danger p-button-text p-button-sm"
+            iconPos="left"
             onClick={handleBackDirect}
           />
         )}
         {!displaySnippets && (
-          <ThemeButton
-            type="icon"
-            size="small"
-            icon={<XIcon className="h-5" />}
-            text="Discard"
+          <Button
+            label="Discard"
+            icon="pi pi-times"
+            className="p-button-danger p-button-text p-button-sm"
+            iconPos="left"
             onClick={handleDiscard}
           />
         )}
         {displaySnippets && (
-          <ThemeButton
-            type="icon"
-            size="small"
-            icon={<PlusIcon className="h-5" />}
-            text="Add Snippet"
+          <Button
+            label="Add Snippet"
+            icon="pi pi-plus"
+            className="p-button-raised p-button-sm"
+            iconPos="left"
             onClick={handleAddSnippet}
           />
         )}
         {addingSnippetInfo || addingCodeToSnippet || savingSnippet ? (
-          <ThemeButton
-            type="icon"
-            size="small"
-            text={mainButtonTitle}
-            icon={savingSnippet && <Save fontSize="medium" className="h-5" />}
-            afterIcon={
-              addingSnippetInfo || addingCodeToSnippet ? (
-                <Send fontSize="medium" className="h-5" />
-              ) : (
-                false
-              )
-            }
+          <Button
+            label={mainButtonTitle}
+            icon={`pi ${savingSnippet ? "pi-save" : "pi-send"}`}
+            className="p-button-sm"
+            iconPos={savingSnippet ? "left" : "right"}
             onClick={mainButtonAction}
           />
         ) : (

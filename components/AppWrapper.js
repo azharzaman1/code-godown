@@ -28,7 +28,7 @@ const AppWrapper = ({ children }) => {
               userDetails: {
                 ...data.userDetails,
                 registeredAt: new Date(
-                  data?.userDetails?.registeredAt?.toDate()
+                  data?.userDetails?.registeredAt?.toDate().toISOString()
                 ),
               },
             })

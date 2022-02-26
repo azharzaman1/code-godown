@@ -13,7 +13,7 @@ import "../components/Generic/Loader.css";
 import "../components/Dahsboard/SnippetsArchivePanel.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
-import "primereact/resources/themes/lara-light-blue/theme.css";
+import "primereact/resources/themes/saga-orange/theme.css";
 
 const progress = new ProgressBar({
   size: 3,
@@ -28,6 +28,7 @@ Router?.events?.on("routeChangeError", progress.finish);
 
 function MyApp({ Component, pageProps }) {
   const getLayout = Component.getLayout ?? ((page) => page);
+
   return (
     <>
       <Head>
