@@ -78,7 +78,7 @@ function UserMenu() {
       </button>
 
       <Transition
-        className="origin-top-right z-10 absolute top-full right-0 min-w-44 bg-white dark:bg-backgroundContrast border border-slate-200 dark:border-divider py-1.5 rounded shadow-lg overflow-hidden mt-1"
+        className="origin-top-right z-10 absolute top-full right-0 min-w-44 bg-backgroundContrast dark:bg-backgroundContrastDark border border-slate-200 dark:border-slate-600 py-1.5 rounded shadow-lg overflow-hidden mt-1"
         show={dropdownOpen}
         enter="transition ease-out duration-200 transform"
         enterStart="opacity-0 -translate-y-2"
@@ -115,9 +115,12 @@ const MenuItem = ({ item }) => {
 
         item.onClick && item.onClick();
       }}
-      className="px-2 py-3 text-primaryTextLight dark:text-primaryText hover:bg-slate-100 dark:hover:bg-backgroundV1 cursor-pointer"
+      className="p-3 space-x-2 text-primaryText dark:text-primaryTextDark hover:bg-slate-100 dark:hover:bg-backgroundV1Dark cursor-pointer"
     >
-      {item.name}
+      <span>
+        {<item.icon className="text-secondaryText dark:text-secondaryDark" />}
+      </span>
+      <span>{item.name}</span>
     </div>
   );
 };

@@ -16,7 +16,7 @@ import "primeicons/primeicons.css";
 import "primereact/resources/themes/saga-orange/theme.css";
 
 const progress = new ProgressBar({
-  size: 3,
+  size: 2,
   color: "#ff6d00",
   className: "z-10",
   delay: 0,

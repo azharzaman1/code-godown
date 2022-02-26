@@ -109,15 +109,6 @@
 
   /* Text */
 
-  .text {
-    @apply text-[16px] text-gray-800 dark:text-primaryText;
-  }
-  .text.dark {
-    @apply text-gray-300;
-  }
-  .info-text {
-    @apply text-xs text-gray-500 font-normal;
-  }
   .info-text.dark {
     @apply text-gray-400;
   }

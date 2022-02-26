@@ -1,6 +1,3 @@
-import { useSelector } from "react-redux";
-import { selectTheme } from "../../../redux/slices/appSlice";
-
 const ThemeText = ({
   type = "primary",
   component = "p",
@@ -9,19 +6,23 @@ const ThemeText = ({
   ...rest
 }) => {
   const Tag = component;
-  const themePreference = useSelector(selectTheme);
-  const dark = themePreference === "dark";
 
   if (type === "primary")
     return (
-      <Tag className={`text ${dark && "dark"} ${className}`} {...rest}>
+      <Tag
+        className={`${className} text-sm md:text-base font-normal text-primaryText dark:text-primaryTextDark`}
+        {...rest}
+      >
         {children}
       </Tag>
     );
 
   if (type === "info")
     return (
-      <Tag className={`info-text ${dark && "dark"} ${className}`} {...rest}>
+      <Tag
+        className={`${className} text-xs md:text-sm text-infoText dark:text-infoTextDark font-normal`}
+        {...rest}
+      >
         {children}
       </Tag>
     );

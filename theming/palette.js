@@ -10,8 +10,8 @@ const palette = {
   secondaryText: "#334155",
   infoText: "#475569",
 
-  backgroundColor1: "#f8fafc", // for main bg, sections bg etc.
-  backgroundColor2: "#cbd5e1", // for main bg, sections bg etc.
+  backgroundColor1: "#f1f5f9", // for main bg, sections bg etc.
+  backgroundColor2: "#f8fafc", // for main bg, sections bg etc.
   backgroundContrastColor: "#fff", // like cards, boxs
 
   dividerColor: "rgba(255,255,255,0.12)",
@@ -37,7 +37,7 @@ const paletteDark = {
 
   backgroundColor1: "#252C48", // for main bg, sections bg etc.
   backgroundColor2: "#394264", // for main bg, sections bg etc.
-  backgroundContrastColor: "#053c5e", // like cards, boxs
+  backgroundContrastColor: "#394264", // like cards, boxs
 
   dividerColor: "rgba(0,0,0,0.12)",
   borderColor: "#eee",

@@ -22,7 +22,7 @@ module.exports = {
         infoText: palette.secondaryText,
 
         primaryTextDark: paletteDark.primaryText,
-        secondaryDark: paletteDark.secondaryText,
+        secondaryTextDark: paletteDark.secondaryText,
         infoTextDark: paletteDark.secondaryText,
 
         dividerColor: palette.dividerColor,

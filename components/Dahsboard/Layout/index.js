@@ -8,8 +8,9 @@ import DashboardHeader from "../Header";
 import Navigation from "../Navigation";
 import { selectDashboardCurrentState } from "../../../redux/slices/appSlice";
 import { useTheme } from "next-themes";
-import "primereact/resources/themes/saga-orange/theme.css";
+import "primereact/resources/themes/vela-orange/theme.css";
 import { useRouter } from "next/router";
+import { Paper } from "@mui/material";
 
 const DashboardLayout = ({
   children,
@@ -21,7 +22,10 @@ const DashboardLayout = ({
 }) => {
   const { theme, setTheme } = useTheme();
   const [dashboardLoading, setDashboardLoading] = useState(true);
-  const dashboardCurrentState = useSelector(selectDashboardCurrentState);
+
+  useEffect(() => {
+    setTheme("dark");
+  }, [setTheme]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -34,9 +38,7 @@ const DashboardLayout = ({
   const showSidebar = router.asPath === "/dashboard";
 
   return (
-    <div
-      className={`${className} dashboard-container bg-gray-100 dark:bg-backgroundV1 min-h-screen`}
-    >
+    <div className={`${className} dashboard-container min-h-screen`}>
       <Head>
         <title>{title || "Dashboard | Code Godown"}</title>
         <meta
@@ -64,17 +66,17 @@ const DashboardLayout = ({
               <DashboardHeader />
               <div className="w-full flex flex-col space-y-2 md:flex-row md:space-y-0 mt-1 md:space-x-2">
                 {showSidebar && (
-                  <div className="w-full md:w-1/6 bg-backgroundV1 border border-gray-700">
+                  <Paper className="w-full md:w-1/6">
                     <Navigation />
-                  </div>
+                  </Paper>
                 )}
-                <div
+                <Paper
                   className={`w-full ${
                     showSidebar && "md:w-5/6"
-                  } p-1 sm:p-2 md:p-3 bg-backgroundV1 border border-gray-700`}
+                  } p-1 sm:p-2 md:p-3 bg-backgroundV1 dark:bg-backgroundV1Dark border border-borderColor dark:border-dividerColor`}
                 >
                   {children}
-                </div>
+                </Paper>
               </div>
             </LayoutContainer>
           </main>

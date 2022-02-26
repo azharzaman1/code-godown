@@ -45,9 +45,9 @@ export default function Header({ themeSwitch = false, variant = "dark" }) {
   };
 
   return (
-    <Popover className={`relative bg-white dark:bg-transparent`}>
+    <Popover className={`relative bg-white dark:bg-backgroundV1Dark`}>
       <div className="max-w-9xl mx-auto px-4 sm:px-6">
-        <div className="flex justify-between items-center py-2.5 md:justify-start md:space-x-10 shadow-md z-50">
+        <div className="flex justify-between items-center py-2.5 md:justify-start md:space-x-10 shadow z-50">
           <div
             className="flex justify-start lg:w-0 lg:flex-1 cursor-pointer"
             onClick={() => {
@@ -81,7 +81,7 @@ export default function Header({ themeSwitch = false, variant = "dark" }) {
 
             <a
               href="#"
-              className="text-sm md:text-base font-medium text-primaryText dark:text-primaryTextDark hover:text-gray-900 dark:hover:text-primaryTextDark transition duration-150"
+              className="text-sm md:text-base font-medium text-secondaryText dark:text-secondaryTextDark hover:text-primaryText dark:hover:text-primaryTextDark transition duration-150"
             >
               Docs
             </a>

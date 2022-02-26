@@ -1,11 +1,10 @@
 import { Popover } from "@headlessui/react";
 import { Button } from "primereact/button";
-import ThemeButton from "../Generic/Button";
 import ThemeHeading from "../Generic/Heading";
-
+import ThemeText from "../Generic/Text";
 export default function Hero() {
   return (
-    <div className="relative bg-gray-100 overflow-hidden py-20">
+    <div className="relative bg-backgroundV1 overflow-hidden py-20">
       <div className="max-w-7xl mx-auto">
         <div className="relative z-10 pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
           <svg
@@ -36,12 +35,12 @@ export default function Hero() {
                   your code snippets
                 </span>
               </ThemeHeading>
-              <p className="mt-3 font-sans text-primaryTextLight sm:mt-5 text-sm sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-lg lg:mx-0">
+              <ThemeText className="mt-3 font-sans sm:mt-5 sm:max-w-xl sm:mx-auto md:mt-5 lg:mx-0">
                 Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui
                 lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat
                 fugiat aliqua.
-              </p>
-              <div className="mt-10 sm:mt-8 md:mt-12 lg:mt-14 flex-center-center lg:justify-start space-x-3">
+              </ThemeText>
+              <div className="mt-10 sm:mt-8 md:mt-12 lg:mt-14 flex items-center justify-center lg:justify-start space-x-3">
                 <div>
                   <Button label="Live Demo" />
                 </div>

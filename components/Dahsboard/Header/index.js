@@ -158,7 +158,7 @@ const DashboardHeader = () => {
   };
 
   return (
-    <Paper className="dashboard__contentHeader flex-between-center w-full h-16 rounded shadow px-3 space-x-3">
+    <Paper className="dashboard__contentHeader flex justify-between items-center w-full h-16 px-3 space-x-3">
       <div className="hidden md:block">
         <div className="flex space-x-2">
           <div className="flex flex-col">
@@ -168,10 +168,11 @@ const DashboardHeader = () => {
           </div>
         </div>
       </div>
-      {displaySnippets && (
+
+      {/* {displaySnippets && (
         <div className="flex-1 max-w-[550px]">
           <form className="hidden lg:block">
-            <div className="flex-between-center rounded-md pl-3 border border-gray-600">
+            <div className="flex-between-center rounded-md pl-3 border border-borderColor dark:border-borderColorDark">
               <input
                 type="text"
                 placeholder="Search snippet"
@@ -180,13 +181,13 @@ const DashboardHeader = () => {
                   "bg-transparent text-gray-300 placeholder-gray-400"
                 }`}
               />
-              <div className="bg-red-400 rounded-r-md p-2 cursor-pointer">
+              <div className="bg-red-400 p-2 cursor-pointer">
                 <SearchIcon className="h-5 text-white" />
               </div>
             </div>
           </form>
         </div>
-      )}
+      )} */}
 
       <div className="flex items-center justify-evenly space-x-2">
         <div className="lg:hidden">
