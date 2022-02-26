@@ -2,9 +2,7 @@ import ThemeText from "../Generic/Text";
 
 const Navigation = () => {
   return (
-    <div className="w-full min-h-[500px]">
-      <ThemeText>Nav</ThemeText>
-    </div>
+    <div className="w-full min-h-[500px]">{/* <ThemeText></ThemeText> */}</div>
   );
 };
 

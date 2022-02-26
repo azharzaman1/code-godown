@@ -47,7 +47,7 @@ export default function Header({ themeSwitch = false, variant = "dark" }) {
   return (
     <Popover className={`relative bg-white dark:bg-backgroundV1Dark`}>
       <div className="max-w-9xl mx-auto px-4 sm:px-6">
-        <div className="flex justify-between items-center py-2.5 md:justify-start md:space-x-10 shadow z-50">
+        <div className="flex justify-between items-center py-3 md:justify-start md:space-x-10 shadow z-50">
           <div
             className="flex justify-start lg:w-0 lg:flex-1 cursor-pointer"
             onClick={() => {
@@ -61,12 +61,7 @@ export default function Header({ themeSwitch = false, variant = "dark" }) {
               alt=""
             />
           </div>
-          <div className="-mr-2 -my-2 md:hidden">
-            <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
-              <span className="sr-only">Open menu</span>
-              <MenuIcon className="h-6 w-6" aria-hidden="true" />
-            </Popover.Button>
-          </div>
+
           <Popover.Group as="nav" className="hidden md:flex space-x-10">
             <Popover className="relative">
               {({ open }) => (
@@ -133,6 +128,12 @@ export default function Header({ themeSwitch = false, variant = "dark" }) {
                   </button>
                 </>
               )}
+            </div>
+            <div className="-mr-2 -my-2 md:hidden">
+              <Popover.Button className="bg-white dark:bg-backgroundV2Dark rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                <span className="sr-only">Open menu</span>
+                <MenuIcon className="h-6 w-6" aria-hidden="true" />
+              </Popover.Button>
             </div>
           </div>
         </div>

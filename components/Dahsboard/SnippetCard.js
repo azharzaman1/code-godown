@@ -104,8 +104,15 @@ const SnippetCard = ({ name, uid, info, files, ...rest }) => {
   const handleSnippetDownload = () => {};
 
   return (
-    <Grid item xs={12} sm={4} md={4} {...rest}>
-      <Card className="snippet__card min-h-[500px] flex flex-col">
+    <Grid
+      item
+      xs={12}
+      sm={4}
+      md={4}
+      {...rest}
+      className="snippet__card w-full min-h-[500px]"
+    >
+      <Card className="flex flex-col">
         <div className="snippetCard__header">
           <div className="flex items-center">
             <ThemeHeading type="tertiary">{name}</ThemeHeading>
@@ -174,8 +181,9 @@ const SnippetCard = ({ name, uid, info, files, ...rest }) => {
           <SyntaxHighlighter
             language={activeFile?.language?.name?.toLowerCase() || "javascript"}
             style={syntaxThemes[syntaxTheme]}
+            // wrapLongLines
             lineNumberStyle={{ fontSize: "10px" }}
-            className="max-h-[375px] min-h-[375px]"
+            className="max-h-[375px] min-h-[375px] max-w-[100%]"
           >
             {activeFile?.code}
           </SyntaxHighlighter>

@@ -10,7 +10,7 @@ export const appSlice = createSlice({
     editorActiveTabIndex: 0,
     labelName: "",
     selectedLabelKey: 0,
-    syntaxTheme: "atomOneDark",
+    syntaxTheme: "a11yDark",
     loading: false,
     dashboardLoading: true,
     dashboardCurrentState: "displaySnippets",

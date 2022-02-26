@@ -115,10 +115,12 @@ const MenuItem = ({ item }) => {
 
         item.onClick && item.onClick();
       }}
-      className="p-3 space-x-2 text-primaryText dark:text-primaryTextDark hover:bg-slate-100 dark:hover:bg-backgroundV1Dark cursor-pointer"
+      className="flex items-center p-3 space-x-2 text-primaryText dark:text-primaryTextDark hover:bg-slate-100 dark:hover:bg-backgroundV1Dark cursor-pointer"
     >
       <span>
-        {<item.icon className="text-secondaryText dark:text-secondaryDark" />}
+        {
+          <item.icon className="text-secondaryText dark:text-secondaryDark h-4" />
+        }
       </span>
       <span>{item.name}</span>
     </div>
