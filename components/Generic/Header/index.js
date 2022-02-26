@@ -81,7 +81,7 @@ export default function Header({ themeSwitch = false, variant = "dark" }) {
 
             <a
               href="#"
-              className="text-sm md:text-base font-medium text-gray-500 dark:text-secondaryText hover:text-gray-900 hover:dark:text-primaryText transition duration-150"
+              className="text-sm md:text-base font-medium text-primaryText dark:text-primaryTextDark hover:text-gray-900 dark:hover:text-primaryTextDark transition duration-150"
             >
               Docs
             </a>

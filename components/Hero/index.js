@@ -1,4 +1,5 @@
 import { Popover } from "@headlessui/react";
+import { Button } from "primereact/button";
 import ThemeButton from "../Generic/Button";
 import ThemeHeading from "../Generic/Heading";
 
@@ -42,9 +43,7 @@ export default function Hero() {
               </p>
               <div className="mt-10 sm:mt-8 md:mt-12 lg:mt-14 flex-center-center lg:justify-start space-x-3">
                 <div>
-                  <ThemeButton type="primary" size="medium">
-                    Live Demo
-                  </ThemeButton>
+                  <Button label="Live Demo" />
                 </div>
               </div>
             </div>

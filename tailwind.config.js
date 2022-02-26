@@ -1,3 +1,5 @@
+const { palette, paletteDark } = require("./theming/palette");
+
 module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
@@ -8,26 +10,34 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#E76F51",
-        primaryDark: "#e24d28",
-        primaryLight: "#ff8500",
-        secondary: "#38bdf8",
-        secondaryDark: "#38bdf8",
-        secondaryLight: "#38bdf8",
+        primary: palette.primary,
+        primaryDark: palette.primaryDark,
+        primaryLight: palette.primaryLight,
+        secondary: palette.secondary,
+        secondaryDark: palette.secondaryDark,
+        secondaryLight: palette.secondaryLight,
 
-        primaryText: "#e2e8f0",
-        secondaryText: "#a0aec0",
-        infoText: "#64748b",
-        primaryTextLight: "#0f172a",
-        secondaryTextLight: "#334155",
-        infoTextLight: "#1f2937",
+        primaryText: palette.primaryText,
+        secondaryText: palette.secondaryText,
+        infoText: palette.secondaryText,
 
-        divider: "rgba(255,255,255,0.12)",
-        dividerDark: "rgba(0,0,0,0.12)",
+        primaryTextDark: paletteDark.primaryText,
+        secondaryDark: paletteDark.secondaryText,
+        infoTextDark: paletteDark.secondaryText,
 
-        backgroundV1: "#252C48",
-        backgroundV2: "#053c5e",
-        backgroundContrast: "#394264",
+        dividerColor: palette.dividerColor,
+        dividerDark: paletteDark.dividerColor,
+
+        borderColor: palette.borderColor,
+        borderColorDark: paletteDark.borderColor,
+
+        backgroundV1: palette.backgroundColor1,
+        backgroundV2: palette.backgroundColor2,
+        backgroundContrast: palette.backgroundContrastColor,
+
+        backgroundV1Dark: paletteDark.backgroundColor1,
+        backgroundV2Dark: paletteDark.backgroundColor2,
+        backgroundContrastDark: paletteDark.backgroundContrastColor,
       },
       fontSize: {
         xs: "11px",

@@ -1,42 +1,43 @@
 import React from "react";
 import { createTheme, ThemeProvider } from "@mui/material";
-import { getPalette } from "./palette";
 import { useTheme } from "next-themes";
+import { palette, paletteDark } from "./palette";
 
 const ThemeWrapper = ({ children }) => {
   const { theme, setTheme } = useTheme();
   const light = theme === "light";
-  const muiPalette = getPalette(light);
 
   const colorTheme = createTheme({
     palette: {
       type: theme,
 
       primary: {
-        main: muiPalette.primary,
-        dark: muiPalette.primaryDark,
-        light: muiPalette.primaryLight,
-        contrastText: muiPalette.primaryText,
+        main: light ? palette.primary : paletteDark.primary,
+        dark: light ? palette.primaryDark : paletteDark.primaryDark,
+        light: light ? palette.primaryLight : paletteDark.primaryLight,
+        contrastText: light ? palette.primaryText : paletteDark.primaryText,
       },
 
       secondary: {
-        main: muiPalette.secondary,
-        light: muiPalette.secondaryLight,
-        dark: muiPalette.secondaryDark,
-        contrastText: muiPalette.primaryText,
+        main: light ? palette.secondary : paletteDark.secondary,
+        dark: light ? palette.secondaryDark : paletteDark.secondaryDark,
+        light: light ? palette.secondaryLight : paletteDark.secondaryLight,
+        contrastText: light ? palette.secondaryText : paletteDark.secondaryText,
       },
 
       background: {
-        default: muiPalette.background,
-        paper: muiPalette.backgroundLight,
+        default: light
+          ? palette.backgroundColor1
+          : paletteDark.backgroundColor1,
+        paper: light ? palette.backgroundColor2 : paletteDark.backgroundColor2,
       },
 
       text: {
-        primary: muiPalette.primaryText,
-        secondary: muiPalette.secondaryText,
-        disabled: muiPalette.infoText,
+        primary: light ? palette.primaryText : paletteDark.primaryText,
+        secondary: light ? palette.secondaryText : paletteDark.secondaryText,
+        disabled: light ? palette.secondaryText : paletteDark.secondaryText,
       },
-      divider: muiPalette.dividerColor,
+      divider: light ? palette.dividerColor : paletteDark.dividerColor,
     },
     shape: {
       borderRadius: 8,

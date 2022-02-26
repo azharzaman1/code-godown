@@ -1,39 +1,51 @@
-export const getPalette = (light) => {
-  return {
-    primary: "#E76F51",
-    primaryLight: "rgb(235, 139, 115)",
-    primaryDark: "rgb(161, 77, 56)",
-    secondary: "#38bdf8",
-    secondaryLight: "rgb(95, 202, 249)",
-    secondaryDark: "rgb(39, 132, 173)",
+const palette = {
+  primary: "#E76F51",
+  primaryLight: "rgb(235, 139, 115)",
+  primaryDark: "rgb(161, 77, 56)",
+  secondary: "#38bdf8",
+  secondaryLight: "rgb(95, 202, 249)",
+  secondaryDark: "rgb(39, 132, 173)",
 
-    primaryText: light ? "#1e293b" : "#e2e8f0",
-    secondaryText: light ? "#334155" : "#a0aec0",
-    infoText: light ? "#475569" : "#94a3b8",
+  primaryText: "#1e293b",
+  secondaryText: "#334155",
+  infoText: "#475569",
 
-    background: light ? "#f9f9f9" : "#252C48",
-    backgroundLight: light ? "#f9f9f9" : "#394264",
+  backgroundColor1: "#f8fafc", // for main bg, sections bg etc.
+  backgroundColor2: "#cbd5e1", // for main bg, sections bg etc.
+  backgroundContrastColor: "#fff", // like cards, boxs
 
-    dividerColor: light ? "rgba(0,0,0,0.12)" : "rgba(255,255,255,0.12)",
-  };
+  dividerColor: "rgba(255,255,255,0.12)",
+  borderColor: "#0f172a",
+
+  success: "#22c55e",
+  warning: "#fb923c",
+  error: "#ef4444",
+  info: "#60a5fa",
 };
 
-// export const getPalette = (light) => {
-//   return {
-//     primary: "#E76F51",
-//     primaryLight: "rgb(255, 138, 51)",
-//     primaryDark: "rgb(178, 76, 0)",
-//     secondary: "#16a34a",
-//     secondaryLight: "rgb(68, 181, 110)",
-//     secondaryDark: "rgb(15, 114, 51)",
+const paletteDark = {
+  primary: "#E76F51",
+  primaryLight: "rgb(235, 139, 115)",
+  primaryDark: "rgb(161, 77, 56)",
+  secondary: "#38bdf8",
+  secondaryLight: "rgb(95, 202, 249)",
+  secondaryDark: "rgb(39, 132, 173)",
 
-// primaryText: light ? "#1e293b" : "#e2e8f0",
-// secondaryText: light ? "#334155" : "#a0aec0",
-// infoText: light ? "#475569" : "#94a3b8",
+  primaryText: "#e2e8f0",
+  secondaryText: "#a0aec0",
+  infoText: "#94a3b8",
 
-//     background: light ? "#eee" : "#0f172a",
-//     backgroundLight: light ? "#ffffff" : "#1e293b",
+  backgroundColor1: "#252C48", // for main bg, sections bg etc.
+  backgroundColor2: "#394264", // for main bg, sections bg etc.
+  backgroundContrastColor: "#053c5e", // like cards, boxs
 
-//     dividerColor: light ? "rgba(100,100,100,0.12)" : "rgba(255,255,255,0.12)",
-//   };
-// };
+  dividerColor: "rgba(0,0,0,0.12)",
+  borderColor: "#eee",
+
+  success: "#22c55e",
+  warning: "#fb923c",
+  error: "#ef4444",
+  info: "#60a5fa",
+};
+
+module.exports = { palette, paletteDark };
