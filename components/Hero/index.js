@@ -1,7 +1,9 @@
 import { Popover } from "@headlessui/react";
-import { Button } from "primereact/button";
+import { Send } from "@mui/icons-material";
+import ThemeButton from "../Generic/Button";
 import ThemeHeading from "../Generic/Heading";
 import ThemeText from "../Generic/Text";
+
 export default function Hero() {
   return (
     <div className="relative bg-backgroundV1 overflow-hidden py-20">
@@ -18,7 +20,6 @@ export default function Hero() {
           </svg>
 
           <Popover>
-            {/* compensate svg */}
             <div className="relative pt-6 px-4 sm:px-6 lg:px-8"></div>
           </Popover>
 
@@ -41,8 +42,21 @@ export default function Hero() {
                 fugiat aliqua.
               </ThemeText>
               <div className="mt-10 sm:mt-8 md:mt-12 lg:mt-14 flex items-center justify-center lg:justify-start space-x-3">
-                <div>
-                  <Button label="Live Demo" />
+                <div className="flex flex-wrap space-x-3 items-center justify-evenly">
+                  <ThemeButton className="mt-2">Primary Button</ThemeButton>
+                  <ThemeButton className="mt-2" type="text">
+                    Text Button
+                  </ThemeButton>
+                  <ThemeButton className="mt-2" type="secondary">
+                    Secondary Button
+                  </ThemeButton>
+                  <ThemeButton
+                    className="mt-2"
+                    type="icon"
+                    afterIcon={<Send />}
+                  >
+                    Icon Button
+                  </ThemeButton>
                 </div>
               </div>
             </div>

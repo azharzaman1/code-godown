@@ -49,64 +49,6 @@
     background-color: var(--background-accent);
   }
 
-  /* Buttons */
-
-  .button-shrink-transition {
-    @apply transition duration-200 hover:shadow-lg active:scale-90 select-none;
-  }
-
-  .button-base {
-    @apply rounded-md shadow-md font-medium cursor-pointer select-none;
-  }
-
-  .primary-look {
-    @apply bg-[#e76f51] text-white hover:bg-[#e24d28];
-  }
-
-  .secondary-look {
-    @apply bg-[#e76f510e] border-[#e24d28] border-2 text-gray-800 hover:bg-[#e76f51] hover:text-white hover:border-[#e76f51];
-  }
-
-  .small-button {
-    @apply px-6 py-2;
-  }
-
-  .medium-button {
-    @apply px-8 py-3.5;
-  }
-
-  .primary-button {
-    @apply button-base button-shrink-transition medium-button primary-look;
-  }
-
-  .secondary-button {
-    @apply button-base button-shrink-transition secondary-look medium-button;
-  }
-
-  .text-button.dark {
-    @apply bg-[rgba(255,255,255,0.15)] text-gray-300 hover:bg-[rgba(255,255,255,0.1)] hover:text-gray-200;
-  }
-
-  .icon-button {
-    @apply button-base button-shrink-transition primary-look flex-between-center py-2 px-3;
-  }
-
-  .icon-text-button {
-    @apply button-base flex items-center justify-start py-2 px-3 shadow-none transition duration-100 hover:shadow-md active:scale-95;
-  }
-
-  .icon-text-button.shrink-transition {
-    @apply button-base button-shrink-transition flex items-center justify-start py-2 px-3;
-  }
-
-  .tab-button {
-    @apply px-4 py-2 flex items-center space-x-4 text-gray-200 bg-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.2)] border-r border-[#757575] cursor-pointer;
-  }
-
-  .tab-button.active {
-    @apply bg-transparent text-[#e76f51] transition duration-100 pl-4 pr-3;
-  }
-
   /* Text */
 
   .info-text.dark {

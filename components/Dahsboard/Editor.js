@@ -178,7 +178,6 @@ const MonacoEditor = () => {
           snippetObj?.files?.map(({ fileName, key }) => (
             <ThemeButton
               key={key}
-              label={fileName}
               type="tab"
               active={key == activeTabIndex}
               tabCloseButton={key == activeTabIndex}
@@ -188,7 +187,9 @@ const MonacoEditor = () => {
               closeButtonOnClick={() => {
                 setOpen(true);
               }}
-            ></ThemeButton>
+            >
+              {fileName}
+            </ThemeButton>
           ))}
         {addingNewFile && (
           <form onSubmit={handleAddNewFile}>

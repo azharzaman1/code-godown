@@ -1,6 +1,8 @@
+import { ArrowBack, Send } from "@mui/icons-material";
 import { Grid } from "@mui/material";
 import { useSelector } from "react-redux";
 import { selectSnippets } from "../../redux/slices/userSlice";
+import ThemeButton from "../Generic/Button";
 import SnippetCard from "./SnippetCard";
 
 const SnippetsArchivePanel = () => {
@@ -24,6 +26,23 @@ const SnippetsArchivePanel = () => {
             />
           ))}
         </Grid>
+        <div className="my-5 flex flex-wrap space-x-3 items-center justify-evenly">
+          <ThemeButton className="mt-2">Primary Button</ThemeButton>
+          <ThemeButton className="mt-2" type="text">
+            Text Button
+          </ThemeButton>
+          <ThemeButton className="mt-2" type="secondary">
+            Secondary Button
+          </ThemeButton>
+          <ThemeButton
+            className="mt-2"
+            type="icon"
+            afterIcon={<Send />}
+            startIcon={<ArrowBack />}
+          >
+            Icon Button
+          </ThemeButton>
+        </div>
       </div>
     </div>
   );
