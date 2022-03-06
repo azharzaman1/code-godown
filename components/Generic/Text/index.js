@@ -1,6 +1,8 @@
-const ThemeText = ({
+const Text = ({
   type = "primary",
   component = "p",
+  bold,
+  dim,
   children,
   className,
   ...rest
@@ -10,7 +12,9 @@ const ThemeText = ({
   if (type === "primary")
     return (
       <Tag
-        className={`${className} text-sm md:text-base font-normal text-primaryText dark:text-primaryTextDark`}
+        className={`text-sm md:text-base text-primaryText dark:text-primaryTextDark ${
+          dim && "text-secondaryText dark:text-secondaryTextDark"
+        } ${bold && "font-semibold"} ${className}`}
         {...rest}
       >
         {children}
@@ -20,7 +24,7 @@ const ThemeText = ({
   if (type === "info")
     return (
       <Tag
-        className={`${className} text-xs md:text-sm text-infoText dark:text-infoTextDark font-normal`}
+        className={`text-xs md:text-sm text-infoText dark:text-infoTextDark font-normal ${className}`}
         {...rest}
       >
         {children}
@@ -28,4 +32,4 @@ const ThemeText = ({
     );
 };
 
-export default ThemeText;
+export default Text;

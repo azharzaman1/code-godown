@@ -7,6 +7,8 @@ import Transition from "../../utils/Transition";
 import { menu } from "./data";
 import { auth } from "../../../client/firebase";
 import { useRouter } from "next/router";
+import Text from "../Text";
+import { Avatar } from "@mui/material";
 
 function UserMenu() {
   const [userMenu, setUserMenu] = useState(menu);
@@ -54,13 +56,18 @@ function UserMenu() {
         onClick={() => setDropdownOpen(!dropdownOpen)}
         aria-expanded={dropdownOpen}
       >
-        <div className="flex items-center truncate">
-          <AccountCircle />
-          <span className="hidden md:block truncate ml-2 text-sm font-medium">
+        <div className="flex items-center space-x-2 truncate">
+          <Avatar
+            sx={{
+              width: 30,
+              height: 30,
+            }}
+          />
+          <Text className="hidden md:block">
             {userDetails?.fullName || "Azhar Zaman"}
-          </span>
+          </Text>
           <svg
-            className="w-3 h-3 shrink-0 ml-1 fill-current text-slate-400"
+            className="hidden md:block w-3 h-3 shrink-0 ml-1 fill-current text-slate-400"
             viewBox="0 0 12 12"
           >
             <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
@@ -85,19 +92,16 @@ function UserMenu() {
           className="flex flex-col w-[250px] max-w-[95vw]"
         >
           <div className="flex flex-col p-3">
-            <div className="flex items-center truncate">
-              <AccountCircle
-                className="text-gray-600 dark:text-secondaryDark"
-                fontSize="large"
+            <div className="flex items-center space-x-2">
+              <Avatar
+                sx={{
+                  width: 30,
+                  height: 30,
+                }}
               />
-              <div className="flex flex-col space-x-2">
-                <span className="md:block truncate ml-2 text-sm font-medium">
-                  {userDetails?.fullName || "Azhar Zaman"}
-                </span>
-
-                <span className="md:block truncate ml-2 text-sm font-medium">
-                  @{userDetails?.username || "idrazhar"}
-                </span>
+              <div className="flex flex-col justify-start">
+                <Text>{userDetails?.fullName || "Azhar Zaman"}</Text>
+                <Text type="info">@{userDetails?.username || "idrazhar"}</Text>
               </div>
             </div>
           </div>
@@ -142,8 +146,11 @@ const MenuItem = ({ item, id, onClick }) => {
         isLastItem && "border-t border-borderColorDark dark:border-dividerColor"
       }`}
     >
-      <item.icon className="text-gray-500 dark:text-secondaryDark h-4" />
-      <span>{item.name}</span>
+      <item.icon
+        fontSize="small"
+        className="text-gray-500 dark:text-secondaryDark"
+      />
+      <Text>{item.name}</Text>
     </div>
   );
 };

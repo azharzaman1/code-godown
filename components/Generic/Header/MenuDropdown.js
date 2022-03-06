@@ -1,7 +1,7 @@
 import { Popover, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
-import ThemeText from "../Text";
+import Text from "../Text";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -57,10 +57,10 @@ const MenuDropdown = ({
                     aria-hidden="true"
                   />
                   <div className="ml-4">
-                    <ThemeText bold>{item.name}</ThemeText>
-                    <ThemeText type="info" className="mt-1">
+                    <Text>{item.name}</Text>
+                    <Text type="info" className="mt-1">
                       {item.description}
-                    </ThemeText>
+                    </Text>
                   </div>
                 </a>
               ))}
@@ -81,7 +81,7 @@ const MenuDropdown = ({
                         className="flex-shrink-0 h-6 w-6 text-gray-400"
                         aria-hidden="true"
                       />
-                      <ThemeText className="ml-3">{item.name}</ThemeText>
+                      <Text className="ml-3">{item.name}</Text>
                     </a>
                   </div>
                 ))}
