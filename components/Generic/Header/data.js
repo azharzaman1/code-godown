@@ -93,11 +93,4 @@ export const menu = [
     href: "/settings",
     icon: Settings,
   },
-  {
-    key: 2,
-    name: "Logout",
-    href: null,
-    icon: Logout,
-    onClick: () => {},
-  },
 ];

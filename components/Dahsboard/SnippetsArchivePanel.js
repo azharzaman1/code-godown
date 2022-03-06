@@ -26,18 +26,6 @@ const SnippetsArchivePanel = () => {
             />
           ))}
         </Grid>
-        <div className="my-5 flex flex-wrap space-x-3 items-center justify-evenly">
-          <ThemeButton className="mt-2">Primary Button</ThemeButton>
-          <ThemeButton className="mt-2" type="text">
-            Text Button
-          </ThemeButton>
-          <ThemeButton className="mt-2" type="secondary">
-            Secondary Button
-          </ThemeButton>
-          <ThemeButton className="mt-2" type="icon" endIcon={<Send />}>
-            Icon Button
-          </ThemeButton>
-        </div>
       </div>
     </div>
   );

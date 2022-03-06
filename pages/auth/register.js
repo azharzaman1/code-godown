@@ -209,18 +209,10 @@ const Register = () => {
 
           <div className="bg-white shadow-lg rounded-lg py-8 px-6 w-full h-full select-none border">
             <div className="providersAuth-section flex-evenly-center mb-6">
-              <ThemeButton
-                type="special-icon"
-                onClick={continueWithGH}
-                // className="w-1/3"
-              >
+              <ThemeButton type="special-icon" onClick={continueWithGH}>
                 <GitHub fontSize="medium" className="icon" />
               </ThemeButton>
-              <ThemeButton
-                type="special-icon"
-                onClick={continueWithGoogle}
-                // className="w-1/3"
-              >
+              <ThemeButton type="special-icon" onClick={continueWithGoogle}>
                 <Google fontSize="medium" className="icon" />
               </ThemeButton>
             </div>

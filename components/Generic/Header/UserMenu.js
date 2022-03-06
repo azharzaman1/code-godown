@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React, { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { AccountCircle } from "@mui/icons-material";
+import { AccountCircle, Logout } from "@mui/icons-material";
 import { selectUserInDB } from "../../../redux/slices/userSlice";
 import Transition from "../../utils/Transition";
 import { menu } from "./data";
@@ -12,13 +12,6 @@ function UserMenu() {
   const [userMenu, setUserMenu] = useState(menu);
   const userDetails = useSelector(selectUserInDB) || {};
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
-  useEffect(() => {
-    const logoutItem = userMenu.find((item) => item.name === "Logout");
-    logoutItem.onClick = () => handleLogout();
-    const newMenu = userMenu.filter((item) => item.name !== "Logout");
-    setUserMenu([...newMenu, logoutItem]);
-  }, [menu]);
 
   const trigger = useRef(null);
   const dropdown = useRef(null);
@@ -89,12 +82,37 @@ function UserMenu() {
           ref={dropdown}
           onFocus={() => setDropdownOpen(true)}
           onBlur={() => setDropdownOpen(false)}
-          className="w-[250px] max-w-[95vw]"
+          className="flex flex-col w-[250px] max-w-[95vw]"
         >
+          <div className="flex flex-col p-3">
+            <div className="flex items-center truncate">
+              <AccountCircle
+                className="text-gray-600 dark:text-secondaryDark"
+                fontSize="large"
+              />
+              <div className="flex flex-col space-x-2">
+                <span className="md:block truncate ml-2 text-sm font-medium">
+                  {userDetails?.fullName || "Azhar Zaman"}
+                </span>
+
+                <span className="md:block truncate ml-2 text-sm font-medium">
+                  @{userDetails?.username || "idrazhar"}
+                </span>
+              </div>
+            </div>
+          </div>
           <div className="main-menu">
             {userMenu?.map((item) => (
-              <MenuItem key={item.key} item={item} />
+              <MenuItem key={item.key} item={item} id={item.key} />
             ))}
+            <MenuItem
+              item={{
+                name: "Logout",
+                href: null,
+                icon: Logout,
+              }}
+              onClick={handleLogout}
+            />
           </div>
         </div>
       </Transition>
@@ -102,8 +120,12 @@ function UserMenu() {
   );
 }
 
-const MenuItem = ({ item }) => {
+const MenuItem = ({ item, id, onClick }) => {
   const router = useRouter();
+
+  const isFirstItem = id == 0;
+  const isLastItem = item.name === "Logout";
+
   return (
     <div
       onClick={() => {
@@ -111,15 +133,16 @@ const MenuItem = ({ item }) => {
           router.push(item.href);
         }
 
-        item.onClick && item.onClick();
+        onClick && onClick();
       }}
-      className="flex items-center p-3 space-x-2 text-primaryText dark:text-primaryTextDark hover:bg-slate-100 dark:hover:bg-backgroundV1Dark cursor-pointer"
+      className={`flex items-center p-3 space-x-2 text-primaryText dark:text-primaryTextDark hover:bg-slate-100 dark:hover:bg-backgroundV1Dark cursor-pointer ${
+        isFirstItem &&
+        "border-t border-borderColorDark dark:border-dividerColor"
+      } ${
+        isLastItem && "border-t border-borderColorDark dark:border-dividerColor"
+      }`}
     >
-      <span>
-        {
-          <item.icon className="text-secondaryText dark:text-secondaryDark h-4" />
-        }
-      </span>
+      <item.icon className="text-gray-500 dark:text-secondaryDark h-4" />
       <span>{item.name}</span>
     </div>
   );
