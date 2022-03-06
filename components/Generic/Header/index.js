@@ -113,20 +113,14 @@ export default function Header({ themeSwitch = false, variant = "dark" }) {
               {user ? (
                 <UserMenu />
               ) : (
-                <>
-                  <button
-                    className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
-                    onClick={handleLoginRedirect}
-                  >
+                <div className="flex items-center space-x-3">
+                  <ThemeButton type="text" onClick={handleLoginRedirect}>
                     Sign in
-                  </button>
-                  <button
-                    className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
-                    onClick={handleRegisterRedirect}
-                  >
+                  </ThemeButton>
+                  <ThemeButton onClick={handleRegisterRedirect}>
                     Sign up
-                  </button>
-                </>
+                  </ThemeButton>
+                </div>
               )}
             </div>
             <div className="-mr-2 -my-2 md:hidden">

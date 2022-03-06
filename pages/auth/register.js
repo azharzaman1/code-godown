@@ -20,6 +20,7 @@ import {
 import { validateEmail, validatePassword } from "../../files/utils";
 import Layout from "../../components/Generic/Layout";
 import Container from "../../components/Generic/Layout/Container";
+import ThemeButton from "../../components/Generic/Button";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -208,18 +209,20 @@ const Register = () => {
 
           <div className="bg-white shadow-lg rounded-lg py-8 px-6 w-full h-full select-none border">
             <div className="providersAuth-section flex-evenly-center mb-6">
-              <button
+              <ThemeButton
+                type="special-icon"
                 onClick={continueWithGH}
-                className="button-base w-1/3 py-3 border"
+                // className="w-1/3"
               >
                 <GitHub fontSize="medium" className="icon" />
-              </button>
-              <button
+              </ThemeButton>
+              <ThemeButton
+                type="special-icon"
                 onClick={continueWithGoogle}
-                className="button-base w-1/3 py-3 border"
+                // className="w-1/3"
               >
                 <Google fontSize="medium" className="icon" />
-              </button>
+              </ThemeButton>
             </div>
             <Divider>OR</Divider>
 
@@ -274,13 +277,11 @@ const Register = () => {
                   )}
                 </span>
               </div>
-
-              <button
-                type="submit"
-                className="primary-button w-full small mt-3"
-              >
-                Signup
-              </button>
+              <div className="flex justify-center mt-8">
+                <ThemeButton fluid size="lg">
+                  Signup
+                </ThemeButton>
+              </div>
             </form>
           </div>
 

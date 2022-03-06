@@ -1,11 +1,6 @@
-import { Save, Send } from "@mui/icons-material";
+import { Add, ArrowBack, Close, Save, Send } from "@mui/icons-material";
 import { Paper } from "@mui/material";
-import { ArrowLeftIcon, PlusIcon, XIcon } from "@heroicons/react/outline";
 import { SearchIcon } from "@heroicons/react/solid";
-import ThemeButton from "../../../components/Generic/Button";
-import ThemeSwitch from "../../../components/Dahsboard/ThemeSwitch";
-import SyntaxThemes from "../../../theming/SyntaxThemes";
-import ThemeHeading from "../../../components/Generic/Heading";
 import {
   RESSET_SNIPPET,
   selectDashboardCurrentState,
@@ -24,8 +19,11 @@ import { NIL as NIL_UUID, v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
 import { extractExtentionAndLanguage, fetcher } from "../../../files/utils";
+import ThemeButton from "../../../components/Generic/Button";
+import ThemeSwitch from "../../../components/Dahsboard/ThemeSwitch";
+import SyntaxThemes from "../../../theming/SyntaxThemes";
+import ThemeHeading from "../../../components/Generic/Heading";
 import useSWR from "swr";
-import { Button } from "primereact/button";
 
 const DashboardHeader = () => {
   const router = useRouter();
@@ -196,42 +194,37 @@ const DashboardHeader = () => {
         {displaySnippets && <ThemeSwitch themes={SyntaxThemes} />}
         {/* Header Dynamic Buttons */}
         {savingSnippet && (
-          <Button
-            label="Back"
-            icon="pi pi-arrow-circle-left"
-            className="p-button-danger p-button-text p-button-sm"
-            iconPos="left"
+          <ThemeButton
+            type="text-icon"
+            startIcon={<ArrowBack />}
             onClick={handleBackDirect}
-          />
+          >
+            Back
+          </ThemeButton>
         )}
         {!displaySnippets && (
-          <Button
-            label="Discard"
-            icon="pi pi-times"
-            className="p-button-danger p-button-text p-button-sm"
-            iconPos="left"
+          <ThemeButton
+            type="text-icon"
+            startIcon={<Close />}
             onClick={handleDiscard}
-          />
+          >
+            Discard
+          </ThemeButton>
         )}
-        {displaySnippets && (
-          <Button
-            label="Add Snippet"
-            icon="pi pi-plus"
-            className="p-button-raised p-button-sm"
-            iconPos="left"
-            onClick={handleAddSnippet}
-          />
-        )}
-        {addingSnippetInfo || addingCodeToSnippet || savingSnippet ? (
-          <Button
-            label={mainButtonTitle}
-            icon={`pi ${savingSnippet ? "pi-save" : "pi-send"}`}
-            className="p-button-sm"
-            iconPos={savingSnippet ? "left" : "right"}
-            onClick={mainButtonAction}
-          />
+        {displaySnippets ? (
+          <ThemeButton type="icon" endIcon={<Add />} onClick={handleAddSnippet}>
+            Add Snippet
+          </ThemeButton>
         ) : (
-          <></>
+          // addingSnippetInfo || addingCodeToSnippet || savingSnippet
+          <ThemeButton
+            type="icon"
+            startIcon={savingSnippet && <Save />}
+            endIcon={!savingSnippet && <Send />}
+            onClick={mainButtonAction}
+          >
+            {mainButtonTitle}
+          </ThemeButton>
         )}
       </div>
     </Paper>

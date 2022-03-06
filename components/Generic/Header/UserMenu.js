@@ -5,6 +5,7 @@ import { AccountCircle } from "@mui/icons-material";
 import { selectUserInDB } from "../../../redux/slices/userSlice";
 import Transition from "../../utils/Transition";
 import { menu } from "./data";
+import { auth } from "../../../client/firebase";
 import { useRouter } from "next/router";
 
 function UserMenu() {
@@ -14,9 +15,7 @@ function UserMenu() {
 
   useEffect(() => {
     const logoutItem = userMenu.find((item) => item.name === "Logout");
-    logoutItem.onClick = () => {
-      console.log("hy");
-    };
+    logoutItem.onClick = () => handleLogout();
     const newMenu = userMenu.filter((item) => item.name !== "Logout");
     setUserMenu([...newMenu, logoutItem]);
   }, [menu]);
@@ -24,9 +23,8 @@ function UserMenu() {
   const trigger = useRef(null);
   const dropdown = useRef(null);
 
-  function handleLogout(e) {
-    e.preventDefault();
-    console.log("logout");
+  function handleLogout() {
+    auth.signOut();
   }
 
   // close on click outside

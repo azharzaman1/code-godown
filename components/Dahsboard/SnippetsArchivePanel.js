@@ -34,12 +34,7 @@ const SnippetsArchivePanel = () => {
           <ThemeButton className="mt-2" type="secondary">
             Secondary Button
           </ThemeButton>
-          <ThemeButton
-            className="mt-2"
-            type="icon"
-            afterIcon={<Send />}
-            startIcon={<ArrowBack />}
-          >
+          <ThemeButton className="mt-2" type="icon" endIcon={<Send />}>
             Icon Button
           </ThemeButton>
         </div>

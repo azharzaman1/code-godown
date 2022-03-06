@@ -22,6 +22,7 @@ import { doc, serverTimestamp, setDoc, getDoc } from "@firebase/firestore";
 import { validateEmail } from "../../files/utils";
 import { useSnackbar } from "notistack";
 import { useTheme } from "next-themes";
+import ThemeButton from "../../components/Generic/Button";
 
 const Login = () => {
   const { theme, setTheme } = useTheme();
@@ -220,18 +221,12 @@ const Login = () => {
             {!forgetPasswordState && (
               <>
                 <div className="providersAuth-section flex-evenly-center mb-6">
-                  <button
-                    onClick={continueWithGH}
-                    className="button-base w-1/3 py-3 border"
-                  >
+                  <ThemeButton type="special-icon" onClick={continueWithGH}>
                     <GitHub fontSize="medium" className="icon" />
-                  </button>
-                  <button
-                    onClick={continueWithGoogle}
-                    className="button-base w-1/3 py-3 border"
-                  >
+                  </ThemeButton>
+                  <ThemeButton type="special-icon" onClick={continueWithGoogle}>
                     <Google fontSize="medium" className="icon" />
-                  </button>
+                  </ThemeButton>
                 </div>
                 <Divider>OR</Divider>
               </>
@@ -285,12 +280,11 @@ const Login = () => {
                   </div>
                 </>
               )}
-              <button
-                type="submit"
-                className="primary-button w-full small mt-3"
-              >
-                {formLabel}
-              </button>
+              <div className="flex justify-center mt-8">
+                <ThemeButton fluid size="lg">
+                  {formLabel}
+                </ThemeButton>
+              </div>
             </form>
           </div>
           <div className="mt-3">
