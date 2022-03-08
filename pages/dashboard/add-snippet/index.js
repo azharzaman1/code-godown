@@ -1,12 +1,8 @@
-import Layout from "../../components/Dahsboard/Layout";
-import PreEditor from "../../components/Dahsboard/PreEditor";
+import Layout from "../../../components/Dahsboard/Layout";
+import PreEditor from "../../../components/Dahsboard/PreEditor";
 
 const AddNewSnippetPanel = () => {
-  return (
-    <>
-      <PreEditor />
-    </>
-  );
+  return <PreEditor />;
 };
 
 AddNewSnippetPanel.getLayout = (page) => (

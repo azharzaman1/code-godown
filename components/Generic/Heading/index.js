@@ -1,4 +1,4 @@
-const ThemeHeading = ({ type, className, children, ...rest }) => {
+const Heading = ({ type, className, children, ...rest }) => {
   if (type === "primary" || !type)
     return (
       <h1
@@ -30,4 +30,4 @@ const ThemeHeading = ({ type, className, children, ...rest }) => {
     );
 };
 
-export default ThemeHeading;
+export default Heading;

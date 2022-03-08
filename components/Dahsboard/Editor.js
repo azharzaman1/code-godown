@@ -1,9 +1,13 @@
+import { useEffect, useRef, useState } from "react";
 import { IconButton, Tooltip } from "@mui/material";
 import { useRouter } from "next/dist/client/router";
-import React, { useEffect, useRef, useState } from "react";
 import Editor, { useMonaco } from "@monaco-editor/react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import { PlusIcon } from "@heroicons/react/outline";
+import ThemeButton from "../Generic/Button";
+import { NIL as NIL_UUID, v4 as uuidv4 } from "uuid";
+import { useSnackbar } from "notistack";
 import {
   selectActiveTabIndex,
   selectSnippet,
@@ -11,13 +15,10 @@ import {
   SET_EDITOR_ACTIVE_TAB_INDEX,
   SET_SNIPPET,
 } from "../../redux/slices/appSlice";
-import { PlusIcon } from "@heroicons/react/outline";
 import { extractExtentionAndLanguage, fetcher } from "../../files/utils";
-import Dialog from "../Generic/Dialog";
+import Loader from "../Generic/Loader";
+import Modal from "../Generic/Modal";
 import useSWR from "swr";
-import ThemeButton from "../Generic/Button";
-import { NIL as NIL_UUID, v4 as uuidv4 } from "uuid";
-import { useSnackbar } from "notistack";
 
 const MonacoEditor = () => {
   const dispatch = useDispatch();
@@ -173,14 +174,14 @@ const MonacoEditor = () => {
 
   return (
     <div className="editor-container w-full">
-      <div className="editor-navigation text-white flex items-center select-none">
+      <div className="editor-navigation text-white flex items-center select-none overflow-x-hidden">
         {snippetObj &&
           snippetObj?.files?.map(({ fileName, key }) => (
             <ThemeButton
               key={key}
               type="tab"
               active={key == activeTabIndex}
-              tabCloseButton={key == activeTabIndex}
+              tabCloseButton
               onClick={() => {
                 dispatch(SET_EDITOR_ACTIVE_TAB_INDEX(key));
               }}
@@ -223,7 +224,7 @@ const MonacoEditor = () => {
       <div>
         {snippetObj?.files?.length > 0 && (
           <Editor
-            height="75vh"
+            height="70vh"
             defaultLanguage={
               activeTab?.language?.name?.toLowerCase() || "javascript"
             }
@@ -232,26 +233,18 @@ const MonacoEditor = () => {
             onChange={handleEditorChange}
             onMount={handleEditorDidMount}
             theme={themePreference === "dark" ? "vs-dark" : "light"}
-            loading={<h1>Loading...</h1>}
+            loading={<Loader />}
           />
         )}
       </div>
       {/* File delete confirmation dialog */}
-      <Dialog
-        title={
-          "Are you sure, you want to delete this file. This action can not be undone!"
-        }
+      <Modal
+        warning
+        title={`Delete file`}
+        desc={`Are you sure you want to deactivate your account? All of your data will be permanently removed. This action cannot be undone.`}
         open={dialogOpen}
         setOpen={setOpen}
-        dialogActions={[
-          {
-            label: "Cancel",
-            action: () => {
-              setOpen(false);
-            },
-          },
-          { label: "Agree", action: handleFileDelete },
-        ]}
+        confirmAction={handleFileDelete}
       />
     </div>
   );

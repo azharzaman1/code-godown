@@ -2,7 +2,6 @@ import { ArrowBack, Send } from "@mui/icons-material";
 import { Grid } from "@mui/material";
 import { useSelector } from "react-redux";
 import { selectSnippets } from "../../redux/slices/userSlice";
-import ThemeButton from "../Generic/Button";
 import SnippetCard from "./SnippetCard";
 
 const SnippetsArchivePanel = () => {

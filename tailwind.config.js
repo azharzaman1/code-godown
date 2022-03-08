@@ -26,7 +26,7 @@ module.exports = {
         infoTextDark: paletteDark.secondaryText,
 
         dividerColor: palette.dividerColor,
-        dividerDark: paletteDark.dividerColor,
+        dividerColorDark: paletteDark.dividerColor,
 
         borderColor: palette.borderColor,
         borderColorDark: paletteDark.borderColor,
@@ -38,6 +38,11 @@ module.exports = {
         backgroundV1Dark: paletteDark.backgroundColor1,
         backgroundV2Dark: paletteDark.backgroundColor2,
         backgroundContrastDark: paletteDark.backgroundContrastColor,
+
+        success: palette.success,
+        warning: palette.warning,
+        error: palette.error,
+        info: palette.info,
       },
       fontSize: {
         xs: "11px",

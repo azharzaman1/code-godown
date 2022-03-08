@@ -8,6 +8,11 @@ import { useTheme } from "next-themes";
 import { useRouter } from "next/router";
 import { Paper } from "@mui/material";
 import LayoutContainer from "../../Generic/Layout/Container";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import a11yDark from "react-syntax-highlighter/dist/cjs/styles/hljs/a11y-dark";
+import { useSelector } from "react-redux";
+import { selectSnippet } from "../../../redux/slices/appSlice";
+
 // import "primereact/resources/themes/vela-blue/theme.css";
 
 const DashboardLayout = ({
@@ -18,6 +23,7 @@ const DashboardLayout = ({
   descriptionName,
   icon,
 }) => {
+  const snippet = useSelector(selectSnippet);
   const { theme, setTheme } = useTheme();
   const [dashboardLoading, setDashboardLoading] = useState(true);
 
@@ -62,7 +68,7 @@ const DashboardLayout = ({
           <main>
             <LayoutContainer className="mt-1">
               <DashboardHeader />
-              <div className="w-full flex flex-col space-y-2 md:flex-row md:space-y-0 mt-1 md:space-x-2">
+              <div className="w-full flex flex-col space-y-2 md:flex-row md:space-y-0 mt-1 md:space-x-2 mb-2">
                 {showSidebar && (
                   <Paper className="w-full md:w-1/6 mt-1">
                     <Navigation />
@@ -76,6 +82,19 @@ const DashboardLayout = ({
                   {children}
                 </Paper>
               </div>
+              <Paper>
+                <div>
+                  <SyntaxHighlighter
+                    language={"json"}
+                    style={a11yDark}
+                    wrapLongLines
+                    showLineNumbers
+                    lineNumberStyle={{ fontSize: "10px" }}
+                  >
+                    {JSON.stringify(snippet, null, "\t")}
+                  </SyntaxHighlighter>
+                </div>
+              </Paper>
             </LayoutContainer>
           </main>
         </>

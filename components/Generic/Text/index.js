@@ -1,5 +1,5 @@
 const Text = ({
-  type = "primary",
+  type,
   component = "p",
   bold,
   dim,
@@ -9,7 +9,7 @@ const Text = ({
 }) => {
   const Tag = component;
 
-  if (type === "primary")
+  if (!type || type === "primary")
     return (
       <Tag
         className={`text-sm md:text-base text-primaryText dark:text-primaryTextDark ${

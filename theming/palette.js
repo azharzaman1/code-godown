@@ -14,7 +14,7 @@ const palette = {
   backgroundColor2: "#f8fafc", // for main bg, sections bg etc.
   backgroundContrastColor: "#fff", // like cards, boxs
 
-  dividerColor: "rgba(255,255,255,0.12)",
+  dividerColor: "rgba(0,0,0,0.12)",
   borderColor: "#0f172a",
 
   success: "#22c55e",
@@ -39,7 +39,7 @@ const paletteDark = {
   backgroundColor2: "#394264", // for main bg, sections bg etc.
   backgroundContrastColor: "#394264", // like cards, boxs
 
-  dividerColor: "rgba(0,0,0,0.12)",
+  dividerColor: "rgba(255,255,255, 0.1)",
   borderColor: "#eee",
 
   success: "#22c55e",

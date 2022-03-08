@@ -113,16 +113,22 @@ const ThemeButton = ({
   if (type === "tab")
     return (
       <div
-        className={`px-4 py-2 flex items-center space-x-4 text-gray-200 bg-white bg-opacity-10 hover:bg-opacity-20 border-r border-white border-opacity-40 cursor-pointer ${
+        className={`flex items-center space-x-4 text-gray-200 bg-white bg-opacity-10 hover:bg-opacity-20 border-r border-dividerColor cursor-pointer ${
           active &&
-          "bg-transparent text-primary transition duration-100 pl-4 pr-3"
-        } ${className}`}
+          "pl-4 pr-3 bg-transparent text-primary transition duration-150"
+        } ${sm ? "px-4 py-2" : "px-4 py-2"} ${className}`}
         {...rest}
       >
         <span>{children}</span>
         {tabCloseButton && (
           <span onClick={closeButtonOnClick}>
-            <XIcon className={`h-5 text-gray-700 dark:text-gray-400`} />
+            <XIcon
+              className={`h-5 ${
+                active
+                  ? "text-gray-800 dark:text-gray-300"
+                  : "text-gray-600 dark:text-gray-500 hover:text-gray-800 dark:hover:text-gray-300"
+              } transition-colors duration-150`}
+            />
           </span>
         )}
       </div>
