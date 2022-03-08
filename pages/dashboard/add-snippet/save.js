@@ -1,7 +1,8 @@
 import Layout from "../../../components/Dahsboard/Layout";
+import SaveSnippet from "../../../components/Dahsboard/SaveSnippet";
 
 const SaveSnippetPanel = () => {
-  return <div>Save</div>;
+  return <SaveSnippet />;
 };
 
 SaveSnippetPanel.getLayout = (page) => (

@@ -7,12 +7,12 @@ import Router from "next/router";
 import ProgressBar from "@badrap/bar-of-progress";
 import { ThemeProvider } from "next-themes";
 import store from "../redux/store";
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";
 import "../styles/globals.css";
 import "../styles/tailwind-theming.css";
 import "../components/Generic/Loader.css";
-import "../components/Dahsboard/SnippetsArchivePanel.css";
-import "primereact/resources/primereact.min.css";
-import "primeicons/primeicons.css";
+import "../components/Dahsboard/SnippetsArchivePanel/SnippetsArchivePanel.css";
 
 const progress = new ProgressBar({
   size: 2,

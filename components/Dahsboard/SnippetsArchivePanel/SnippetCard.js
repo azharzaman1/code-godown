@@ -3,23 +3,24 @@ import { Chip, Grid, IconButton, Paper, Stack, Tooltip } from "@mui/material";
 import { experimentalStyled as styled } from "@mui/material/styles";
 import { Delete, Download, Edit, Lock, Share } from "@mui/icons-material";
 import SyntaxHighlighter from "react-syntax-highlighter";
-import ThemeHeading from "../Generic/Heading";
-import ThemeText from "../Generic/Text";
 import { useSelector } from "react-redux";
 import {
   selectSyntaxTheme,
   SET_DASHBOARD_LOADING,
   SET_SNIPPET,
   SET_SNIPPET_NAME,
-} from "../../redux/slices/appSlice";
-import Dialog from "../Generic/Dialog";
+} from "../../../redux/slices/appSlice";
+import Dialog from "../../Generic/Dialog";
 import { deleteDoc, doc } from "firebase/firestore";
-import { auth, db } from "../../client/firebase";
+import { auth, db } from "../../../client/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useSnackbar } from "notistack";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/dist/client/router";
-import { selectSnippets } from "../../redux/slices/userSlice";
+import { selectSnippets } from "../../../redux/slices/userSlice";
+import ThemeHeading from "../../Generic/Heading";
+import ThemeText from "../../Generic/Text";
+// syntax themes
 import atomOneDark from "react-syntax-highlighter/dist/cjs/styles/hljs/atom-one-dark";
 import atomOneLight from "react-syntax-highlighter/dist/cjs/styles/hljs/atom-one-light";
 import a11yDark from "react-syntax-highlighter/dist/cjs/styles/hljs/a11y-dark";
