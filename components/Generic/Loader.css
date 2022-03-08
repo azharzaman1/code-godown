@@ -66,3 +66,34 @@
     opacity: 0.5;
   }
 }
+
+/* Dot Spinner */
+
+.dot-spinner-primary {
+  background: radial-gradient(farthest-side, var(--clr-primary) 95%, #0000) 50%
+      0/12px 12px no-repeat,
+    radial-gradient(
+        farthest-side,
+        #0000 calc(100% - 3.5px),
+        var(--clr-primary) calc(100% - 2.5px)
+      )
+      content-box;
+  animation: dotspinner 2s infinite;
+}
+
+.dot-spinner-light {
+  background: radial-gradient(farthest-side, rgb(235, 235, 235) 95%, #0000) 50%
+      0/12px 12px no-repeat,
+    radial-gradient(
+        farthest-side,
+        #0000 calc(100% - 3.5px),
+        white calc(100% - 2.5px)
+      )
+      content-box;
+  animation: dotspinner 2s infinite;
+}
+@keyframes dotspinner {
+  to {
+    transform: rotate(1turn);
+  }
+}

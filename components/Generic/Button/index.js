@@ -1,6 +1,5 @@
-import { useSelector } from "react-redux";
-import { selectTheme } from "../../../redux/slices/appSlice";
 import { XIcon } from "@heroicons/react/outline";
+import Loader from "../Loader";
 
 const ThemeButton = ({
   type = "primary",
@@ -13,6 +12,7 @@ const ThemeButton = ({
   startIcon, // only for icon button
   endIcon, // only for icon button
   shrinkTrans = true,
+  loading,
 
   active, // only for tab button
   tabCloseButton, // only for tab button
@@ -25,13 +25,14 @@ const ThemeButton = ({
     return (
       <a
         href={href}
-        className={`bg-primary hover:bg-opacity-90 text-white font-medium rounded shadow-md cursor-pointer select-none transition duration-150 ${
+        className={`flex items-center bg-primary hover:bg-opacity-90 text-white font-medium rounded shadow-md cursor-pointer select-none transition duration-150 ${
           shrinkTrans && "active:scale-95"
         } ${sm ? "px-4 py-2" : "px-6 py-3"} ${
           fluid && "min-w-full text-center"
         } ${className}`}
         {...rest}
       >
+        {loading && <Loader sm color="light" className="mr-2" type={2} />}
         {children}
       </a>
     );

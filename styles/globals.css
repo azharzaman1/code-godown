@@ -3,20 +3,24 @@
 @tailwind utilities;
 
 :root {
-  --primary: #e76f51;
-  --primary-light: #c78c7d;
-  --primary-dark: #e24d28;
-  --secondary: "#38bdf8";
+  --clr-primary: #e76f51;
+  --clr-primary-light: rgb(235, 139, 115);
+  --clr-primary-dark: rgb(161, 77, 56);
+  --clr-secondary: #38bdf8;
+  --clr-secondary-light: rgb(95, 202, 249);
+  --clr-secondary-dark: rgb(39, 132, 173);
 
-  --primaryText-light: "#0f172a";
-  --primaryText-dark: "#e2e8f0";
+  --clr-primary-text: #1e293b;
+  --clr-seconodary-text: #334155;
+  --clr-info-text: #475569;
 
-  --secondaryText-light: "#0f172a";
-  --secondaryText-dark: "#a0aec0";
+  --clr-primary-text-dark: #e2e8f0;
+  --clr-seconodary-text-dark: #a0aec0;
+  --clr-info-text-dark: #94a3b8;
 
-  --background-main: #252c48;
-  --background-light: #394264;
-  --background-accent: #011627;
+  --clr-background-main: #252c48;
+  --clr-background-light: #394264;
+  --clr-background-accent: #011627;
 }
 
 .dahsboardLeft__navigation * {

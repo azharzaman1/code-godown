@@ -2,6 +2,7 @@ import { Popover } from "@headlessui/react";
 import { Send } from "@mui/icons-material";
 import ThemeButton from "../Generic/Button";
 import ThemeHeading from "../Generic/Heading";
+import Loader from "../Generic/Loader";
 import ThemeText from "../Generic/Text";
 
 export default function Hero() {
@@ -32,7 +33,7 @@ export default function Hero() {
                 >
                   Save. Edit. Share.
                 </span>{" "}
-                <span className="block color-primary-dark xl:inline">
+                <span className="block text-primary xl:inline">
                   your code snippets
                 </span>
               </ThemeHeading>
@@ -43,7 +44,9 @@ export default function Hero() {
               </ThemeText>
               <div className="mt-10 sm:mt-8 md:mt-12 lg:mt-14 flex items-center justify-center lg:justify-start space-x-3">
                 <div className="flex flex-wrap space-x-3 items-center justify-evenly">
-                  <ThemeButton className="mt-2">Primary Button</ThemeButton>
+                  <ThemeButton className="mt-2" loading>
+                    Primary Button
+                  </ThemeButton>
                 </div>
               </div>
             </div>
