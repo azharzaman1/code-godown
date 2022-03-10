@@ -23,7 +23,7 @@
   --clr-background-accent: #011627;
 }
 
-.dahsboardLeft__navigation * {
+.DashboardLeft__navigation * {
   user-select: none !important;
 }
 

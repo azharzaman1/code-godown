@@ -20,7 +20,7 @@ import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
 import { extractExtentionAndLanguage, fetcher } from "../../../files/utils";
 import ThemeButton from "../../../components/Generic/Button";
-import ThemeSwitch from "../../../components/Dahsboard/ThemeSwitch";
+import ThemeSwitch from "../../../components/Dashboard/ThemeSwitch";
 import SyntaxThemes from "../../../theming/SyntaxThemes";
 import ThemeHeading from "../../../components/Generic/Heading";
 import useSWR from "swr";

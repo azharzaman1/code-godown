@@ -1,5 +1,5 @@
-import Layout from "../../../components/Dahsboard/Layout";
-import SaveSnippet from "../../../components/Dahsboard/SaveSnippet";
+import Layout from "../../../components/Dashboard/Layout";
+import SaveSnippet from "../../../components/Dashboard/SaveSnippet";
 
 const SaveSnippetPanel = () => {
   return <SaveSnippet />;

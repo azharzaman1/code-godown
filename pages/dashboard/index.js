@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useTheme } from "next-themes";
-import Layout from "../../components/Dahsboard/Layout";
-import SnippetsArchivePanel from "../../components/Dahsboard/SnippetsArchivePanel";
+import Layout from "../../components/Dashboard/Layout";
+import SnippetsArchivePanel from "../../components/Dashboard/SnippetsArchivePanel";
 
 const Dashboard = () => {
   const { theme, setTheme } = useTheme();

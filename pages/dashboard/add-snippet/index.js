@@ -1,5 +1,5 @@
-import Layout from "../../../components/Dahsboard/Layout";
-import PreEditor from "../../../components/Dahsboard/PreEditor";
+import Layout from "../../../components/Dashboard/Layout";
+import PreEditor from "../../../components/Dashboard/PreEditor";
 
 const AddNewSnippetPanel = () => {
   return <PreEditor />;
