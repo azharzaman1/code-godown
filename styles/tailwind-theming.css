@@ -83,12 +83,12 @@
   /* Input */
 
   .input {
-    @apply py-3 px-3 my-3 rounded-md text-gray-500 placeholder-gray-400 border-2 outline-none;
+    @apply py-3 px-3 my-3 bg-transparent rounded-md text-primaryText dark:text-primaryTextDark placeholder-secondaryText dark:placeholder-secondaryTextDark border-2 border-borderColor dark:border-borderColorDark outline-none;
   }
 
-  .input.dark {
+  /* .input.dark {
     @apply bg-transparent text-gray-300 placeholder-gray-400 border-2 border-gray-400;
-  }
+  } */
 
   /* icon */
 

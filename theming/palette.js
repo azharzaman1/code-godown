@@ -15,7 +15,7 @@ const palette = {
   backgroundContrastColor: "#fff", // like cards, boxs
 
   dividerColor: "rgba(0,0,0,0.12)",
-  borderColor: "#0f172a",
+  borderColor: "#64748b",
 
   success: "#22c55e",
   warning: "#fb923c",
@@ -40,7 +40,7 @@ const paletteDark = {
   backgroundContrastColor: "#394264", // like cards, boxs
 
   dividerColor: "rgba(255,255,255, 0.1)",
-  borderColor: "#eee",
+  borderColor: "#94a3b8",
 
   success: "#22c55e",
   warning: "#fb923c",

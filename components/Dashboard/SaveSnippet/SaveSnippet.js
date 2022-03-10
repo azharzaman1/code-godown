@@ -96,42 +96,9 @@ const SaveSnippet = () => {
   };
 
   const handleLabelAddition = () => {
-    const docRef = doc(db, "users", user?.uid);
-    let previousLabels = userInDB?.labels ? userInDB?.labels : [];
     let uid = `label_${uuidv4()}`;
-    setDoc(
-      docRef,
-      {
-        labels: [
-          ...previousLabels,
-          {
-            name: labelName,
-            snippets: [],
-            createAt: new Date(),
-            key: previousLabels?.length,
-            uid: uid,
-          },
-        ],
-      },
-      { merge: true }
-    );
-    dispatch(
-      SET_SNIPPET({
-        ...snippet,
-        snippetInfo: {
-          ...snippet?.snippetInfo,
-          snippetLabels: [
-            {
-              label: labelName,
-              key: 0,
-              uid: uid,
-            },
-          ],
-        },
-      })
-    );
-    dispatch(SET_SELECTED_LABEL_KEY(previousLabels?.length + 1));
-    setAddingLabel(false);
+    // add label to db
+    // add label to snippet object inside memory
   };
 
   const handleIsPrivateChange = (e) => {

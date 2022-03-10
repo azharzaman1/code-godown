@@ -22,28 +22,28 @@ const PreEditor = () => {
       <Heading type="secondary">Add new snippet</Heading>
       <Divider className="pt-3" />
       <form className="mt-5">
-        <div className="flex flex-col space-y-2 mt-4">
-          <ThemeText component="label" htmlFor="snippet_name_input">
+        <div className="flex flex-col space-y-2 mt-4 w-full">
+          <ThemeText component="label" htmlFor="snippet-name">
             Snippet name
           </ThemeText>
           <input
             type="text"
             placeholder="e.g. Snippet #1"
-            id="snippet_name_input"
-            className={`input max-w-sm ${themePreference === "dark" && "dark"}`}
+            id="snippet-name"
+            className={`input w-full`}
             value={snippetName}
             onChange={(e) => dispatch(SET_SNIPPET_NAME(e.target.value))}
           />
         </div>
-        <div className="flex flex-col space-y-2 mt-4">
-          <ThemeText component="label" htmlFor="file_name_input">
+        <div className="flex flex-col space-y-2 mt-4 w-full">
+          <ThemeText component="label" htmlFor="file-name">
             File name
           </ThemeText>
           <input
             type="text"
             placeholder="e.g. index.html"
-            id="file_name_input"
-            className={`input max-w-sm ${themePreference === "dark" && "dark"}`}
+            id="file-name"
+            className={`input w-full`}
             value={fileName}
             onChange={(e) => dispatch(SET_FILE_NAME(e.target.value))}
           />
