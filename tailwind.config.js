@@ -19,11 +19,11 @@ module.exports = {
 
         primaryText: palette.primaryText,
         secondaryText: palette.secondaryText,
-        infoText: palette.secondaryText,
+        infoText: palette.infoText,
 
         primaryTextDark: paletteDark.primaryText,
         secondaryTextDark: paletteDark.secondaryText,
-        infoTextDark: paletteDark.secondaryText,
+        infoTextDark: paletteDark.infoText,
 
         dividerColor: palette.dividerColor,
         dividerColorDark: paletteDark.dividerColor,

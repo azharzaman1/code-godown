@@ -101,7 +101,7 @@ function UserMenu() {
               />
               <div className="flex flex-col justify-start">
                 <Text>{userDetails?.fullName || "Azhar Zaman"}</Text>
-                <Text type="info">@{userDetails?.username || "idrazhar"}</Text>
+                <Text type="info">@{userDetails?.userName || "idrazha"}</Text>
               </div>
             </div>
           </div>

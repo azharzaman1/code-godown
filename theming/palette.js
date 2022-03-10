@@ -8,7 +8,7 @@ const palette = {
 
   primaryText: "#1e293b",
   secondaryText: "#334155",
-  infoText: "#475569",
+  infoText: "#94a3b8",
 
   backgroundColor1: "#f1f5f9", // for main bg, sections bg etc.
   backgroundColor2: "#f8fafc", // for main bg, sections bg etc.

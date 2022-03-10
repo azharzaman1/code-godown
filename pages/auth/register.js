@@ -31,6 +31,8 @@ const Register = () => {
   const [passwordShow, setPasswordShow] = useState(false);
   const [fullName, setFullName] = useState("");
   const [nameError, setNameError] = useState(false);
+  const [userName, setUserName] = useState("");
+  const [userNameError, setUserNameError] = useState(false);
 
   const [ghAuthInProgress, setGhAuthInProgress] = useState(false);
   const [googleAuthInProgress, setGoogleAuthInProgress] = useState(false);
@@ -45,7 +47,12 @@ const Register = () => {
     setNameError(false);
     setEmailError(false);
     setPassError(false);
-    if (validateEmail(email) && validatePassword(password) && fullName !== "") {
+    if (
+      validateEmail(email) &&
+      validatePassword(password) &&
+      userName !== "" &&
+      fullName !== ""
+    ) {
       setRegistering(true);
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
@@ -56,10 +63,11 @@ const Register = () => {
             setDoc(docRef, {
               userDetails: {
                 userID: user.uid,
-                fullName: fullName,
+                fullName,
+                userName,
                 displayName: fullName,
                 email: user.email,
-                password: password,
+                password,
                 emailVerified: user.emailVerified,
                 registeredAt: serverTimestamp(),
                 accountType: "email_password",
@@ -91,6 +99,10 @@ const Register = () => {
     } else {
       if (fullName === "") {
         setNameError(true);
+      }
+
+      if (userName === "") {
+        setUserNameError(true);
       }
 
       if (!validateEmail(email)) {
@@ -243,13 +255,25 @@ const Register = () => {
                 onChange={(e) => setFullName(e.target.value)}
                 type="text"
                 placeholder={nameError ? "e.g. Azhar Zaman" : "Your name"}
-                className={`input ${
-                  nameError ? "border-red-400" : "border-[#dadada]"
+                className={`input w-full ${
+                  nameError ? "border-red-400" : "border-borderColor"
                 }`}
               />
             </div>
 
-            <div className="flex flex-col space-y-2">
+            <div className="flex flex-col space-y-2 w-full">
+              <input
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+                type="text"
+                placeholder={userNameError ? "e.g. azhar001" : "Username"}
+                className={`input w-full ${
+                  userNameError ? "border-red-400" : "border-borderColor"
+                }`}
+              />
+            </div>
+
+            <div className="flex flex-col space-y-2 w-full">
               <input
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -257,15 +281,15 @@ const Register = () => {
                 placeholder={
                   emailError ? "e.g. azhar@gmail.com" : "Valid email address"
                 }
-                className={`input ${
-                  emailError ? "border-red-400" : "border-[#dadada]"
+                className={`input w-full ${
+                  emailError ? "border-red-400" : "border-borderColor"
                 }`}
               />
             </div>
 
             <div
-              className={`relative flex-between-center rounded-md ${
-                passError ? "border-red-400" : "border-[#dadada]"
+              className={`relative flex-between-center rounded-md w-full ${
+                passError ? "border-red-400" : "border-borderColor"
               } border-2 my-3 space-x-2`}
             >
               <input
@@ -273,7 +297,7 @@ const Register = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 type={passwordShow ? "text" : "password"}
                 placeholder="Min. 8 characters, atleast 1 letter & number"
-                className="px-3 py-3 outline-none placeholder-gray-300 rounded-md flex-1"
+                className="px-3 py-3 outline-none text-primaryText dark:text-primaryTextDark placeholder:text-infoText dark:placeholder:text-infoTextDark rounded-md flex-1"
               />
 
               <span
@@ -292,6 +316,7 @@ const Register = () => {
                 loading={registering}
                 size="lg"
                 className="w-full justify-center"
+                onClick={signupWithEmailAndPassword}
               >
                 Create account
               </Button>

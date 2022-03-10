@@ -5,6 +5,8 @@ Improvements:
   Multiple Labels Selection per Snippet
   Register username addition
   Add disabled state to buttons
+  Configure readable errors in Auth
+  add react-hook-form in auth
 
 Fixes:
   Auth Design
