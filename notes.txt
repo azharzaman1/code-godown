@@ -3,11 +3,9 @@ Aditions:
 
 Improvements: 
   Multiple Labels Selection per Snippet
-  Modal actions design on small viewports
   Register username addition
 
 Fixes:
-  Editor Tabs Scroll
   Auth Design
 
 Snippets:

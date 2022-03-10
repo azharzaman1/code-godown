@@ -23,23 +23,23 @@ const ThemeButton = ({
 
   if (type === "primary")
     return (
-      <a
+      <button
+        type="button"
         href={href}
         className={`flex items-center bg-primary hover:bg-opacity-90 text-white font-medium rounded shadow-md cursor-pointer select-none transition duration-150 ${
-          shrinkTrans && "active:scale-95"
-        } ${sm ? "px-4 py-2" : "px-6 py-3"} ${
-          fluid && "min-w-full text-center"
-        } ${className}`}
+          sm ? "px-4 py-2" : "px-6 py-3"
+        } ${shrinkTrans && "active:scale-95"} ${className}`}
         {...rest}
       >
-        {loading && <Loader sm color="light" className="mr-2" type={2} />}
+        {/* {loading && <Loader sm color="light" className="mr-2" type={2} />} */}
         {children}
-      </a>
+      </button>
     );
 
   if (type === "secondary")
     return (
       <a
+        type="button"
         href={href}
         className={`text-primaryText dark:text-primaryTextDark bg-primary bg-opacity-10 hover:bg-primary hover:text-white font-medium rounded shadow-md border-2 border-primary cursor-pointer select-none transition duration-150 ${
           shrinkTrans && "active:scale-95"
@@ -54,7 +54,8 @@ const ThemeButton = ({
 
   if (type === "text")
     return (
-      <a
+      <button
+        type="button"
         href={href}
         className={`text-primaryText bg-transparent dark:text-primaryTextDark hover:bg-primary hover:bg-opacity-10  hover:border-gray-400 rounded cursor-pointer transition duration-150 ${
           shrinkTrans && "active:scale-95"
@@ -64,12 +65,13 @@ const ThemeButton = ({
         {...rest}
       >
         {children}
-      </a>
+      </button>
     );
 
   if (type === "icon")
     return (
-      <a
+      <button
+        type="button"
         href={href}
         className={`flex items-center bg-primary text-white hover:bg-opacity-90 font-medium rounded shadow-md cursor-pointer select-none transition duration-150 ${
           shrinkTrans && "active:scale-95"
@@ -79,7 +81,7 @@ const ThemeButton = ({
         <span className="button-start-icon">{startIcon}</span>
         <span>{children}</span>
         <span className="button-end-icon">{endIcon}</span>
-      </a>
+      </button>
     );
 
   if (type === "special-icon")
@@ -112,7 +114,8 @@ const ThemeButton = ({
 
   if (type === "tab")
     return (
-      <div
+      <button
+        role="tab"
         className={`flex items-center space-x-4 text-gray-200 bg-white bg-opacity-10 hover:bg-opacity-20 border-r border-dividerColor cursor-pointer ${
           active &&
           "pl-4 pr-3 bg-transparent text-primary transition duration-150"
@@ -131,7 +134,7 @@ const ThemeButton = ({
             />
           </span>
         )}
-      </div>
+      </button>
     );
 };
 

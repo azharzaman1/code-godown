@@ -8,7 +8,7 @@ import { menu } from "./data";
 import { auth } from "../../../client/firebase";
 import { useRouter } from "next/router";
 import Text from "../Text";
-import { Avatar } from "@mui/material";
+import { Avatar, Divider } from "@mui/material";
 
 function UserMenu() {
   const [userMenu, setUserMenu] = useState(menu);
@@ -76,7 +76,7 @@ function UserMenu() {
       </button>
 
       <Transition
-        className="origin-top-right z-10 absolute top-full right-0 min-w-44 bg-backgroundContrast dark:bg-backgroundContrastDark border border-slate-200 dark:border-slate-600 py-1.5 rounded shadow-lg overflow-hidden mt-1"
+        className="origin-top-right z-10 absolute top-full right-2 min-w-44 bg-backgroundContrast dark:bg-backgroundContrastDark border border-slate-200 dark:border-slate-600 rounded shadow-lg overflow-hidden mt-0.5"
         show={dropdownOpen}
         enter="transition ease-out duration-200 transform"
         enterStart="opacity-0 -translate-y-2"
@@ -131,27 +131,25 @@ const MenuItem = ({ item, id, onClick }) => {
   const isLastItem = item.name === "Logout";
 
   return (
-    <div
-      onClick={() => {
-        if (item.href) {
-          router.push(item.href);
-        }
-
-        onClick && onClick();
-      }}
-      className={`flex items-center p-3 space-x-2 text-primaryText dark:text-primaryTextDark hover:bg-slate-100 dark:hover:bg-backgroundV1Dark cursor-pointer ${
-        isFirstItem &&
-        "border-t border-borderColorDark dark:border-dividerColor"
-      } ${
-        isLastItem && "border-t border-borderColorDark dark:border-dividerColor"
-      }`}
-    >
-      <item.icon
-        fontSize="small"
-        className="text-gray-500 dark:text-secondaryDark"
-      />
-      <Text>{item.name}</Text>
-    </div>
+    <>
+      {isFirstItem && <Divider className="my-1" />}
+      {isLastItem && <Divider className="my-1" />}
+      <div
+        onClick={() => {
+          if (item.href) {
+            router.push(item.href);
+          }
+          onClick && onClick();
+        }}
+        className={`flex items-center my-1 p-3 space-x-2 text-primaryText dark:text-primaryTextDark hover:bg-slate-100 dark:hover:bg-backgroundV1Dark cursor-pointer`}
+      >
+        <item.icon
+          fontSize="small"
+          className="text-gray-500 dark:text-secondaryDark"
+        />
+        <Text>{item.name}</Text>
+      </div>
+    </>
   );
 };
 

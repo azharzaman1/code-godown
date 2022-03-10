@@ -174,7 +174,7 @@ const MonacoEditor = () => {
 
   return (
     <div className="editor-container w-full">
-      <div className="editor-navigation text-white flex items-center select-none overflow-x-hidden">
+      <div className="editor-navigation text-white flex items-center select-none overflow-x-scroll">
         {snippetObj &&
           snippetObj?.files?.map(({ fileName, key }) => (
             <ThemeButton

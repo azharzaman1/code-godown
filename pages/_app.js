@@ -9,10 +9,11 @@ import { ThemeProvider } from "next-themes";
 import store from "../redux/store";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
+import "../components/Dahsboard/SnippetsArchivePanel/SnippetsArchivePanel.css";
 import "../styles/globals.css";
 import "../styles/tailwind-theming.css";
 import "../components/Generic/Loader.css";
-import "../components/Dahsboard/SnippetsArchivePanel/SnippetsArchivePanel.css";
+import "../components/Dahsboard/Editor.css";
 
 const progress = new ProgressBar({
   size: 2,

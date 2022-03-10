@@ -88,14 +88,17 @@ const Modal = ({
                   </div>
                 </div>
               </div>
-              <div className="bg-gray-50 dark:bg-backgroundContrastDark px-4 py-2 border-t border-dividerColorDark sm:px-6 sm:flex sm:flex-row-reverse">
-                <Button onClick={confirmAction}>
+              <div className="py-2 px-4 flex flex-col sm:flex-row-reverse space-y-3 sm:space-y-0 sm:px-6 bg-gray-50 dark:bg-backgroundContrastDark border-t border-dividerColorDark">
+                <Button
+                  onClick={confirmAction}
+                  className="justify-center text-center"
+                >
                   {cancelLabel || "Confirm"}
                 </Button>
                 <Button
                   type="text"
                   onClick={() => setOpen(false)}
-                  className="sm:mr-3"
+                  className="sm:mr-3 mt-10 sm:mt-0 text-center"
                 >
                   {cancelLabel || "Cancel"}
                 </Button>
