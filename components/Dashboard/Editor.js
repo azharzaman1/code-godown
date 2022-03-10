@@ -31,15 +31,13 @@ const MonacoEditor = () => {
   const [addingNewFile, setAddingNewFile] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [newFileName, setNewFileName] = useState("");
-  const { data, error } = useSWR("/api/programming-langs", fetcher);
+  const { data: languages, error } = useSWR("/api/programming-langs", fetcher);
 
   const router = useRouter();
 
   const { enqueueSnackbar } = useSnackbar();
 
   const { snippet } = router.query;
-
-  // Switch Active Tab
   useEffect(() => {
     let mounted = true;
     if (mounted) {
@@ -78,7 +76,7 @@ const MonacoEditor = () => {
     if (newFileName.includes(".")) {
       const [fileExtention, language] = extractExtentionAndLanguage(
         newFileName,
-        data
+        languages
       );
 
       let snippetToSet;
@@ -91,16 +89,15 @@ const MonacoEditor = () => {
           files: [
             ...snippetObj?.files,
             {
-              snippetName: snippetObj,
+              snippetName: snippetObj?.snippetName,
               key: snippetObj?.files?.at(-1).key + 1,
               extention: fileExtention,
               fileName: newFileName,
               code: `// start coding here`,
-              language: language ? language : "unknown",
-              languageExtentions: language?.extensions,
-              createdAt: new Date(),
-              lastUpdatedAt: new Date(),
-              snapshots: [],
+              language: {
+                ...language,
+                extensions: language?.extensions?.slice(0, 7),
+              },
             },
           ],
         };
@@ -108,35 +105,25 @@ const MonacoEditor = () => {
         // if page refreshed by user
         console.log("altered called");
         fileKey = 0;
+
         snippetToSet = {
           snippetName: snippet,
           uid: `snippet_${uuidv4()}`,
           snippetInfo: {
-            snippetLabels: [
-              {
-                label: "",
-                key: "",
-                uid: `label_${NIL_UUID}`,
-              },
-            ],
-            snippetTags: [],
             createAt: new Date(),
-            lastUpdatedAt: new Date(),
-            snapshots: [],
-            isPrivate: false,
+            isPrivate: true,
           },
           files: [
             {
               snippetName: snippet,
-              key: 0,
-              extention: fileExtention,
+              key: fileKey,
               fileName: newFileName,
               code: `// start coding here`,
-              language: language ? language : "unknown",
-              languageExtentions: language?.extensions,
-              createdAt: new Date(),
-              lastUpdatedAt: new Date(),
-              snapshots: [],
+              extention: fileExtention,
+              language: {
+                ...language,
+                extensions: language?.extensions?.slice(0, 3),
+              },
             },
           ],
         };
@@ -156,18 +143,26 @@ const MonacoEditor = () => {
   };
 
   const handleFileDelete = () => {
-    let tabToDeleteKey = activeTabIndex;
+    const tabToDeleteKey = activeTabIndex;
+    const tabToDeleteIndex = snippetObj?.files?.findIndex(
+      (file) => file.key == activeTabIndex
+    );
     const restOfFiles = snippetObj?.files?.filter(
       (tab) => tab.key !== tabToDeleteKey
     );
+
+    const nextActiveTabIndex =
+      restOfFiles[tabToDeleteIndex - 1]?.key || restOfFiles[0]?.key;
+
     dispatch(
       SET_SNIPPET({
         ...snippetObj,
         files: restOfFiles?.sort((a, b) => a.key - b.key),
       })
     );
-    dispatch(SET_EDITOR_ACTIVE_TAB_INDEX(restOfFiles[0]?.key));
-    setOpen(false);
+
+    dispatch(SET_EDITOR_ACTIVE_TAB_INDEX(nextActiveTabIndex));
+    setDialogOpen(false);
   };
 
   return (
@@ -184,7 +179,7 @@ const MonacoEditor = () => {
                 dispatch(SET_EDITOR_ACTIVE_TAB_INDEX(key));
               }}
               closeButtonOnClick={() => {
-                setOpen(true);
+                setDialogOpen(true);
               }}
             >
               {fileName}

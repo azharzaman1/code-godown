@@ -44,7 +44,7 @@ export default function Hero() {
               </ThemeText>
               <div className="mt-10 sm:mt-8 md:mt-12 lg:mt-14 flex items-center justify-center lg:justify-start space-x-3">
                 <div className="flex flex-wrap space-x-3 items-center justify-evenly">
-                  <ThemeButton className="mt-2">Primary Button</ThemeButton>
+                  <ThemeButton className="mt-2">Get Started</ThemeButton>
                 </div>
               </div>
             </div>

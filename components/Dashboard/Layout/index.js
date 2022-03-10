@@ -1,19 +1,17 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import Header from "../../Generic/Header";
-import Loader from "../../Generic/Loader";
+import { useSelector } from "react-redux";
 import DashboardHeader from "../Header";
 import Navigation from "../Navigation";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/router";
 import { Paper } from "@mui/material";
-import LayoutContainer from "../../Generic/Layout/Container";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import a11yDark from "react-syntax-highlighter/dist/cjs/styles/hljs/a11y-dark";
-import { useSelector } from "react-redux";
+import Header from "../../Generic/Header";
+import Loader from "../../Generic/Loader";
+import LayoutContainer from "../../Generic/Layout/Container";
 import { selectSnippet } from "../../../redux/slices/appSlice";
-
-// import "primereact/resources/themes/vela-blue/theme.css";
 
 const DashboardLayout = ({
   children,
@@ -40,6 +38,8 @@ const DashboardLayout = ({
   const router = useRouter();
 
   const showSidebar = router.asPath === "/dashboard";
+
+  console.log("Snippet", snippet);
 
   return (
     <div className={`${className} dashboard-container min-h-screen`}>
@@ -82,7 +82,7 @@ const DashboardLayout = ({
                   {children}
                 </Paper>
               </div>
-              <Paper>
+              {/* <Paper>
                 <div>
                   <SyntaxHighlighter
                     language={"json"}
@@ -94,7 +94,7 @@ const DashboardLayout = ({
                     {JSON.stringify(snippet, null, "\t")}
                   </SyntaxHighlighter>
                 </div>
-              </Paper>
+              </Paper> */}
             </LayoutContainer>
           </main>
         </>

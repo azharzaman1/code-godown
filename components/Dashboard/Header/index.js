@@ -64,18 +64,8 @@ const DashboardHeader = () => {
         snippetName: snippetName,
         uid: `snippet_${uuidv4()}`,
         snippetInfo: {
-          snippetLabels: [
-            {
-              label: "",
-              key: "",
-              uid: `label_${NIL_UUID}`,
-            },
-          ],
-          snippetTags: [],
           createAt: new Date(),
-          lastUpdatedAt: new Date(),
-          snapshots: [],
-          isPrivate: false,
+          isPrivate: true,
         },
         files: [
           {
@@ -84,11 +74,10 @@ const DashboardHeader = () => {
             fileName: fileName,
             code: `// start coding here`,
             extention: fileExtention,
-            language: language ? language : "unknown",
-            languageExtentions: language?.extensions,
-            createdAt: new Date(),
-            lastUpdatedAt: new Date(),
-            snapshots: [],
+            language: {
+              ...language,
+              extensions: language?.extensions?.slice(0, 3),
+            },
           },
         ],
       };

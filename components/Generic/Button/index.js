@@ -117,7 +117,7 @@ const ThemeButton = ({
       <button
         role="tab"
         data-testid="primary-btn"
-        className={`flex items-center space-x-4 text-gray-200 bg-white bg-opacity-10 hover:bg-opacity-20 border-r border-dividerColor cursor-pointer ${
+        className={`flex items-center space-x-4 text-gray-200 bg-white bg-opacity-10 hover:bg-opacity-20 border-r border-dividerColor dark:border-dividerColorDark cursor-pointer ${
           active &&
           "pl-4 pr-3 bg-transparent text-primary transition duration-150"
         } ${sm ? "px-4 py-2" : "px-4 py-2"} ${className}`}
