@@ -24,8 +24,8 @@ const Loader = ({ type, sm, className, label, color = "primary" }) => {
     return (
       <div
         class={`dot-spinner-${color} ${
-          sm ? "w-8 h-8" : "w-12 h-12"
-        } rounded-full p-[3px] ${className}`}
+          sm ? "w-6 h-6 sm" : "w-12 h-12"
+        } rounded-full p-[2px] ${className}`}
       />
     );
   }

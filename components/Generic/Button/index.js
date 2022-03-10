@@ -31,8 +31,7 @@ const ThemeButton = ({
         } ${shrinkTrans && "active:scale-95"} ${className}`}
         {...rest}
       >
-        {/* {loading && <Loader sm color="light" className="mr-2" type={2} />} */}
-        {children}
+        {loading ? <Loader sm color="light" type={2} /> : children}
       </button>
     );
 
@@ -93,7 +92,7 @@ const ThemeButton = ({
         } ${className}`}
         {...rest}
       >
-        {children}
+        {loading ? <Loader sm color="primary" type={2} /> : children}
       </a>
     );
 

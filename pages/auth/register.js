@@ -20,7 +20,8 @@ import {
 import { validateEmail, validatePassword } from "../../files/utils";
 import Layout from "../../components/Generic/Layout";
 import Container from "../../components/Generic/Layout/Container";
-import ThemeButton from "../../components/Generic/Button";
+import Button from "../../components/Generic/Button";
+import Heading from "../../components/Generic/Heading";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -30,6 +31,10 @@ const Register = () => {
   const [passwordShow, setPasswordShow] = useState(false);
   const [fullName, setFullName] = useState("");
   const [nameError, setNameError] = useState(false);
+
+  const [ghAuthInProgress, setGhAuthInProgress] = useState(false);
+  const [googleAuthInProgress, setGoogleAuthInProgress] = useState(false);
+  const [registering, setRegistering] = useState(false);
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -41,6 +46,7 @@ const Register = () => {
     setEmailError(false);
     setPassError(false);
     if (validateEmail(email) && validatePassword(password) && fullName !== "") {
+      setRegistering(true);
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           if (userCredential.user) {
@@ -61,18 +67,23 @@ const Register = () => {
               snippets: [],
             });
 
+            setRegistering(false);
+
             enqueueSnackbar(`Signup Successful`, {
               variant: "success",
             });
+
             enqueueSnackbar(`Login Successful`, {
               variant: "success",
             });
+
             router.replace("/");
           }
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
+          setRegistering(false);
           enqueueSnackbar(`Error Code: ${errorCode}: ${errorMessage}`, {
             variant: "error",
           });
@@ -198,101 +209,117 @@ const Register = () => {
   };
 
   return (
-    <Layout title="Authentication" hideHeader>
-      <Container className="flex-center-center flex-col bg-gray-50 min-h-[100vh]">
-        <div className="w-[450px] max-w-[90%] flex-center-center flex-col">
-          <div className="form__header">
-            <h3 className="secondary-heading mb-4 text-center">
-              Create Account
-            </h3>
-          </div>
-
-          <div className="bg-white shadow-lg rounded-lg py-8 px-6 w-full h-full select-none border">
-            <div className="providersAuth-section flex-evenly-center mb-6">
-              <ThemeButton type="special-icon" onClick={continueWithGH}>
-                <GitHub fontSize="medium" className="icon" />
-              </ThemeButton>
-              <ThemeButton type="special-icon" onClick={continueWithGoogle}>
-                <Google fontSize="medium" className="icon" />
-              </ThemeButton>
-            </div>
-            <Divider>OR</Divider>
-
-            <form noValidate onSubmit={signupWithEmailAndPassword}>
-              <div className="flex flex-col space-y-2 w-full">
-                <input
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  type="text"
-                  placeholder={nameError ? "e.g. Azhar Zaman" : "Your name"}
-                  className={`input ${
-                    nameError ? "border-red-400" : "border-[#dadada]"
-                  }`}
-                />
-              </div>
-
-              <div className="flex flex-col space-y-2">
-                <input
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  type="email"
-                  placeholder={
-                    emailError ? "e.g. azhar@gmail.com" : "Valid email address"
-                  }
-                  className={`input ${
-                    emailError ? "border-red-400" : "border-[#dadada]"
-                  }`}
-                />
-              </div>
-
-              <div
-                className={`relative flex-between-center rounded-md ${
-                  passError ? "border-red-400" : "border-[#dadada]"
-                } border-2 my-3 space-x-2`}
-              >
-                <input
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  type={passwordShow ? "text" : "password"}
-                  placeholder="Min. 8 characters, atleast 1 letter & number"
-                  className="outline-none border-none text-gray-500 placeholder-gray-300 px-3 py-3 flex-1"
-                />
-
-                <span
-                  onClick={() => setPasswordShow((prevState) => !prevState)}
-                  className="absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer pr-2"
-                >
-                  {passwordShow ? (
-                    <EyeOffIcon className="h-6 icon" />
-                  ) : (
-                    <EyeIcon className="h-6 icon" />
-                  )}
-                </span>
-              </div>
-              <div className="flex justify-center mt-8">
-                <ThemeButton fluid size="lg">
-                  Signup
-                </ThemeButton>
-              </div>
-            </form>
-          </div>
-
-          <div className="mt-3">
-            <span
-              className="link"
-              onClick={() => {
-                router.push({
-                  pathname: "/auth/login",
-                });
-              }}
-            >
-              Already have an account? Login
-            </span>
-          </div>
+    <Container className="flex justify-center items-center min-h-screen">
+      <div className="flex flex-col justify-center items-center w-[450px] max-w-[100vw] mx-auto">
+        <div className="form__header">
+          <Heading type="secondary" className="mb-4">
+            Create Account
+          </Heading>
         </div>
-      </Container>
-    </Layout>
+
+        <div className="py-8 px-6 w-full bg-white shadow rounded-lg border select-none">
+          <div className="providersAuth-section flex-evenly-center mb-6">
+            <Button
+              loading={ghAuthInProgress}
+              type="special-icon"
+              onClick={continueWithGH}
+            >
+              <GitHub fontSize="medium" className="icon" />
+            </Button>
+            <Button
+              loading={googleAuthInProgress}
+              type="special-icon"
+              onClick={continueWithGoogle}
+            >
+              <Google fontSize="medium" className="icon" />
+            </Button>
+          </div>
+          <Divider>OR</Divider>
+
+          <form noValidate onSubmit={signupWithEmailAndPassword}>
+            <div className="flex flex-col space-y-2 w-full">
+              <input
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                type="text"
+                placeholder={nameError ? "e.g. Azhar Zaman" : "Your name"}
+                className={`input ${
+                  nameError ? "border-red-400" : "border-[#dadada]"
+                }`}
+              />
+            </div>
+
+            <div className="flex flex-col space-y-2">
+              <input
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                type="email"
+                placeholder={
+                  emailError ? "e.g. azhar@gmail.com" : "Valid email address"
+                }
+                className={`input ${
+                  emailError ? "border-red-400" : "border-[#dadada]"
+                }`}
+              />
+            </div>
+
+            <div
+              className={`relative flex-between-center rounded-md ${
+                passError ? "border-red-400" : "border-[#dadada]"
+              } border-2 my-3 space-x-2`}
+            >
+              <input
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                type={passwordShow ? "text" : "password"}
+                placeholder="Min. 8 characters, atleast 1 letter & number"
+                className="px-3 py-3 outline-none placeholder-gray-300 rounded-md flex-1"
+              />
+
+              <span
+                onClick={() => setPasswordShow((prevState) => !prevState)}
+                className="absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer pr-2"
+              >
+                {passwordShow ? (
+                  <EyeOffIcon className="h-6 icon" />
+                ) : (
+                  <EyeIcon className="h-6 icon" />
+                )}
+              </span>
+            </div>
+            <div className="flex justify-center mt-8">
+              <Button
+                loading={registering}
+                size="lg"
+                className="w-full justify-center"
+              >
+                Create account
+              </Button>
+            </div>
+          </form>
+        </div>
+
+        <div className="mt-3">
+          <span
+            className="link"
+            onClick={() => {
+              router.push({
+                pathname: "/auth/login",
+              });
+            }}
+          >
+            Already have an account? Login
+          </span>
+        </div>
+      </div>
+    </Container>
   );
 };
+
+Register.getLayout = (page) => (
+  <Layout title="Register | Authentication" hideHeader hideFooter>
+    {page}
+  </Layout>
+);
 
 export default Register;

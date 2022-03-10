@@ -12,7 +12,7 @@ import "primeicons/primeicons.css";
 import "../components/Dashboard/SnippetsArchivePanel/SnippetsArchivePanel.css";
 import "../styles/globals.css";
 import "../styles/tailwind-theming.css";
-import "../components/Generic/Loader.css";
+import "../components/Generic/Loader/Loader.css";
 import "../components/Dashboard/Editor.css";
 
 const progress = new ProgressBar({

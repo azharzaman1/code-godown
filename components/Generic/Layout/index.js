@@ -20,9 +20,7 @@ const Layout = ({
   const { data, error } = useSWR("/api/navigation", fetcher);
 
   return (
-    <div
-      className={`${className} layout-container bg-gray-100 dark:bg-backgroundV1 min-h-screen`}
-    >
+    <div className={`layout-container min-w-full min-h-screen ${className}`}>
       <Head>
         <title>{title}</title>
         <meta name={descriptionName} content={description} />

@@ -22,7 +22,8 @@ import { doc, serverTimestamp, setDoc, getDoc } from "@firebase/firestore";
 import { validateEmail } from "../../files/utils";
 import { useSnackbar } from "notistack";
 import { useTheme } from "next-themes";
-import ThemeButton from "../../components/Generic/Button";
+import Button from "../../components/Generic/Button";
+import Heading from "../../components/Generic/Heading";
 
 const Login = () => {
   const { theme, setTheme } = useTheme();
@@ -33,6 +34,11 @@ const Login = () => {
   const [passwordShow, setPasswordShow] = useState(false);
   const [forgetPasswordState, setForgetPasswordState] = useState(false);
   const [resetEmailSent, setResetEmailSent] = useState(false);
+  const [signingIn, setSigningIn] = useState(false);
+  const [sendingPasswordResetEmail, setSendingPasswordResetEmail] =
+    useState(false);
+  const [ghAuthInProgress, setGhAuthInProgress] = useState(false);
+  const [googleAuthInProgress, setGoogleAuthInProgress] = useState(false);
 
   useEffect(() => {
     setTheme("light");
@@ -46,17 +52,20 @@ const Login = () => {
     // sigin
     e.preventDefault();
     if (validateEmail(email)) {
+      setSigningIn(true);
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           // Signed in
           enqueueSnackbar(`Login Successful`, {
             variant: "success",
           });
+          setSigningIn(false);
           router.replace("/");
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
+          setSigningIn(false);
           enqueueSnackbar(`Error Code: ${errorCode}: ${errorMessage}`, {
             variant: "error",
           });
@@ -68,12 +77,12 @@ const Login = () => {
 
   const passwordResetRequest = (e) => {
     e.preventDefault();
-    // password reset request
-
+    setSendingPasswordResetEmail(true);
     sendPasswordResetEmail(auth, email)
       .then(() => {
         // Password reset email sent
         setResetEmailSent(true);
+        setSendingPasswordResetEmail(false);
         enqueueSnackbar(
           `Password reset email sent! Please follow instructions in the email`,
           {
@@ -84,6 +93,7 @@ const Login = () => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        setSendingPasswordResetEmail(false);
         enqueueSnackbar(`Error Code: ${errorCode}: ${errorMessage}`, {
           variant: "error",
         });
@@ -91,19 +101,22 @@ const Login = () => {
   };
 
   const continueWithGoogle = () => {
+    setGoogleAuthInProgress(true);
     signInWithPopup(auth, googleAuthProvider)
       .then(async (result) => {
         let userAlreadyRegistered = false;
         const docRef = doc(db, "users", result?.user?.uid);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
+          // user already present in db
           userAlreadyRegistered = true;
           enqueueSnackbar(`Login Successful`, {
             variant: "success",
           });
-          router.replace("/");
+          setGoogleAuthInProgress(false);
         }
         if (result && !userAlreadyRegistered) {
+          // potentially new user
           const user = result?.user;
           const token =
             GoogleAuthProvider.credentialFromResult(result).accessToken;
@@ -126,6 +139,7 @@ const Login = () => {
             snippets: [],
           });
 
+          setGoogleAuthInProgress(false);
           enqueueSnackbar(`Login Successful`, {
             variant: "success",
           });
@@ -135,6 +149,7 @@ const Login = () => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        setGoogleAuthInProgress(false);
         enqueueSnackbar(`Error Code: ${errorCode}: ${errorMessage}`, {
           variant: "error",
         });
@@ -142,12 +157,15 @@ const Login = () => {
   };
 
   const continueWithGH = () => {
+    setGhAuthInProgress(true);
     signInWithPopup(auth, githubAuthProvider)
       .then(async (result) => {
         let userAlreadyRegistered = false;
         const docRef = doc(db, "users", result?.user?.uid);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
+          // user already present in db
+          setGhAuthInProgress(false);
           userAlreadyRegistered = true;
         }
         if (result && !userAlreadyRegistered) {
@@ -174,6 +192,7 @@ const Login = () => {
             snippets: [],
           });
         }
+        setGhAuthInProgress(false);
         enqueueSnackbar(`Login Successful`, {
           variant: "success",
         });
@@ -183,13 +202,12 @@ const Login = () => {
         // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
+        setGhAuthInProgress(false);
         enqueueSnackbar(`Error Code: ${errorCode}: ${errorMessage}`, {
           variant: "error",
         });
       });
   };
-
-  console.log(forgetPasswordState, resetEmailSent);
 
   const formLabel =
     forgetPasswordState && resetEmailSent
@@ -210,99 +228,123 @@ const Login = () => {
       : signinWithEmailAndPassword;
 
   return (
-    <Layout title="Authentication" hideHeader>
-      <Container className="flex-center-center flex-col bg-gray-50 min-h-[100vh]">
-        <div className="w-[450px] max-w-[90%] flex-center-center flex-col">
-          <div className="form__header">
-            <h3 className="secondary-heading mb-4 text-center">Welcome Back</h3>
-          </div>
+    <Container className="flex justify-center items-center min-h-screen">
+      <div className="flex flex-col justify-center items-center w-[450px] max-w-[100vw] mx-auto">
+        <div className="form__header">
+          <Heading type="secondary" className="mb-4">
+            Welcome back
+          </Heading>
+        </div>
 
-          <div className="bg-white shadow-lg rounded-lg py-8 px-6 w-full h-full select-none border">
+        <div className="py-8 px-6 w-full bg-white shadow rounded-lg border select-none">
+          {!forgetPasswordState && (
+            <>
+              <div className="providersAuth-section flex-evenly-center mb-6">
+                <Button
+                  type="special-icon"
+                  loading={ghAuthInProgress}
+                  onClick={continueWithGH}
+                >
+                  <GitHub fontSize="medium" className="icon" />
+                </Button>
+                <Button
+                  type="special-icon"
+                  loading={googleAuthInProgress}
+                  onClick={continueWithGoogle}
+                >
+                  <Google fontSize="medium" className="icon" />
+                </Button>
+              </div>
+              <Divider>OR</Divider>
+            </>
+          )}
+
+          <form noValidate onSubmit={formAction}>
+            <div className="flex flex-col space-y-2">
+              <input
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                type="email"
+                placeholder="Email address"
+                className={`input`}
+              />
+            </div>
+
             {!forgetPasswordState && (
               <>
-                <div className="providersAuth-section flex-evenly-center mb-6">
-                  <ThemeButton type="special-icon" onClick={continueWithGH}>
-                    <GitHub fontSize="medium" className="icon" />
-                  </ThemeButton>
-                  <ThemeButton type="special-icon" onClick={continueWithGoogle}>
-                    <Google fontSize="medium" className="icon" />
-                  </ThemeButton>
+                <div
+                  className={`relative flex-between-center rounded-md ${
+                    passError ? "border-red-400" : "border-[#dadada]"
+                  } border-2 my-3 space-x-2`}
+                >
+                  <input
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    type={passwordShow ? "text" : "password"}
+                    placeholder="Your password"
+                    className="outline-none border-none text-gray-500 placeholder-gray-300 px-3 py-3 flex-1"
+                  />
+                  <span
+                    onClick={() => setPasswordShow((prevState) => !prevState)}
+                    className="absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer pr-2"
+                  >
+                    {passwordShow ? (
+                      <EyeOffIcon className="h-6 icon" />
+                    ) : (
+                      <EyeIcon className="h-6 icon" />
+                    )}
+                  </span>
                 </div>
-                <Divider>OR</Divider>
+                <div className="flex justify-end mb-3">
+                  <span
+                    className="link"
+                    onClick={() => {
+                      setForgetPasswordState(true);
+                    }}
+                  >
+                    Forgot password? Reset
+                  </span>
+                </div>
               </>
             )}
-
-            <form noValidate onSubmit={formAction}>
-              <div className="flex flex-col space-y-2">
-                <input
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  type="email"
-                  placeholder="Email address"
-                  className={`input`}
-                />
-              </div>
-
-              {!forgetPasswordState && (
-                <>
-                  <div
-                    className={`relative flex-between-center rounded-md ${
-                      passError ? "border-red-400" : "border-[#dadada]"
-                    } border-2 my-3 space-x-2`}
-                  >
-                    <input
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      type={passwordShow ? "text" : "password"}
-                      placeholder="Your password"
-                      className="outline-none border-none text-gray-500 placeholder-gray-300 px-3 py-3 flex-1"
-                    />
-                    <span
-                      onClick={() => setPasswordShow((prevState) => !prevState)}
-                      className="absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer pr-2"
-                    >
-                      {passwordShow ? (
-                        <EyeOffIcon className="h-6 icon" />
-                      ) : (
-                        <EyeIcon className="h-6 icon" />
-                      )}
-                    </span>
-                  </div>
-                  <div className="flex justify-end mb-3">
-                    <span
-                      className="link"
-                      onClick={() => {
-                        setForgetPasswordState(true);
-                      }}
-                    >
-                      Forgot password? Reset
-                    </span>
-                  </div>
-                </>
-              )}
-              <div className="flex justify-center mt-8">
-                <ThemeButton fluid size="lg">
-                  {formLabel}
-                </ThemeButton>
-              </div>
-            </form>
-          </div>
-          <div className="mt-3">
-            <span
-              className="link"
-              onClick={() => {
-                router.push({
-                  pathname: "/auth/register",
-                });
-              }}
-            >
-              Don't have an account? Signup
-            </span>
-          </div>
+            <div className="flex justify-center mt-8">
+              <Button
+                size="lg"
+                className="w-full justify-center"
+                loading={signingIn || sendingPasswordResetEmail}
+                onClick={formAction}
+              >
+                {formLabel}
+              </Button>
+            </div>
+          </form>
         </div>
-      </Container>
-    </Layout>
+        <div className="mt-3">
+          <span
+            className="link"
+            onClick={() => {
+              router.push({
+                pathname: "/auth/register",
+              });
+            }}
+          >
+            Don't have an account? Signup
+          </span>
+        </div>
+      </div>
+    </Container>
   );
 };
+
+Login.getLayout = (page) => (
+  <Layout
+    title="Login | Authentication"
+    hideHeader
+    hideFooter
+    className={`min-w-full`}
+  >
+    {page}
+  </Layout>
+);
 
 export default Login;

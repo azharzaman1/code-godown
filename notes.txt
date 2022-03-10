@@ -4,6 +4,7 @@ Aditions:
 Improvements: 
   Multiple Labels Selection per Snippet
   Register username addition
+  Add disabled state to buttons
 
 Fixes:
   Auth Design
