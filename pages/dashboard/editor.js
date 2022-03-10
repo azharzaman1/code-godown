@@ -1,6 +1,6 @@
 import { Paper } from "@mui/material";
-import Editor from "../../../components/Dashboard/Editor";
-import Layout from "../../../components/Dashboard/Layout";
+import Editor from "../../components/Dashboard/Editor";
+import Layout from "../../components/Dashboard/Layout";
 
 const AddCodePanel = () => {
   return (

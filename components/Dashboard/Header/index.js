@@ -3,11 +3,9 @@ import { Paper } from "@mui/material";
 import { SearchIcon } from "@heroicons/react/solid";
 import {
   RESSET_SNIPPET,
-  selectDashboardCurrentState,
   selectFileName,
   selectSnippet,
   selectSnippetName,
-  selectTheme,
   SET_DASHBOARD_CURRENT_STATE,
   SET_SNIPPET,
 } from "../../../redux/slices/appSlice";
@@ -19,11 +17,14 @@ import { NIL as NIL_UUID, v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
 import { extractExtentionAndLanguage, fetcher } from "../../../files/utils";
-import ThemeButton from "../../../components/Generic/Button";
+import Button from "../../../components/Generic/Button";
 import ThemeSwitch from "../../../components/Dashboard/ThemeSwitch";
 import SyntaxThemes from "../../../theming/SyntaxThemes";
 import ThemeHeading from "../../../components/Generic/Heading";
 import useSWR from "swr";
+import Modal from "../../Generic/Modal";
+import { useState } from "react";
+import PreEditor from "../PreEditor";
 
 const DashboardHeader = () => {
   const dispatch = useDispatch();
@@ -32,19 +33,14 @@ const DashboardHeader = () => {
   const fileName = useSelector(selectFileName);
   const userInDB = useSelector(selectUserInDB);
   const { data, error } = useSWR("/api/programming-langs", fetcher);
+  const [addSnippetDialogOpen, setAddSnippetDialogOpen] = useState(false);
   const router = useRouter();
 
   const displaySnippets = router.asPath === "/dashboard";
-  const addingSnippetInfo = router.asPath === "/dashboard/add-snippet";
-  const addingCodeToSnippet = router.asPath === "/dashboard/add-snippet/editor";
-  const savingSnippet = router.asPath === "/dashboard/add-snippet/save";
-
-  console.log(
-    displaySnippets,
-    addingSnippetInfo,
-    addingCodeToSnippet,
-    savingSnippet
-  );
+  const addingSnippetInfo =
+    router.asPath === "/dashboard" && addSnippetDialogOpen;
+  const addingCodeToSnippet = router.asPath === "/dashboard/editor";
+  const savingSnippet = router.asPath === "/dashboard/save-snippet";
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -54,11 +50,12 @@ const DashboardHeader = () => {
   };
 
   const handleBackDirect = () => {
-    router.push({ pathname: "/dashboard/add-snippet/editor" });
+    router.push({ pathname: "/dashboard/editor" });
   };
 
   const pushToEditor = () => {
     if (fileName.includes(".")) {
+      setAddSnippetDialogOpen(false);
       const [fileExtention, language] = extractExtentionAndLanguage(
         fileName,
         data
@@ -97,7 +94,7 @@ const DashboardHeader = () => {
       };
       dispatch(SET_SNIPPET(snippetTemplate));
       router.push({
-        pathname: "/dashboard/add-snippet/editor",
+        pathname: "/dashboard/editor",
       });
     } else {
       enqueueSnackbar(`File name must contain extention, please recheck`, {
@@ -128,11 +125,9 @@ const DashboardHeader = () => {
   const mainButtonTitle =
     addingSnippetInfo || addingCodeToSnippet ? "Continue" : "Save Snippet";
 
-  const mainButtonAction = addingSnippetInfo
-    ? pushToEditor
-    : addingCodeToSnippet
+  const mainButtonAction = addingCodeToSnippet
     ? () => {
-        router.push({ pathname: "/dashboard/add-snippet/save" });
+        router.push({ pathname: "/dashboard/save-snippet" });
       }
     : savingSnippet
     ? handleSnippetSave
@@ -171,47 +166,51 @@ const DashboardHeader = () => {
         {displaySnippets && <ThemeSwitch themes={SyntaxThemes} />}
         {/* Header Dynamic Buttons */}
         {savingSnippet && (
-          <ThemeButton
+          <Button
             type="text-icon"
             startIcon={<ArrowBack />}
             onClick={handleBackDirect}
           >
             Back
-          </ThemeButton>
+          </Button>
         )}
         {!displaySnippets && (
-          <ThemeButton
+          <Button
             type="text-icon"
             startIcon={<Close />}
             onClick={handleDiscard}
           >
             Discard
-          </ThemeButton>
+          </Button>
         )}
         {displaySnippets ? (
-          <ThemeButton
+          <Button
             type="icon"
             endIcon={<Add />}
             onClick={() => {
-              router.push({
-                pathname: "/dashboard/add-snippet",
-              });
+              setAddSnippetDialogOpen(true);
             }}
           >
             Add Snippet
-          </ThemeButton>
+          </Button>
         ) : (
-          // addingSnippetInfo || addingCodeToSnippet || savingSnippet
-          <ThemeButton
+          <Button
             type="icon"
             startIcon={savingSnippet && <Save />}
             endIcon={!savingSnippet && <Send />}
             onClick={mainButtonAction}
           >
             {mainButtonTitle}
-          </ThemeButton>
+          </Button>
         )}
       </div>
+      <Modal
+        open={addSnippetDialogOpen}
+        modalContent={<PreEditor />}
+        setOpen={setAddSnippetDialogOpen}
+        confirmLabel="Add Snippet"
+        confirmAction={pushToEditor}
+      />
     </Paper>
   );
 };

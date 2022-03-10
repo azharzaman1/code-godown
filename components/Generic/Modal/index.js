@@ -9,6 +9,7 @@ import { DoneAll } from "@mui/icons-material";
 const Modal = ({
   title,
   desc,
+  modalContent,
   warning,
   success,
   error,
@@ -57,43 +58,48 @@ const Modal = ({
           >
             <div className="relative inline-block align-bottom bg-white dark:bg-backgroundContrastDark rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
               <div className="bg-white dark:bg-backgroundContrastDark px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <div className="sm:flex sm:items-start">
-                  {warning || error ? (
-                    <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-error bg-opacity-10 sm:mx-0 sm:h-10 sm:w-10">
-                      <ExclamationIcon
-                        className="h-6 w-6 text-error"
-                        aria-hidden="true"
-                      />
-                    </div>
-                  ) : (
-                    <></>
-                  )}
+                {!modalContent ? (
+                  // default node
+                  <div className="sm:flex sm:items-start">
+                    {warning || error ? (
+                      <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-error bg-opacity-10 sm:mx-0 sm:h-10 sm:w-10">
+                        <ExclamationIcon
+                          className="h-6 w-6 text-error"
+                          aria-hidden="true"
+                        />
+                      </div>
+                    ) : (
+                      <></>
+                    )}
 
-                  {success && (
-                    <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-success bg-opacity-10 sm:mx-0 sm:h-10 sm:w-10">
-                      <DoneAll
-                        className="h-6 w-6 text-success"
-                        aria-hidden="true"
-                      />
-                    </div>
-                  )}
+                    {success && (
+                      <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-success bg-opacity-10 sm:mx-0 sm:h-10 sm:w-10">
+                        <DoneAll
+                          className="h-6 w-6 text-success"
+                          aria-hidden="true"
+                        />
+                      </div>
+                    )}
 
-                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                    <Dialog.Title as="h3" className="">
-                      <Heading type="tertiary">{title}</Heading>
-                    </Dialog.Title>
-                    <div className="mt-2">
-                      <Text dim>{desc}</Text>
+                    <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                      <Dialog.Title as="h3" className="">
+                        <Heading type="tertiary">{title}</Heading>
+                      </Dialog.Title>
+                      <div className="mt-2">
+                        <Text dim>{desc}</Text>
+                      </div>
                     </div>
                   </div>
-                </div>
+                ) : (
+                  <>{modalContent}</>
+                )}
               </div>
               <div className="py-2 px-4 flex flex-col sm:flex-row-reverse space-y-3 sm:space-y-0 sm:px-6 bg-gray-50 dark:bg-backgroundContrastDark border-t border-dividerColorDark">
                 <Button
                   onClick={confirmAction}
                   className="justify-center text-center"
                 >
-                  {cancelLabel || "Confirm"}
+                  {confirmLabel || "Confirm"}
                 </Button>
                 <Button
                   type="text"

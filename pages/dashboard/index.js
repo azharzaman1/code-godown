@@ -5,9 +5,6 @@ import SnippetsArchivePanel from "../../components/Dashboard/SnippetsArchivePane
 
 const Dashboard = () => {
   const { theme, setTheme } = useTheme();
-
-  console.log(theme);
-
   useEffect(() => {
     setTheme("dark");
   }, [setTheme]);

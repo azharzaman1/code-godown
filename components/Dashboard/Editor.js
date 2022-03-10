@@ -29,7 +29,7 @@ const MonacoEditor = () => {
     snippetObj?.files?.find((tab) => tab.key == activeTabIndex)
   );
   const [addingNewFile, setAddingNewFile] = useState(false);
-  const [dialogOpen, setOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [newFileName, setNewFileName] = useState("");
   const { data, error } = useSWR("/api/programming-langs", fetcher);
 
@@ -51,8 +51,6 @@ const MonacoEditor = () => {
   }, [snippetObj, activeTabIndex]);
 
   // Preparing Editor
-
-  const monaco = useMonaco();
 
   const editorRef = useRef(null);
 
@@ -243,7 +241,7 @@ const MonacoEditor = () => {
         title={`Delete file`}
         desc={`Are you sure you want to deactivate your account? All of your data will be permanently removed. This action cannot be undone.`}
         open={dialogOpen}
-        setOpen={setOpen}
+        setOpen={setDialogOpen}
         confirmAction={handleFileDelete}
       />
     </div>
