@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
+import { Dropdown } from "primereact/dropdown";
 import {
   selectSyntaxTheme,
   SET_SYNTAX_THEME,
 } from "../../redux/slices/appSlice";
-import { Dropdown } from "primereact/dropdown";
 
 const ThemeSwitch = ({ themes }) => {
   const dispatch = useDispatch();

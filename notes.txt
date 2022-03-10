@@ -1,16 +1,14 @@
-const themePreference = useSelector(selectTheme);
- ${themePreference === "dark" && "dark"}
+Aditions:
+  Skeleton Screens
 
- Aditions:
- Skeleton Screens
-
- Improvements: 
- Multiple Labels Selection per Snippet
+Improvements: 
+  Multiple Labels Selection per Snippet
+  Modal actions design on small viewports
+  Register username addition
 
 Fixes:
-Auth repetitive Messages
-GH auth error display
-Auth Design
- 
+  Editor Tabs Scroll
+  Auth Design
 
- dateExample: Timestamp.fromDate(new Date("December 10, 1815")),
+Snippets:
+  dateExample: Timestamp.fromDate(new Date("December 10, 1815")),
