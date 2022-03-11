@@ -19,13 +19,20 @@ import {
   googleAuthProvider,
 } from "../../firebase";
 import { doc, serverTimestamp, setDoc, getDoc } from "@firebase/firestore";
-import { validateEmail } from "../../files/utils";
+import { regexCodes, validateEmail } from "../../files/utils";
 import { useSnackbar } from "notistack";
 import { useTheme } from "next-themes";
 import Button from "../../components/Generic/Button";
 import Heading from "../../components/Generic/Heading";
+import { useForm } from "react-hook-form";
+import { ErrorMessage } from "./register";
 
 const Login = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ shouldUnregister: true });
   const { theme, setTheme } = useTheme();
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false);
@@ -45,8 +52,9 @@ const Login = () => {
   }, []);
 
   const { enqueueSnackbar } = useSnackbar();
-
   const router = useRouter();
+
+  const onSubmit = (data) => console.log(data);
 
   const signinWithEmailAndPassword = (e) => {
     // sigin
@@ -227,6 +235,8 @@ const Login = () => {
       ? passwordResetRequest
       : signinWithEmailAndPassword;
 
+  console.log("errors", errors);
+
   return (
     <Container className="flex justify-center items-center min-h-screen pt-10">
       <div className="flex flex-col justify-center items-center w-[450px] max-w-[100vw] mx-auto">
@@ -265,42 +275,69 @@ const Login = () => {
             </Heading>
           </div>
 
-          <form noValidate onSubmit={formAction}>
-            <div className="flex flex-col space-y-2">
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="flex flex-col">
               <input
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
                 type="email"
+                defaultValue=""
                 placeholder="Email address"
                 className={`input`}
+                {...register("email", {
+                  required: {
+                    value: true,
+                    message: "Email is requiered for login",
+                  },
+                  pattern: {
+                    value: regexCodes.email,
+                    message: "Email is not valid!",
+                  },
+                })}
               />
+              {errors?.email && (
+                <ErrorMessage message={errors?.email.message} />
+              )}
             </div>
 
             {!forgetPasswordState && (
               <>
-                <div
-                  className={`relative flex-between-center rounded-md ${
-                    passError ? "border-red-400" : "border-[#dadada]"
-                  } border-2 my-3 space-x-2`}
-                >
-                  <input
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    type={passwordShow ? "text" : "password"}
-                    placeholder="Your password"
-                    className="outline-none border-none text-gray-500 placeholder-gray-300 px-3 py-3 flex-1"
-                  />
-                  <span
-                    onClick={() => setPasswordShow((prevState) => !prevState)}
-                    className="absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer pr-2"
+                <div className="flex flex-col">
+                  <div
+                    className={`relative flex items-between items-center rounded-md ${
+                      passError ? "border-red-400" : "border-[#dadada]"
+                    } border-2 my-3 space-x-2`}
                   >
-                    {passwordShow ? (
-                      <EyeOffIcon className="h-6 icon" />
-                    ) : (
-                      <EyeIcon className="h-6 icon" />
-                    )}
-                  </span>
+                    <input
+                      type={passwordShow ? "text" : "password"}
+                      placeholder="Your password"
+                      className="outline-none border-none text-gray-500 placeholder-gray-300 px-3 py-3 flex-1"
+                      {...register("password", {
+                        required: {
+                          value: true,
+                          message: "Password is requiered for login",
+                        },
+                        pattern: {
+                          value: regexCodes.email,
+                          message: "Password is not valid!",
+                        },
+                      })}
+                    />
+
+                    <span
+                      onClick={() => setPasswordShow((prevState) => !prevState)}
+                      className="absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer pr-2"
+                    >
+                      {passwordShow ? (
+                        <EyeOffIcon className="h-6 icon" />
+                      ) : (
+                        <EyeIcon className="h-6 icon" />
+                      )}
+                    </span>
+                  </div>
+                  {errors?.password && (
+                    <ErrorMessage message={errors?.password.message} />
+                  )}
                 </div>
+
                 <div className="flex justify-end mb-3">
                   <span
                     className="link"
@@ -313,12 +350,13 @@ const Login = () => {
                 </div>
               </>
             )}
+            <input type="submit" className="hidden" />
             <div className="flex justify-center mt-8">
               <Button
                 size="lg"
                 className="w-full justify-center"
                 loading={signingIn || sendingPasswordResetEmail}
-                onClick={formAction}
+                onClick={handleSubmit(onSubmit)}
               >
                 {formLabel}
               </Button>

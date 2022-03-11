@@ -47,3 +47,18 @@ export const sortArray = (arr) => {
     return a.key - b.key;
   });
 };
+
+export const regexCodes = {
+  username: /^[A-z][A-z0-9-_]{3,23}$/,
+  password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/,
+  email: /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,7})+$/,
+};
+
+export const formInputGuide = {
+  fullName: `Enter proper full name including Firstname & Lastname like, Robert Downey Jr`,
+  userName: `4 to 24 characters.
+  Must begin with a letter. Letters, numbers, underscores, hyphens allowed.`,
+  email: `Enter valid email containing username, "@" and provider name, like username@gmail.com`,
+  password: `8 to 24 characters.
+  Must include uppercase and lowercase letters, a number and a special character. Allowed special characters: !@#$%`,
+};
