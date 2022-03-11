@@ -5,7 +5,7 @@ import { AccountCircle, Logout } from "@mui/icons-material";
 import { selectUserInDB } from "../../../redux/slices/userSlice";
 import Transition from "../../utils/Transition";
 import { menu } from "./data";
-import { auth } from "../../../client/firebase";
+import { auth } from "../../../firebase";
 import { useRouter } from "next/router";
 import Text from "../Text";
 import { Avatar, Divider } from "@mui/material";
@@ -64,7 +64,7 @@ function UserMenu() {
             }}
           />
           <Text className="hidden md:block">
-            {userDetails?.fullName || "Azhar Zaman"}
+            {userDetails?.fullName || "Display Name"}
           </Text>
           <svg
             className="hidden md:block w-3 h-3 shrink-0 ml-1 fill-current text-slate-400"
@@ -100,8 +100,8 @@ function UserMenu() {
                 }}
               />
               <div className="flex flex-col justify-start">
-                <Text>{userDetails?.fullName || "Azhar Zaman"}</Text>
-                <Text type="info">@{userDetails?.userName || "idrazha"}</Text>
+                <Text>{userDetails?.fullName || "Display Name"}</Text>
+                <Text type="info">@{userDetails?.userName || "username"}</Text>
               </div>
             </div>
           </div>

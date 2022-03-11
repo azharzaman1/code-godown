@@ -27,7 +27,7 @@ import {
   SET_SNIPPET,
   SET_SNIPPET_NAME,
 } from "../../../redux/slices/appSlice";
-import { db } from "../../../client/firebase";
+import { db } from "../../../firebase";
 import { splitAtCharacter } from "../../../files/utils";
 import Text from "../../Generic/Text";
 import Button from "../../Generic/Button";

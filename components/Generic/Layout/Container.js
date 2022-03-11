@@ -1,14 +1,14 @@
-import { Container } from "@mui/material";
+import { Container as MuiContainer } from "@mui/material";
 
-export const LayoutContainer = ({ children, className, ...rest }) => {
+export const Container = ({ children, className, ...rest }) => {
   return (
-    <Container
+    <MuiContainer
       maxWidth={false}
-      className={`${className} w-full max-w-7xl px-3 sm:px-4 md:px-6 lg:px-8 mx-auto`}
+      className={`${className} w-full px-3 sm:px-4 md:px-6 lg:px-8 mx-auto`}
       {...rest}
     >
       {children}
-    </Container>
+    </MuiContainer>
   );
 };
-export default LayoutContainer;
+export default Container;

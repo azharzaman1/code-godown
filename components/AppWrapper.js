@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { auth, db } from "../client/firebase";
+import { auth, db } from "../firebase";
 import { doc, onSnapshot, collection } from "@firebase/firestore";
 import { onAuthStateChanged } from "@firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";

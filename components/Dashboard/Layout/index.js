@@ -6,11 +6,9 @@ import Navigation from "../Navigation";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/router";
 import { Paper } from "@mui/material";
-import SyntaxHighlighter from "react-syntax-highlighter";
-import a11yDark from "react-syntax-highlighter/dist/cjs/styles/hljs/a11y-dark";
 import Header from "../../Generic/Header";
 import Loader from "../../Generic/Loader";
-import LayoutContainer from "../../Generic/Layout/Container";
+import Container from "../../Generic/Layout/Container";
 import { selectSnippet } from "../../../redux/slices/appSlice";
 
 const DashboardLayout = ({
@@ -66,7 +64,7 @@ const DashboardLayout = ({
         <>
           <Header />
           <main>
-            <LayoutContainer className="mt-1">
+            <Container className="mt-1" maxWidth={false}>
               <DashboardHeader />
               <div className="w-full flex flex-col space-y-2 md:flex-row md:space-y-0 mt-1 md:space-x-2 mb-2">
                 {showSidebar && (
@@ -95,7 +93,7 @@ const DashboardLayout = ({
                   </SyntaxHighlighter>
                 </div>
               </Paper> */}
-            </LayoutContainer>
+            </Container>
           </main>
         </>
       )}

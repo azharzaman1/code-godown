@@ -12,7 +12,7 @@ import {
 } from "../../../redux/slices/appSlice";
 import Dialog from "../../Generic/Dialog";
 import { deleteDoc, doc } from "firebase/firestore";
-import { auth, db } from "../../../client/firebase";
+import { auth, db } from "../../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useSnackbar } from "notistack";
 import { useDispatch } from "react-redux";

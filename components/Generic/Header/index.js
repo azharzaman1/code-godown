@@ -10,7 +10,7 @@ import { IconButton } from "@mui/material";
 import { MoonIcon, SunIcon } from "@heroicons/react/outline";
 import { selectTheme } from "../../../redux/slices/appSlice";
 import { selectUserInDB } from "../../../redux/slices/userSlice";
-import { auth } from "../../../client/firebase";
+import { auth } from "../../../firebase";
 import MenuDropdown from "./MenuDropdown";
 import { callsToAction, resources, solutions } from "./data";
 import ThemeButton from "../Button";

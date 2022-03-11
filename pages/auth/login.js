@@ -17,7 +17,7 @@ import {
   db,
   githubAuthProvider,
   googleAuthProvider,
-} from "../../client/firebase";
+} from "../../firebase";
 import { doc, serverTimestamp, setDoc, getDoc } from "@firebase/firestore";
 import { validateEmail } from "../../files/utils";
 import { useSnackbar } from "notistack";
@@ -228,7 +228,7 @@ const Login = () => {
       : signinWithEmailAndPassword;
 
   return (
-    <Container className="flex justify-center items-center min-h-screen">
+    <Container className="flex justify-center items-center min-h-screen pt-10">
       <div className="flex flex-col justify-center items-center w-[450px] max-w-[100vw] mx-auto">
         <div className="form__header">
           <Heading type="secondary" className="mb-4">
@@ -258,6 +258,12 @@ const Login = () => {
               <Divider>OR</Divider>
             </>
           )}
+
+          <div className="mt-3 mb-2">
+            <Heading type="tertiary" className="text-center">
+              Login with email
+            </Heading>
+          </div>
 
           <form noValidate onSubmit={formAction}>
             <div className="flex flex-col space-y-2">

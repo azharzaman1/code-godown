@@ -12,7 +12,7 @@ import {
 import { selectUserInDB } from "../../../redux/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { doc } from "firebase/firestore";
-import { db } from "../../../client/firebase";
+import { db } from "../../../firebase";
 import { NIL as NIL_UUID, v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
