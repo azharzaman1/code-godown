@@ -1,4 +1,6 @@
 import Head from "next/head";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 import ThemeWrapper from "../theming/ThemeWrapper";
 import AppWrapper from "../components/AppWrapper";
 import { Provider } from "react-redux";
@@ -26,6 +28,8 @@ Router?.events?.on("routeChangeStart", progress.start);
 Router?.events?.on("routeChangeComplete", progress.finish);
 Router?.events?.on("routeChangeError", progress.finish);
 
+const queryClient = new QueryClient();
+
 function MyApp({ Component, pageProps }) {
   const getLayout = Component.getLayout ?? ((page) => page);
 
@@ -51,9 +55,14 @@ function MyApp({ Component, pageProps }) {
       <ThemeProvider attribute="class">
         <Provider store={store}>
           <ThemeWrapper>
-            <SnackbarProvider maxSnack={3}>
-              <AppWrapper>{getLayout(<Component {...pageProps} />)}</AppWrapper>
-            </SnackbarProvider>
+            <QueryClientProvider client={queryClient}>
+              <SnackbarProvider maxSnack={3}>
+                <AppWrapper>
+                  {getLayout(<Component {...pageProps} />)}
+                </AppWrapper>
+                <ReactQueryDevtools initialIsOpen={false} />
+              </SnackbarProvider>
+            </QueryClientProvider>
           </ThemeWrapper>
         </Provider>
       </ThemeProvider>

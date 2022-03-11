@@ -3,7 +3,6 @@ import { useState } from "react";
 import { GitHub, Google, Info } from "@mui/icons-material";
 import { EyeIcon, EyeOffIcon } from "@heroicons/react/outline";
 import {
-  createUserWithEmailAndPassword,
   GithubAuthProvider,
   GoogleAuthProvider,
   signInWithPopup,
@@ -17,124 +16,134 @@ import {
   githubAuthProvider,
   googleAuthProvider,
 } from "../../firebase";
-import {
-  formInputGuide,
-  regexCodes,
-  validateEmail,
-  validatePassword,
-} from "../../files/utils";
+import { formInputGuide, regexCodes } from "../../files/utils";
 import Layout from "../../components/Generic/Layout";
 import Container from "../../components/Generic/Layout/Container";
 import Button from "../../components/Generic/Button";
 import Heading from "../../components/Generic/Heading";
 import Tooltip from "../../components/Generic/Tooltip";
 import { useForm } from "react-hook-form";
+import { useMutation } from "react-query";
+import axios from "../../axios";
 
 const Register = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm({ shouldUnregister: true });
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState(false);
-  const [password, setPassword] = useState("");
-  const [passError, setPassError] = useState(false);
   const [passwordShow, setPasswordShow] = useState(false);
-  const [fullName, setFullName] = useState("");
-  const [nameError, setNameError] = useState(false);
-  const [userName, setUserName] = useState("");
-  const [userNameError, setUserNameError] = useState(false);
-
   const [ghAuthInProgress, setGhAuthInProgress] = useState(false);
   const [googleAuthInProgress, setGoogleAuthInProgress] = useState(false);
   const [registering, setRegistering] = useState(false);
+
+  const {
+    data,
+    isLoading,
+    isSuccess,
+    error,
+    mutate: registerUser,
+  } = useMutation(async (userData) => {
+    return await axios.post("/api/v1/auth/register", userData);
+  });
+
+  console.log(data, error);
 
   const { enqueueSnackbar } = useSnackbar();
 
   const router = useRouter();
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    console.log(data);
+    const { fullName, userName, email, password } = data;
 
-  const signupWithEmailAndPassword = (e) => {
-    e.preventDefault();
-    setNameError(false);
-    setEmailError(false);
-    setPassError(false);
-    if (
-      validateEmail(email) &&
-      validatePassword(password) &&
-      userName !== "" &&
-      fullName !== ""
-    ) {
-      setRegistering(true);
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          if (userCredential.user) {
-            const user = userCredential?.user;
-            const docRef = doc(db, "users", user.uid);
-
-            setDoc(docRef, {
-              userDetails: {
-                userID: user.uid,
-                fullName,
-                userName,
-                displayName: fullName,
-                email: user.email,
-                password,
-                emailVerified: user.emailVerified,
-                registeredAt: serverTimestamp(),
-                accountType: "email_password",
-              },
-              snippets: [],
-            });
-
-            setRegistering(false);
-
-            enqueueSnackbar(`Signup Successful`, {
-              variant: "success",
-            });
-
-            enqueueSnackbar(`Login Successful`, {
-              variant: "success",
-            });
-
-            router.replace("/");
-          }
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          setRegistering(false);
-          enqueueSnackbar(`Error Code: ${errorCode}: ${errorMessage}`, {
-            variant: "error",
-          });
-        });
-    } else {
-      if (fullName === "") {
-        setNameError(true);
-      }
-
-      if (userName === "") {
-        setUserNameError(true);
-      }
-
-      if (!validateEmail(email)) {
-        setEmailError(true);
-        setEmail("");
-      }
-
-      if (!validatePassword(password)) {
-        setPassError(true);
-        setPassword("");
-      }
-
-      enqueueSnackbar(`Please recheck inputs, and try again`, {
-        variant: "warning",
-      });
-    }
+    registerUser({
+      firstName: fullName.split(" ")[0],
+      fullName,
+      username: userName,
+      email,
+      pswd: password,
+    });
   };
+
+  // const signupWithEmailAndPassword = (e) => {
+  //   e.preventDefault();
+  //   setNameError(false);
+  //   setEmailError(false);
+  //   setPassError(false);
+  //   if (
+  //     validateEmail(email) &&
+  //     validatePassword(password) &&
+  //     userName !== "" &&
+  //     fullName !== ""
+  //   ) {
+  //     setRegistering(true);
+  //     createUserWithEmailAndPassword(auth, email, password)
+  //       .then((userCredential) => {
+  //         if (userCredential.user) {
+  //           const user = userCredential?.user;
+  //           const docRef = doc(db, "users", user.uid);
+
+  //           setDoc(docRef, {
+  //             userDetails: {
+  //               userID: user.uid,
+  //               fullName,
+  //               userName,
+  //               displayName: fullName,
+  //               email: user.email,
+  //               password,
+  //               emailVerified: user.emailVerified,
+  //               registeredAt: serverTimestamp(),
+  //               accountType: "email_password",
+  //             },
+  //             snippets: [],
+  //           });
+
+  //           setRegistering(false);
+
+  //           enqueueSnackbar(`Signup Successful`, {
+  //             variant: "success",
+  //           });
+
+  //           enqueueSnackbar(`Login Successful`, {
+  //             variant: "success",
+  //           });
+
+  //           router.replace("/");
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         const errorCode = error.code;
+  //         const errorMessage = error.message;
+  //         setRegistering(false);
+  //         enqueueSnackbar(`Error Code: ${errorCode}: ${errorMessage}`, {
+  //           variant: "error",
+  //         });
+  //       });
+  //   } else {
+  //     if (fullName === "") {
+  //       setNameError(true);
+  //     }
+
+  //     if (userName === "") {
+  //       setUserNameError(true);
+  //     }
+
+  //     if (!validateEmail(email)) {
+  //       setEmailError(true);
+  //       setEmail("");
+  //     }
+
+  //     if (!validatePassword(password)) {
+  //       setPassError(true);
+  //       setPassword("");
+  //     }
+
+  //     enqueueSnackbar(`Please recheck inputs, and try again`, {
+  //       variant: "warning",
+  //     });
+  //   }
+  // };
 
   const continueWithGoogle = () => {
     signInWithPopup(auth, googleAuthProvider)
@@ -235,11 +244,8 @@ const Register = () => {
       });
   };
 
-  console.log("render");
-  console.log("errors", errors);
-
   return (
-    <Container className="flex justify-center items-center min-h-screen pt-10">
+    <Container className="flex justify-center items-center min-h-screen">
       <div className="flex flex-col justify-center items-center w-[450px] max-w-[100vw] mx-auto">
         <div className="form__header">
           <Heading type="secondary" className="mb-4">
@@ -384,7 +390,7 @@ const Register = () => {
             <input type="submit" className="hidden" />
             <div className="flex justify-center mt-8">
               <Button
-                loading={registering}
+                loading={isLoading}
                 size="lg"
                 className="w-full justify-center"
                 onClick={handleSubmit(onSubmit)}
