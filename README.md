@@ -1,8 +1,8 @@
 # Full Stack Code Godown
-Building MERN Stack Code Godown, a code storing, code sharing, code Manupulating platform.
+Building MERN Stack Code Godown, a <b>code storing, code sharing, code Manupulating</b> platform.
 
-Development link: https://code-godown.vercel.app/
-Portfolio link: https://azharzaman.com
+<b>Development link:</b> https://code-godown.vercel.app/ <br />
+<b>Portfolio link:</b> https://azharzaman.com
 
 ## Used technologies:
 • Javascript(es6+) <br/>
@@ -27,7 +27,7 @@ Portfolio link: https://azharzaman.com
 • hero-icons <br/>
 • material-icons <br/>
 
-### Future testing
+### Code testing (in future)
 • Jest <br/>
 • react-testing-library (unit testing) <br/>
 • playwright(e2e testing) <br/>
