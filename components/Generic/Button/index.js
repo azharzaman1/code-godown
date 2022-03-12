@@ -58,9 +58,7 @@ const ThemeButton = ({
         href={href}
         className={`text-primaryText bg-transparent dark:text-primaryTextDark hover:bg-primary hover:bg-opacity-10  hover:border-gray-400 rounded cursor-pointer transition duration-150 ${
           shrinkTrans && "active:scale-95"
-        } ${sm ? "py-2 px-3" : "px-5 py-2.5"} ${
-          fluid && "min-w-full text-center"
-        } ${className}`}
+        } ${sm ? "py-2 px-3" : "px-5 py-2.5"} ${className}`}
         {...rest}
       >
         {children}

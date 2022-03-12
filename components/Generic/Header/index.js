@@ -70,7 +70,12 @@ export default function Header({ themeSwitch = false, variant = "dark" }) {
               )}
             </Popover>
 
-            <a href="#">Docs</a>
+            <a
+              href="#"
+              className="text-base font-medium text-secondaryText dark:text-secondaryTextDark hover:text-primary"
+            >
+              Docs
+            </a>
 
             <Popover className="relative">
               {({ open }) => (

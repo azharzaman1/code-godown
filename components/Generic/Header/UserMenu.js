@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Logout } from "@mui/icons-material";
-import { selectUser } from "../../../redux/slices/userSlice";
+import { selectUser, selectUserInDB } from "../../../redux/slices/userSlice";
 import Transition from "../../utils/Transition";
 import { dropdownMenu } from "./data";
 import { auth } from "../../../firebase";
@@ -11,8 +11,8 @@ import { Avatar, Divider } from "@mui/material";
 
 function UserMenu() {
   const [userMenu, setUserMenu] = useState(dropdownMenu);
-  const currentUser = useSelector(selectUser);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const currentUser = useSelector(selectUserInDB)?.userDetails;
 
   const trigger = useRef(null);
   const dropdown = useRef(null);
@@ -63,7 +63,7 @@ function UserMenu() {
             }}
           />
           <Text className="hidden md:block">
-            {currentUser?.fullName || "Display Name"}
+            {currentUser?.fullName || currentUser?.displayName || "User"}
           </Text>
           <svg
             className="hidden md:block w-3 h-3 shrink-0 ml-1 fill-current text-slate-400"
@@ -99,8 +99,10 @@ function UserMenu() {
                 }}
               />
               <div className="flex flex-col justify-start">
-                <Text>{currentUser?.fullName || "Display Name"}</Text>
-                <Text type="info">@{currentUser?.username || "username"}</Text>
+                <Text>
+                  {currentUser?.fullName || currentUser?.displayName || "User"}
+                </Text>
+                <Text type="info">@{currentUser?.userName || "username"}</Text>
               </div>
             </div>
           </div>

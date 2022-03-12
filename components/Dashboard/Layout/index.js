@@ -10,6 +10,7 @@ import Header from "../../Generic/Header";
 import Loader from "../../Generic/Loader";
 import Container from "../../Generic/Layout/Container";
 import { selectSnippet } from "../../../redux/slices/appSlice";
+import { selectSnippets } from "../../../redux/slices/userSlice";
 
 const DashboardLayout = ({
   children,
@@ -22,6 +23,7 @@ const DashboardLayout = ({
   const snippet = useSelector(selectSnippet);
   const { theme, setTheme } = useTheme();
   const [dashboardLoading, setDashboardLoading] = useState(true);
+  const userSnippets = useSelector(selectSnippets);
 
   useEffect(() => {
     setTheme("dark");
@@ -35,7 +37,7 @@ const DashboardLayout = ({
 
   const router = useRouter();
 
-  const showSidebar = router.asPath === "/dashboard";
+  const showSidebar = router.asPath === "/dashboard" && userSnippets.length > 0;
 
   console.log("Snippet", snippet);
 
@@ -50,11 +52,6 @@ const DashboardLayout = ({
           }
         />
         <link rel="icon" href={icon || "/favicon.ico"} />
-        {theme === "dark" ? (
-          <link rel="stylesheet" href="pr-dark-theme/theme.css" />
-        ) : (
-          <link rel="stylesheet" href="pr-dark-theme/theme.css" />
-        )}
       </Head>
       {dashboardLoading ? (
         <div className="loader-container w-full min-h-screen flex justify-center items-center">
@@ -66,33 +63,20 @@ const DashboardLayout = ({
           <main>
             <Container className="mt-1" maxWidth={false}>
               <DashboardHeader />
-              <div className="w-full flex flex-col space-y-2 md:flex-row md:space-y-0 mt-1 md:space-x-2 mb-2">
+              <div className="w-full flex flex-col space-y-2 md:flex-row md:space-y-0 mt-2 md:space-x-2 mb-2">
                 {showSidebar && (
-                  <Paper className="w-full md:w-1/6 mt-1">
+                  <Paper className="w-full md:w-1/6">
                     <Navigation />
                   </Paper>
                 )}
                 <Paper
-                  className={`w-full ${
+                  className={`w-full flex items-center justify-center min-h-[60vh] bg-backgroundV1 dark:bg-backgroundV1Dark border-borderColor dark:border-dividerColor ${
                     showSidebar && "md:w-5/6"
-                  } bg-backgroundV1 dark:bg-backgroundV1Dark border-borderColor dark:border-dividerColor`}
+                  }`}
                 >
                   {children}
                 </Paper>
               </div>
-              {/* <Paper>
-                <div>
-                  <SyntaxHighlighter
-                    language={"json"}
-                    style={a11yDark}
-                    wrapLongLines
-                    showLineNumbers
-                    lineNumberStyle={{ fontSize: "10px" }}
-                  >
-                    {JSON.stringify(snippet, null, "\t")}
-                  </SyntaxHighlighter>
-                </div>
-              </Paper> */}
             </Container>
           </main>
         </>

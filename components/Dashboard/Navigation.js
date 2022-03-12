@@ -1,8 +1,12 @@
-import ThemeText from "../Generic/Text";
+import Text from "../Generic/Text";
 
 const Navigation = () => {
   return (
-    <div className="w-full min-h-[500px]">{/* <ThemeText></ThemeText> */}</div>
+    <div className="w-full">
+      <Text dim className="text-center">
+        Navigation
+      </Text>
+    </div>
   );
 };
 

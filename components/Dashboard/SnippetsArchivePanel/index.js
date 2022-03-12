@@ -1,14 +1,16 @@
-import { ArrowBack, Send } from "@mui/icons-material";
 import { Grid } from "@mui/material";
 import { useSelector } from "react-redux";
 import { selectSnippets } from "../../../redux/slices/userSlice";
+import Heading from "../../Generic/Heading";
+import Button from "../../Generic/Button";
 import SnippetCard from "./SnippetCard";
+import { Add, DeleteSweep } from "@mui/icons-material";
 
 const SnippetsArchivePanel = () => {
   const snippets = useSelector(selectSnippets);
   return (
-    <div className="dashboard__snippetsArchiveCont flex flex-col md:flex-row mt-1">
-      <div className="archivePanel__right w-full">
+    <div className="dashboard__snippetsArchiveCont w-full">
+      {snippets.length > 0 ? (
         <Grid
           container
           spacing={{ xs: 1, md: 2 }}
@@ -25,7 +27,20 @@ const SnippetsArchivePanel = () => {
             />
           ))}
         </Grid>
-      </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center space-y-5">
+          <DeleteSweep
+            sx={{
+              fontSize: 100,
+              color: "lightgray",
+            }}
+          />
+          <Heading type="secondary">No Snippets Found!</Heading>
+          <Button type="icon" endIcon={<Add />}>
+            Create
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

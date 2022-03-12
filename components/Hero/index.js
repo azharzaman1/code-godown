@@ -2,6 +2,7 @@ import { Popover } from "@headlessui/react";
 import Button from "../Generic/Button";
 import Heading from "../Generic/Heading";
 import ThemeText from "../Generic/Text";
+import Link from "next/link";
 
 export default function Hero() {
   return (
@@ -38,9 +39,11 @@ export default function Hero() {
               </ThemeText>
               <div className="mt-5 md:mt-8 lg:mt-10 flex items-center justify-center lg:justify-start space-x-3">
                 <div className="flex flex-wrap space-x-3 items-center justify-evenly">
-                  <Button className="mt-2" size="lg">
-                    Get Started
-                  </Button>
+                  <Link href="/auth/login">
+                    <Button className="mt-2" size="lg">
+                      Get Started
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>

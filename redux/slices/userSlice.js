@@ -4,18 +4,45 @@ export const userSlice = createSlice({
   name: "user",
   initialState: {
     currentUser: null,
+    userInDB: null,
+    loggedOutRecently: false,
+    snippets: [],
   },
   reducers: {
-    SET_USER: (state, action) => {
+    SETUSER: (state, action) => {
       return {
         ...state,
         currentUser: action.payload,
+        loggedOutRecently: false,
+      };
+    },
+
+    SET_USER_FROM_DB: (state, action) => {
+      return {
+        ...state,
+        userInDB: action.payload,
+      };
+    },
+
+    SET_SNIPPETS: (state, action) => {
+      return {
+        ...state,
+        snippets: action.payload,
+      };
+    },
+
+    LOGOUT: (state, action) => {
+      return {
+        ...state,
+        currentUser: action.payload,
+        loggedOutRecently: true,
       };
     },
   },
 });
 
-export const { SET_USER } = userSlice.actions;
+export const { SETUSER, LOGOUT, SET_USER_FROM_DB, SET_SNIPPETS } =
+  userSlice.actions;
 
 export const selectUser = (state) => state.userStore.currentUser;
 export const selectUserInDB = (state) => state.userStore.userInDB;

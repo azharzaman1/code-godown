@@ -22,7 +22,7 @@ const Heading = ({ type, className, children, ...rest }) => {
   if (type === "tertiary")
     return (
       <h2
-        className={`tertiary-heading ${className} text-base lg:text-lg font-medium text-primaryText dark:text-primaryTextDark`}
+        className={`tertiary-heading ${className} text-sm md:text-base lg:text-lg font-medium text-primaryText dark:text-primaryTextDark`}
         {...rest}
       >
         {children}

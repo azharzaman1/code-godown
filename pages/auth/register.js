@@ -3,6 +3,7 @@ import { useState } from "react";
 import { GitHub, Google, Info } from "@mui/icons-material";
 import { EyeIcon, EyeOffIcon } from "@heroicons/react/outline";
 import {
+  createUserWithEmailAndPassword,
   GithubAuthProvider,
   GoogleAuthProvider,
   signInWithPopup,
@@ -68,17 +69,60 @@ const Register = () => {
 
   const router = useRouter();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     setRegistering(true);
     const { fullName, userName, email, password } = data;
 
-    registerUser({
-      firstName: fullName.split(" ")[0],
-      fullName,
-      username: userName,
-      email,
-      pswd: password,
-    });
+    await createUserWithEmailAndPassword(auth, email, password)
+      .then(async (userCredential) => {
+        if (userCredential.user) {
+          const user = userCredential?.user;
+          const docRef = doc(db, "users", user.uid);
+
+          await setDoc(docRef, {
+            userDetails: {
+              userID: user.uid,
+              fullName,
+              userName,
+              displayName: fullName,
+              email: user.email,
+              password,
+              emailVerified: user.emailVerified,
+              registeredAt: serverTimestamp(),
+              accountType: "email_password",
+            },
+            snippets: [],
+          });
+
+          setRegistering(false);
+
+          enqueueSnackbar(`Signup Successful`, {
+            variant: "success",
+          });
+
+          enqueueSnackbar(`Login Successful`, {
+            variant: "success",
+          });
+
+          router.replace("/");
+        }
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        setRegistering(false);
+        enqueueSnackbar(`Error Code: ${errorCode}: ${errorMessage}`, {
+          variant: "error",
+        });
+      });
+
+    // registerUser({
+    //   firstName: fullName.split(" ")[0],
+    //   fullName,
+    //   username: userName,
+    //   email,
+    //   pswd: password,
+    // });
   };
 
   const continueWithGoogle = () => {
@@ -238,6 +282,7 @@ const Register = () => {
             <div className="flex flex-col w-full">
               <input
                 type="text"
+                name="userName"
                 defaultValue=""
                 {...register("userName", {
                   required: { value: true, message: "Username is requiered" },
@@ -262,6 +307,7 @@ const Register = () => {
 
             <div className="flex flex-col w-full">
               <input
+                name="email"
                 type="email"
                 defaultValue=""
                 {...register("email", {

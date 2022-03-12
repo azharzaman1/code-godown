@@ -9,6 +9,7 @@ import {
   GithubAuthProvider,
   GoogleAuthProvider,
   sendPasswordResetEmail,
+  signInWithEmailAndPassword,
   signInWithPopup,
 } from "@firebase/auth";
 import {
@@ -83,9 +84,29 @@ const Login = () => {
     }
   );
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     setSigningIn(true);
-    login({ email: data.email, pswd: data.password });
+    const { email, password } = data;
+
+    await signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        enqueueSnackbar(`Login Successful`, {
+          variant: "success",
+        });
+        setSigningIn(false);
+        router.replace("/");
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        setSigningIn(false);
+        enqueueSnackbar(`Error Code: ${errorCode}: ${errorMessage}`, {
+          variant: "error",
+        });
+      });
+
+    // login({ email: email, pswd: password });
   };
 
   const passwordResetRequest = (e) => {
@@ -188,7 +209,7 @@ const Login = () => {
           // Setting to db
           const docRef = doc(db, "users", user.uid);
 
-          setDoc(docRef, {
+          await setDoc(docRef, {
             userDetails: {
               userID: user.uid,
               fullName: "",
