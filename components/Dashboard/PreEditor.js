@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux";
 import {
   selectFileName,
   selectSnippetName,
-  selectTheme,
   SET_FILE_NAME,
   SET_SNIPPET_NAME,
 } from "../../redux/slices/appSlice";
@@ -15,7 +14,6 @@ const PreEditor = () => {
   const dispatch = useDispatch();
   const snippetName = useSelector(selectSnippetName);
   const fileName = useSelector(selectFileName);
-  const themePreference = useSelector(selectTheme);
 
   return (
     <Paper className="p-4 pt-2">

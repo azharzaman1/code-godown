@@ -1,28 +1,23 @@
 import { Fragment } from "react";
+import { useRouter } from "next/dist/client/router";
 import { Popover, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
-import Link from "next/link";
-import Router, { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useTheme } from "next-themes";
 import { IconButton } from "@mui/material";
 import { MoonIcon, SunIcon } from "@heroicons/react/outline";
-import { selectTheme } from "../../../redux/slices/appSlice";
-import { selectUserInDB } from "../../../redux/slices/userSlice";
+import { selectUser } from "../../../redux/slices/userSlice";
 import { auth } from "../../../firebase";
 import MenuDropdown from "./MenuDropdown";
 import { callsToAction, resources, solutions } from "./data";
 import ThemeButton from "../Button";
-import { Button } from "primereact/button";
 import UserMenu from "./UserMenu";
 
 export default function Header({ themeSwitch = false, variant = "dark" }) {
   const router = useRouter();
-  const themePreference = useSelector(selectTheme);
-  const userInDB = useSelector(selectUserInDB);
-  const [user, loading, error] = useAuthState(auth);
   const { theme, setTheme } = useTheme();
+  const currentUser = useSelector(selectUser);
 
   const handleLoginRedirect = () => {
     router.push({
@@ -100,7 +95,7 @@ export default function Header({ themeSwitch = false, variant = "dark" }) {
                   aria-label="fingerprint"
                   color="secondary"
                 >
-                  {themePreference === "dark" ? (
+                  {theme === "dark" ? (
                     <SunIcon className={`h-8 p-1`} />
                   ) : (
                     <MoonIcon className="h-8 p-1" />
@@ -110,7 +105,7 @@ export default function Header({ themeSwitch = false, variant = "dark" }) {
             )}
 
             <div className="hidden md:flex items-center justify-end">
-              {user ? (
+              {currentUser ? (
                 <UserMenu />
               ) : (
                 <div className="flex items-center space-x-3">

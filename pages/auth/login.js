@@ -9,7 +9,6 @@ import {
   GithubAuthProvider,
   GoogleAuthProvider,
   sendPasswordResetEmail,
-  signInWithEmailAndPassword,
   signInWithPopup,
 } from "@firebase/auth";
 import {
@@ -19,25 +18,26 @@ import {
   googleAuthProvider,
 } from "../../firebase";
 import { doc, serverTimestamp, setDoc, getDoc } from "@firebase/firestore";
-import { regexCodes, validateEmail } from "../../files/utils";
+import { regexCodes } from "../../files/utils";
 import { useSnackbar } from "notistack";
 import { useTheme } from "next-themes";
 import Button from "../../components/Generic/Button";
 import Heading from "../../components/Generic/Heading";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "./register";
+import { useMutation } from "react-query";
+import axios from "../../axios";
+import { useDispatch } from "react-redux";
+import { SET_USER } from "../../redux/slices/userSlice";
 
 const Login = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({ shouldUnregister: true });
   const { theme, setTheme } = useTheme();
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState(false);
-  const [password, setPassword] = useState("");
-  const [passError, setPassError] = useState(false);
+  useEffect(() => {
+    setTheme("light");
+  }, []);
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
   const [passwordShow, setPasswordShow] = useState(false);
   const [forgetPasswordState, setForgetPasswordState] = useState(false);
   const [resetEmailSent, setResetEmailSent] = useState(false);
@@ -47,40 +47,45 @@ const Login = () => {
   const [ghAuthInProgress, setGhAuthInProgress] = useState(false);
   const [googleAuthInProgress, setGoogleAuthInProgress] = useState(false);
 
-  useEffect(() => {
-    setTheme("light");
-  }, []);
+  const {
+    reset,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ shouldUnregister: true });
 
-  const { enqueueSnackbar } = useSnackbar();
-  const router = useRouter();
-
-  const onSubmit = (data) => console.log(data);
-
-  const signinWithEmailAndPassword = (e) => {
-    // sigin
-    e.preventDefault();
-    if (validateEmail(email)) {
-      setSigningIn(true);
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          // Signed in
-          enqueueSnackbar(`Login Successful`, {
-            variant: "success",
-          });
-          setSigningIn(false);
-          router.replace("/");
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          setSigningIn(false);
-          enqueueSnackbar(`Error Code: ${errorCode}: ${errorMessage}`, {
-            variant: "error",
-          });
+  const { mutate: login } = useMutation(
+    async (login) => {
+      return await axios.post("/api/v1/auth/login", login);
+    },
+    {
+      onSuccess: (res) => {
+        // stop loading
+        setSigningIn(false);
+        // push to redux store
+        dispatch(SET_USER(res.data.user));
+        // reset form
+        reset();
+        // notify
+        enqueueSnackbar(res.statusText, {
+          variant: "success",
         });
-    } else {
-      setEmailError(true);
+        // push to home
+        if (res.status === 200 || res.status === 201) router.replace("/");
+      },
+      onError: (err) => {
+        setSigningIn(false);
+        const statusText = err.response.statusText;
+        enqueueSnackbar(statusText, {
+          variant: "error",
+        });
+      },
     }
+  );
+
+  const onSubmit = (data) => {
+    setSigningIn(true);
+    login({ email: data.email, pswd: data.password });
   };
 
   const passwordResetRequest = (e) => {
@@ -233,9 +238,7 @@ const Login = () => {
         }
       : forgetPasswordState
       ? passwordResetRequest
-      : signinWithEmailAndPassword;
-
-  console.log("errors", errors);
+      : handleSubmit(onSubmit);
 
   return (
     <Container className="flex justify-center items-center min-h-screen pt-10">
@@ -285,7 +288,7 @@ const Login = () => {
                 {...register("email", {
                   required: {
                     value: true,
-                    message: "Email is requiered for login",
+                    message: "Email is required for login",
                   },
                   pattern: {
                     value: regexCodes.email,
@@ -302,9 +305,7 @@ const Login = () => {
               <>
                 <div className="flex flex-col">
                   <div
-                    className={`relative flex items-between items-center rounded-md ${
-                      passError ? "border-red-400" : "border-[#dadada]"
-                    } border-2 my-3 space-x-2`}
+                    className={`relative flex items-between items-center rounded-md border-2 my-3 space-x-2`}
                   >
                     <input
                       type={passwordShow ? "text" : "password"}
@@ -313,10 +314,10 @@ const Login = () => {
                       {...register("password", {
                         required: {
                           value: true,
-                          message: "Password is requiered for login",
+                          message: "Password is required for login",
                         },
                         pattern: {
-                          value: regexCodes.email,
+                          value: regexCodes.password,
                           message: "Password is not valid!",
                         },
                       })}
@@ -356,7 +357,7 @@ const Login = () => {
                 size="lg"
                 className="w-full justify-center"
                 loading={signingIn || sendingPasswordResetEmail}
-                onClick={handleSubmit(onSubmit)}
+                onClick={formAction}
               >
                 {formLabel}
               </Button>

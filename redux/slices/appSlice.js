@@ -5,15 +5,11 @@ export const appSlice = createSlice({
   initialState: {
     snippetName: "New Snippet",
     fileName: "",
-    themePreference: "dark",
     snippet: {},
     editorActiveTabIndex: 0,
     labelName: "",
-    selectedLabelKey: 0,
     syntaxTheme: "a11yDark",
-    loading: false,
     dashboardLoading: true,
-    dashboardCurrentState: "displaySnippets",
   },
   reducers: {
     SET_SNIPPET_NAME: (state, action) => {
@@ -26,12 +22,6 @@ export const appSlice = createSlice({
       return {
         ...state,
         fileName: action.payload,
-      };
-    },
-    SET_THEME: (state, action) => {
-      return {
-        ...state,
-        themePreference: action.payload,
       };
     },
     SET_SNIPPET: (state, action) => {
@@ -52,7 +42,6 @@ export const appSlice = createSlice({
         snippet: {},
         snippetName: "",
         fileName: "",
-        selectedLabelKey: 0,
         labelName: "",
         editorActiveTabIndex: 0,
       };
@@ -63,34 +52,16 @@ export const appSlice = createSlice({
         labelName: action.payload,
       };
     },
-    SET_SELECTED_LABEL_KEY: (state, action) => {
-      return {
-        ...state,
-        selectedLabelKey: action.payload,
-      };
-    },
     SET_SYNTAX_THEME: (state, action) => {
       return {
         ...state,
         syntaxTheme: action.payload,
       };
     },
-    SET_LOADING: (state, action) => {
-      return {
-        ...state,
-        loading: action.payload,
-      };
-    },
     SET_DASHBOARD_LOADING: (state, action) => {
       return {
         ...state,
         dashboardLoading: action.payload,
-      };
-    },
-    SET_DASHBOARD_CURRENT_STATE: (state, action) => {
-      return {
-        ...state,
-        dashboardCurrentState: action.payload,
       };
     },
   },
@@ -114,15 +85,11 @@ export const {
 
 export const selectSnippetName = (state) => state.appStore.snippetName;
 export const selectFileName = (state) => state.appStore.fileName;
-export const selectTheme = (state) => state.appStore.themePreference;
 export const selectSnippet = (state) => state.appStore.snippet;
 export const selectActiveTabIndex = (state) =>
   state.appStore.editorActiveTabIndex;
 export const selectLabelName = (state) => state.appStore.labelName;
-export const selectSelectedLabelKey = (state) =>
-  state.appStore.selectedLabelKey;
 export const selectSyntaxTheme = (state) => state.appStore.syntaxTheme;
-export const selectLoading = (state) => state.appStore.loading;
 export const selectDashboardLoading = (state) =>
   state.appStore.dashboardLoading;
 export const selectDashboardCurrentState = (state) =>

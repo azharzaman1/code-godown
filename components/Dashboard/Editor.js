@@ -1,17 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { IconButton, Tooltip } from "@mui/material";
 import { useRouter } from "next/dist/client/router";
-import Editor, { useMonaco } from "@monaco-editor/react";
+import Editor from "@monaco-editor/react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { PlusIcon } from "@heroicons/react/outline";
 import ThemeButton from "../Generic/Button";
-import { NIL as NIL_UUID, v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 import { useSnackbar } from "notistack";
 import {
   selectActiveTabIndex,
   selectSnippet,
-  selectTheme,
   SET_EDITOR_ACTIVE_TAB_INDEX,
   SET_SNIPPET,
 } from "../../redux/slices/appSlice";
@@ -19,11 +18,12 @@ import { extractExtentionAndLanguage, fetcher } from "../../files/utils";
 import Loader from "../Generic/Loader";
 import Modal from "../Generic/Modal";
 import useSWR from "swr";
+import { useTheme } from "next-themes";
 
 const MonacoEditor = () => {
   const dispatch = useDispatch();
   let snippetObj = useSelector(selectSnippet);
-  const themePreference = useSelector(selectTheme);
+  const { theme: themePreference, setTheme } = useTheme();
   const activeTabIndex = useSelector(selectActiveTabIndex);
   const [activeTab, setActiveTab] = useState(
     snippetObj?.files?.find((tab) => tab.key == activeTabIndex)

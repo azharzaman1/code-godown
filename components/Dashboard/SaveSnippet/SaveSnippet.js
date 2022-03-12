@@ -13,24 +13,20 @@ import {
   Tooltip,
 } from "@mui/material";
 import { PlusIcon } from "@heroicons/react/outline";
-import { doc, setDoc } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
-import { useRouter } from "next/dist/client/router";
 import { selectUser, selectUserInDB } from "../../../redux/slices/userSlice";
 import {
   selectLabelName,
   selectSnippet,
   selectSnippetName,
-  selectTheme,
   SET_LABEL_NAME,
-  SET_SELECTED_LABEL_KEY,
   SET_SNIPPET,
   SET_SNIPPET_NAME,
 } from "../../../redux/slices/appSlice";
-import { db } from "../../../firebase";
 import { splitAtCharacter } from "../../../files/utils";
 import Text from "../../Generic/Text";
 import Button from "../../Generic/Button";
+import { useTheme } from "next-themes";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -40,14 +36,14 @@ const SaveSnippet = () => {
   const userInDB = useSelector(selectUserInDB);
   const snippet = useSelector(selectSnippet);
   const snippetName = useSelector(selectSnippetName);
-  const themePreference = useSelector(selectTheme);
   const [isPrivate, setIsPrivate] = useState(false);
   const [tagsString, setTagsString] = useState("");
   const [tags, setTags] = useState([]);
   const [addingLabel, setAddingLabel] = useState(false);
   const labelName = useSelector(selectLabelName);
   const { enqueueSnackbar } = useSnackbar();
-  const dark = themePreference === "dark";
+  const { theme, setTheme } = useTheme();
+  const dark = theme === "dark";
 
   const handleFileDelete = (key) => {
     if (snippet?.files?.length > 1) {
