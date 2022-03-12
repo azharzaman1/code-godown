@@ -30,6 +30,7 @@ const Register = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({ shouldUnregister: true });
   const [passwordShow, setPasswordShow] = useState(false);
@@ -37,24 +38,38 @@ const Register = () => {
   const [googleAuthInProgress, setGoogleAuthInProgress] = useState(false);
   const [registering, setRegistering] = useState(false);
 
-  const {
-    data,
-    isLoading,
-    isSuccess,
-    error,
-    mutate: registerUser,
-  } = useMutation(async (userData) => {
-    return await axios.post("/api/v1/auth/register", userData);
-  });
-
-  console.log(data, error);
+  const { mutate: registerUser } = useMutation(
+    async (userData) => {
+      return await axios.post("/api/v1/auth/register", userData);
+    },
+    {
+      onSuccess: (res) => {
+        enqueueSnackbar(res.statusText, {
+          variant: "success",
+        });
+        setRegistering(false);
+        reset();
+        if (res.status === 201) {
+          router.push("/auth/login");
+        }
+      },
+      onError: (err) => {
+        const statusCode = err.response.status;
+        const statusText = err.response.statusText;
+        setRegistering(false);
+        enqueueSnackbar(statusText, {
+          variant: "error",
+        });
+      },
+    }
+  );
 
   const { enqueueSnackbar } = useSnackbar();
 
   const router = useRouter();
 
   const onSubmit = (data) => {
-    console.log(data);
+    setRegistering(true);
     const { fullName, userName, email, password } = data;
 
     registerUser({
@@ -65,85 +80,6 @@ const Register = () => {
       pswd: password,
     });
   };
-
-  // const signupWithEmailAndPassword = (e) => {
-  //   e.preventDefault();
-  //   setNameError(false);
-  //   setEmailError(false);
-  //   setPassError(false);
-  //   if (
-  //     validateEmail(email) &&
-  //     validatePassword(password) &&
-  //     userName !== "" &&
-  //     fullName !== ""
-  //   ) {
-  //     setRegistering(true);
-  //     createUserWithEmailAndPassword(auth, email, password)
-  //       .then((userCredential) => {
-  //         if (userCredential.user) {
-  //           const user = userCredential?.user;
-  //           const docRef = doc(db, "users", user.uid);
-
-  //           setDoc(docRef, {
-  //             userDetails: {
-  //               userID: user.uid,
-  //               fullName,
-  //               userName,
-  //               displayName: fullName,
-  //               email: user.email,
-  //               password,
-  //               emailVerified: user.emailVerified,
-  //               registeredAt: serverTimestamp(),
-  //               accountType: "email_password",
-  //             },
-  //             snippets: [],
-  //           });
-
-  //           setRegistering(false);
-
-  //           enqueueSnackbar(`Signup Successful`, {
-  //             variant: "success",
-  //           });
-
-  //           enqueueSnackbar(`Login Successful`, {
-  //             variant: "success",
-  //           });
-
-  //           router.replace("/");
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         const errorCode = error.code;
-  //         const errorMessage = error.message;
-  //         setRegistering(false);
-  //         enqueueSnackbar(`Error Code: ${errorCode}: ${errorMessage}`, {
-  //           variant: "error",
-  //         });
-  //       });
-  //   } else {
-  //     if (fullName === "") {
-  //       setNameError(true);
-  //     }
-
-  //     if (userName === "") {
-  //       setUserNameError(true);
-  //     }
-
-  //     if (!validateEmail(email)) {
-  //       setEmailError(true);
-  //       setEmail("");
-  //     }
-
-  //     if (!validatePassword(password)) {
-  //       setPassError(true);
-  //       setPassword("");
-  //     }
-
-  //     enqueueSnackbar(`Please recheck inputs, and try again`, {
-  //       variant: "warning",
-  //     });
-  //   }
-  // };
 
   const continueWithGoogle = () => {
     signInWithPopup(auth, googleAuthProvider)
@@ -390,7 +326,7 @@ const Register = () => {
             <input type="submit" className="hidden" />
             <div className="flex justify-center mt-8">
               <Button
-                loading={isLoading}
+                loading={registering}
                 size="lg"
                 className="w-full justify-center"
                 onClick={handleSubmit(onSubmit)}

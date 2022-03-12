@@ -5,6 +5,7 @@ const Tooltip = ({ content, children, className, ...rest }) => {
     <TooltipPrimitive.Root delayDuration={250} className={`${className}`}>
       <TooltipPrimitive.Trigger asChild>{children}</TooltipPrimitive.Trigger>
       <TooltipPrimitive.Content
+        aria-live="assertive"
         className="w-[250px] max-w-[90vw] p-3 text-xs md:text-sm text-secondaryText dark:text-secondaryTextDark bg-white dark:bg-backgroundContrastDark shadow-xl rounded-lg border border-dividerColor dark:border-dividerColorDark"
         {...rest}
       >
