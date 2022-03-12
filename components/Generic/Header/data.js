@@ -10,7 +10,8 @@ import {
   SupportIcon,
   ViewGridIcon,
 } from "@heroicons/react/outline";
-import { Dashboard, Logout, Settings } from "@mui/icons-material";
+
+import { Dashboard, Settings } from "@mui/icons-material";
 
 export const solutions = [
   {
@@ -80,7 +81,7 @@ export const resources = [
   },
 ];
 
-export const menu = [
+export const dropdownMenu = [
   {
     key: 0,
     name: "Dashboard",

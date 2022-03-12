@@ -7,7 +7,7 @@ const palette = {
   secondaryDark: "rgb(39, 132, 173)",
 
   primaryText: "#1e293b",
-  secondaryText: "#334155",
+  secondaryText: "#64748b",
   infoText: "#94a3b8",
 
   backgroundColor1: "#f1f5f9", // for main bg, sections bg etc.

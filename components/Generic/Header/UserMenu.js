@@ -1,17 +1,16 @@
-import Link from "next/link";
 import React, { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { AccountCircle, Logout } from "@mui/icons-material";
+import { Logout } from "@mui/icons-material";
 import { selectUser } from "../../../redux/slices/userSlice";
 import Transition from "../../utils/Transition";
-import { menu } from "./data";
+import { dropdownMenu } from "./data";
 import { auth } from "../../../firebase";
 import { useRouter } from "next/router";
 import Text from "../Text";
 import { Avatar, Divider } from "@mui/material";
 
 function UserMenu() {
-  const [userMenu, setUserMenu] = useState(menu);
+  const [userMenu, setUserMenu] = useState(dropdownMenu);
   const currentUser = useSelector(selectUser);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -48,7 +47,7 @@ function UserMenu() {
   });
 
   return (
-    <div className="relative inline-flex">
+    <div className="relative inline-flex z-10">
       <button
         ref={trigger}
         className="inline-flex justify-center items-center group"
@@ -107,7 +106,13 @@ function UserMenu() {
           </div>
           <div className="main-menu">
             {userMenu?.map((item) => (
-              <MenuItem key={item.key} item={item} id={item.key} />
+              <MenuItem
+                key={item.key}
+                item={item}
+                id={item.key}
+                startBorder
+                endBorder
+              />
             ))}
             <MenuItem
               item={{
@@ -124,7 +129,7 @@ function UserMenu() {
   );
 }
 
-const MenuItem = ({ item, id, onClick }) => {
+export const MenuItem = ({ item, id, onClick, startBorder, endBorder }) => {
   const router = useRouter();
 
   const isFirstItem = id == 0;
@@ -132,8 +137,8 @@ const MenuItem = ({ item, id, onClick }) => {
 
   return (
     <>
-      {isFirstItem && <Divider className="my-1" />}
-      {isLastItem && <Divider className="my-1" />}
+      {isFirstItem && startBorder ? <Divider className="my-1" /> : <></>}
+      {isLastItem && endBorder ? <Divider className="my-1" /> : <></>}
       <div
         onClick={() => {
           if (item.href) {

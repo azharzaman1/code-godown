@@ -1,17 +1,15 @@
 import { Popover } from "@headlessui/react";
-import { Send } from "@mui/icons-material";
-import ThemeButton from "../Generic/Button";
-import ThemeHeading from "../Generic/Heading";
-import Loader from "../Generic/Loader";
+import Button from "../Generic/Button";
+import Heading from "../Generic/Heading";
 import ThemeText from "../Generic/Text";
 
 export default function Hero() {
   return (
-    <div className="relative bg-backgroundV1 overflow-hidden py-20">
+    <div className="relative bg-backgroundV1 dark:bg-backgroundV1Dark overflow-hidden md: lg:py-20 xl:py-28">
       <div className="max-w-7xl mx-auto">
-        <div className="relative z-10 pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
+        <div className="relative z-0 lg:z-10 py-8 lg:py-12 xl:py-16 lg:max-w-2xl lg:w-full bg-white shadow-sm">
           <svg
-            className="hidden lg:block absolute right-0 inset-y-0 h-full w-48 text-white transform translate-x-1/2"
+            className="hidden lg:block absolute right-0 inset-y-0 h-full w-48 transform translate-x-1/2 text-white"
             fill="currentColor"
             viewBox="0 0 100 100"
             preserveAspectRatio="none"
@@ -20,13 +18,9 @@ export default function Hero() {
             <polygon points="50,0 100,0 50,100 0,100" />
           </svg>
 
-          <Popover>
-            <div className="relative pt-6 px-4 sm:px-6 lg:px-8"></div>
-          </Popover>
-
-          <main className="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
-            <div className="sm:text-center lg:text-left">
-              <ThemeHeading type="primary">
+          <main className="py-2 lg:py-4 xl:py-6 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center lg:text-left">
+              <Heading type="primary">
                 <span
                   className="block xl:inline"
                   data-testid="hero-main-heading"
@@ -36,15 +30,17 @@ export default function Hero() {
                 <span className="block text-primary xl:inline">
                   your code snippets
                 </span>
-              </ThemeHeading>
+              </Heading>
               <ThemeText className="mt-3 font-sans sm:mt-5 sm:max-w-xl sm:mx-auto md:mt-5 lg:mx-0">
                 Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui
                 lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat
                 fugiat aliqua.
               </ThemeText>
-              <div className="mt-10 sm:mt-8 md:mt-12 lg:mt-14 flex items-center justify-center lg:justify-start space-x-3">
+              <div className="mt-5 md:mt-8 lg:mt-10 flex items-center justify-center lg:justify-start space-x-3">
                 <div className="flex flex-wrap space-x-3 items-center justify-evenly">
-                  <ThemeButton className="mt-2">Get Started</ThemeButton>
+                  <Button className="mt-2" size="lg">
+                    Get Started
+                  </Button>
                 </div>
               </div>
             </div>

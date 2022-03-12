@@ -2,7 +2,7 @@ const Heading = ({ type, className, children, ...rest }) => {
   if (type === "primary" || !type)
     return (
       <h1
-        className={`${className} text-2xl sm:text-3xl md:text-4xl lg:text-6xl tracking-tight font-extrabold text-primaryText dark:text-primaryTextDark`}
+        className={`${className} text-4xl md:text-5xl lg:text-6xl tracking-tight font-extrabold text-primaryText dark:text-primaryTextDark`}
         {...rest}
       >
         {children}
