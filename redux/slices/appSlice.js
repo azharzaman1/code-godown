@@ -71,16 +71,11 @@ export const {
   SET_DASHBOARD_STATE,
   SET_SNIPPET_NAME,
   SET_FILE_NAME,
-  SET_THEME,
   SET_SNIPPET,
   SET_EDITOR_ACTIVE_TAB_INDEX,
   RESSET_SNIPPET,
   SET_LABEL_NAME,
-  SET_SELECTED_LABEL_KEY,
   SET_SYNTAX_THEME,
-  SET_LOADING,
-  SET_DASHBOARD_LOADING,
-  SET_DASHBOARD_CURRENT_STATE,
 } = appSlice.actions;
 
 export const selectSnippetName = (state) => state.appStore.snippetName;

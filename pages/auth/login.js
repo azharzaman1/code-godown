@@ -40,7 +40,7 @@ const Login = () => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const [passwordShow, setPasswordShow] = useState(false);
-  const [forgetPasswordState, setForgetPasswordState] = useState(false);
+  const [resetingPassword, setResetingPassword] = useState(false);
   const [resetEmailSent, setResetEmailSent] = useState(false);
   const [signingIn, setSigningIn] = useState(false);
   const [sendingPasswordResetEmail, setSendingPasswordResetEmail] =
@@ -88,25 +88,7 @@ const Login = () => {
     setSigningIn(true);
     const { email, password } = data;
 
-    await signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        enqueueSnackbar(`Login Successful`, {
-          variant: "success",
-        });
-        setSigningIn(false);
-        router.replace("/");
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        setSigningIn(false);
-        enqueueSnackbar(`Error Code: ${errorCode}: ${errorMessage}`, {
-          variant: "error",
-        });
-      });
-
-    // login({ email: email, pswd: password });
+    login({ email: email, pswd: password });
   };
 
   const passwordResetRequest = (e) => {
@@ -244,20 +226,20 @@ const Login = () => {
   };
 
   const formLabel =
-    forgetPasswordState && resetEmailSent
+    resetingPassword && resetEmailSent
       ? "Return to Login"
-      : forgetPasswordState
+      : resetingPassword
       ? "Send Reset Email"
       : "Login";
 
   const formAction =
-    forgetPasswordState && resetEmailSent
+    resetingPassword && resetEmailSent
       ? (e) => {
           e.preventDefault();
           setResetEmailSent(false);
-          setForgetPasswordState(false);
+          setResetingPassword(false);
         }
-      : forgetPasswordState
+      : resetingPassword
       ? passwordResetRequest
       : handleSubmit(onSubmit);
 
@@ -271,7 +253,7 @@ const Login = () => {
         </div>
 
         <div className="py-8 px-6 w-full bg-white shadow rounded-lg border select-none">
-          {!forgetPasswordState && (
+          {!resetingPassword && (
             <>
               <div className="providersAuth-section flex-evenly-center mb-6">
                 <Button
@@ -322,7 +304,7 @@ const Login = () => {
               )}
             </div>
 
-            {!forgetPasswordState && (
+            {!resetingPassword && (
               <>
                 <div className="flex flex-col">
                   <div
@@ -364,7 +346,7 @@ const Login = () => {
                   <span
                     className="link"
                     onClick={() => {
-                      setForgetPasswordState(true);
+                      setResetingPassword(true);
                     }}
                   >
                     Forgot password? Reset

@@ -2,23 +2,24 @@ import { Fragment } from "react";
 import { useRouter } from "next/dist/client/router";
 import { Popover, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
-import { useSelector } from "react-redux";
 import { useTheme } from "next-themes";
 import { IconButton } from "@mui/material";
 import { MoonIcon, SunIcon } from "@heroicons/react/outline";
-import { selectUser } from "../../../redux/slices/userSlice";
-import { auth } from "../../../firebase";
 import MenuDropdown from "./MenuDropdown";
-import { callsToAction, dropdownMenu, resources, solutions } from "./data";
 import ThemeButton from "../Button";
 import UserMenu, { MenuItem } from "./UserMenu";
 import Link from "../Link";
 import Button from "../Button";
+import { auth } from "../../../firebase";
+import useAuth from "../../../hooks/auth/useAuth";
+import useRefreshToken from "../../../hooks/auth/useRefreshToken";
+import { callsToAction, dropdownMenu, resources, solutions } from "./data";
 
 export default function Header({ themeSwitch = false, variant = "dark" }) {
   const router = useRouter();
   const { theme, setTheme } = useTheme();
-  const currentUser = useSelector(selectUser);
+  const currentUser = useAuth();
+  const refreshToken = useRefreshToken();
 
   const handleLoginRedirect = () => {
     router.push({
@@ -70,12 +71,13 @@ export default function Header({ themeSwitch = false, variant = "dark" }) {
               )}
             </Popover>
 
-            <a
+            <span
               href="#"
+              onClick={() => refreshToken()}
               className="text-base font-medium text-secondaryText dark:text-secondaryTextDark hover:text-primary"
             >
               Docs
-            </a>
+            </span>
 
             <Popover className="relative">
               {({ open }) => (

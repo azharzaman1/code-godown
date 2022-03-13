@@ -1,25 +1,28 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { Logout } from "@mui/icons-material";
-import { selectUser, selectUserInDB } from "../../../redux/slices/userSlice";
-import Transition from "../../utils/Transition";
-import { dropdownMenu } from "./data";
-import { auth } from "../../../firebase";
 import { useRouter } from "next/router";
-import Text from "../Text";
+import { Logout } from "@mui/icons-material";
+import { useDispatch } from "react-redux";
 import { Avatar, Divider } from "@mui/material";
+import { dropdownMenu } from "./data";
+import Transition from "../../utils/Transition";
+import useAuth from "../../../hooks/auth/useAuth";
+import { LOGOUT, SET_USER } from "../../../redux/slices/userSlice";
+import Text from "../Text";
+import { useSnackbar } from "notistack";
 
 function UserMenu() {
+  const dispatch = useDispatch();
   const [userMenu, setUserMenu] = useState(dropdownMenu);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const currentUser = useSelector(selectUserInDB)?.userDetails;
+  const currentUser = useAuth();
 
   const trigger = useRef(null);
   const dropdown = useRef(null);
-
-  function handleLogout() {
-    auth.signOut();
-  }
+  const { enqueueSnackbar } = useSnackbar();
+  const handleLogout = async () => {
+    dispatch(LOGOUT());
+    enqueueSnackbar("Logged Out", { variant: "info" });
+  };
 
   // close on click outside
   useEffect(() => {
@@ -108,14 +111,9 @@ function UserMenu() {
           </div>
           <div className="main-menu">
             {userMenu?.map((item) => (
-              <MenuItem
-                key={item.key}
-                item={item}
-                id={item.key}
-                startBorder
-                endBorder
-              />
+              <MenuItem key={item.key} item={item} id={item.key} startBorder />
             ))}
+            <Divider className="my-1" />
             <MenuItem
               item={{
                 name: "Logout",
@@ -131,16 +129,14 @@ function UserMenu() {
   );
 }
 
-export const MenuItem = ({ item, id, onClick, startBorder, endBorder }) => {
+export const MenuItem = ({ item, id, onClick, startBorder }) => {
   const router = useRouter();
 
   const isFirstItem = id == 0;
-  const isLastItem = item.name === "Logout";
 
   return (
     <>
       {isFirstItem && startBorder ? <Divider className="my-1" /> : <></>}
-      {isLastItem && endBorder ? <Divider className="my-1" /> : <></>}
       <div
         onClick={() => {
           if (item.href) {
