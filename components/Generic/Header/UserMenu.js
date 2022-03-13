@@ -1,24 +1,25 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
+import { useSnackbar } from "notistack";
 import { Logout } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { Avatar, Divider } from "@mui/material";
 import { dropdownMenu } from "./data";
 import Transition from "../../utils/Transition";
 import useAuth from "../../../hooks/auth/useAuth";
-import { LOGOUT, SET_USER } from "../../../redux/slices/userSlice";
+import { LOGOUT } from "../../../redux/slices/userSlice";
 import Text from "../Text";
-import { useSnackbar } from "notistack";
 
 function UserMenu() {
-  const dispatch = useDispatch();
-  const [userMenu, setUserMenu] = useState(dropdownMenu);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const currentUser = useAuth();
+  const dispatch = useDispatch();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const trigger = useRef(null);
   const dropdown = useRef(null);
+
   const { enqueueSnackbar } = useSnackbar();
+
   const handleLogout = async () => {
     dispatch(LOGOUT());
     enqueueSnackbar("Logged Out", { variant: "info" });
@@ -105,12 +106,15 @@ function UserMenu() {
                 <Text>
                   {currentUser?.fullName || currentUser?.displayName || "User"}
                 </Text>
-                <Text type="info">@{currentUser?.userName || "username"}</Text>
+                <Text type="info">
+                  @
+                  {currentUser?.username || currentUser?.userName || "username"}
+                </Text>
               </div>
             </div>
           </div>
           <div className="main-menu">
-            {userMenu?.map((item) => (
+            {dropdownMenu?.map((item) => (
               <MenuItem key={item.key} item={item} id={item.key} startBorder />
             ))}
             <Divider className="my-1" />
