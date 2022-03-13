@@ -73,6 +73,7 @@ export default function Header({ themeSwitch = false, variant = "dark" }) {
 
             <span
               href="#"
+              onClick={() => refreshToken()}
               className="text-base font-medium text-secondaryText dark:text-secondaryTextDark cursor-pointer"
             >
               Docs

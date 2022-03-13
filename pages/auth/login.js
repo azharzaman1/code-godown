@@ -57,7 +57,9 @@ const Login = () => {
 
   const { mutate: login } = useMutation(
     async (login) => {
-      return await axios.post("/api/v1/auth/login", login);
+      return await axios.post("/api/v1/auth/login", login, {
+        withCredentials: true,
+      });
     },
     {
       onSuccess: (res) => {

@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import axios, { axiosPrivate } from "../../axios";
+import axios from "../../axios";
 import { SET_USER } from "../../redux/slices/userSlice";
 import useAuth from "./useAuth";
 
@@ -9,8 +9,9 @@ const useRefreshToken = () => {
 
   const refreshToken = async () => {
     try {
-      const response = await axiosPrivate.get(
-        "http://localhost:3500/api/v1/tokens/refresh"
+      const response = await axios.get(
+        "http://localhost:3500/api/v1/tokens/refresh",
+        { withCredentials: true }
       );
       console.log(response);
       return response.data.accessToken;
