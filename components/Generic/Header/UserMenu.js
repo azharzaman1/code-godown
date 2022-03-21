@@ -9,8 +9,10 @@ import Transition from "../../utils/Transition";
 import useAuth from "../../../hooks/auth/useAuth";
 import { LOGOUT } from "../../../redux/slices/userSlice";
 import Text from "../Text";
+import useLogout from "../../../hooks/auth/useLogout";
 
 function UserMenu() {
+  const logout = useLogout();
   const currentUser = useAuth();
   const dispatch = useDispatch();
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -21,8 +23,7 @@ function UserMenu() {
   const { enqueueSnackbar } = useSnackbar();
 
   const handleLogout = async () => {
-    dispatch(LOGOUT());
-    enqueueSnackbar("Logged Out", { variant: "info" });
+    logout();
   };
 
   // close on click outside

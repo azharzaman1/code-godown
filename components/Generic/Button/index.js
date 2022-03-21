@@ -1,7 +1,7 @@
 import { XIcon } from "@heroicons/react/outline";
 import Loader from "../Loader";
 
-const ThemeButton = ({
+const Button = ({
   type = "primary",
   children,
   className,
@@ -136,4 +136,4 @@ const ThemeButton = ({
     );
 };
 
-export default ThemeButton;
+export default Button;

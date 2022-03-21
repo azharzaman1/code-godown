@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
-import { axiosPrivate } from "../api/axios";
-import { LOGOUT } from "../redux/slices/userSlice";
 import { useSnackbar } from "notistack";
+import { LOGOUT } from "../../redux/slices/userSlice";
+import { axiosPrivate } from "../../api/axios";
 
 const useLogout = () => {
   const dispatch = useDispatch();
