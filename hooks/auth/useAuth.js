@@ -1,8 +1,13 @@
+import { useDebugValue } from "react";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/slices/userSlice";
 
 const useAuth = () => {
-  return useSelector(selectUser);
+  const currentUser = useSelector(selectUser);
+  useDebugValue(currentUser, (currentUser) =>
+    currentUser ? "Logged In" : "Logged Out"
+  );
+  return currentUser;
 };
 
 export default useAuth;

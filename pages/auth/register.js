@@ -24,7 +24,7 @@ import Heading from "../../components/Generic/Heading";
 import Tooltip from "../../components/Generic/Tooltip";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
-import axios from "../../axios";
+import axios from "../../api/axios";
 
 const Register = () => {
   const {
@@ -40,10 +40,11 @@ const Register = () => {
 
   const { mutate: registerUser } = useMutation(
     async (userData) => {
-      return await axios.post("/api/v1/auth/register", userData);
+      return await axios.post("/auth/register", userData);
     },
     {
       onSuccess: (res) => {
+        console.log("User Register Response", res);
         enqueueSnackbar(res.statusText, {
           variant: "success",
         });
@@ -292,10 +293,10 @@ const Register = () => {
                   defaultValue=""
                   {...register("password", {
                     required: { value: true, message: "Password is requiered" },
-                    pattern: {
-                      value: regexCodes.password,
-                      message: "Password is not valid!",
-                    },
+                    // pattern: {
+                    //   value: regexCodes.password,
+                    //   message: "Password is not valid!",
+                    // },
                   })}
                   aria-invalid={errors?.password ? "true" : "false"}
                   aria-describedby="password-note"
@@ -337,16 +338,17 @@ const Register = () => {
           </form>
         </div>
 
-        <div className="mt-3">
+        <div className="mt-3 flex items-center space-x-2">
+          <span>Already have an account?</span>
           <span
-            className="link"
+            className="cursor-pointer font-medium text-primaryText hover:text-primary flex items-center transition-colors duration-150"
             onClick={() => {
               router.push({
                 pathname: "/auth/login",
               });
             }}
           >
-            Already have an account? Login
+            Login
           </span>
         </div>
       </div>

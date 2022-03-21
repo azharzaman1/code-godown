@@ -9,7 +9,6 @@ import {
   GithubAuthProvider,
   GoogleAuthProvider,
   sendPasswordResetEmail,
-  signInWithEmailAndPassword,
   signInWithPopup,
 } from "@firebase/auth";
 import {
@@ -27,9 +26,11 @@ import Heading from "../../components/Generic/Heading";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "./register";
 import { useMutation } from "react-query";
-import axios from "../../axios";
 import { useDispatch } from "react-redux";
 import { SET_USER } from "../../redux/slices/userSlice";
+import { axiosPrivate } from "../../api/axios";
+import Text from "../../components/Generic/Text";
+import { useLocalStorage } from "react-use";
 
 const Login = () => {
   const { theme, setTheme } = useTheme();
@@ -47,6 +48,10 @@ const Login = () => {
     useState(false);
   const [ghAuthInProgress, setGhAuthInProgress] = useState(false);
   const [googleAuthInProgress, setGoogleAuthInProgress] = useState(false);
+  const [remember, setRemember, remove] = useLocalStorage(
+    "cg-remember-device",
+    false
+  );
 
   const {
     reset,
@@ -56,13 +61,14 @@ const Login = () => {
   } = useForm({ shouldUnregister: true });
 
   const { mutate: login } = useMutation(
-    async (login) => {
-      return await axios.post("/api/v1/auth/login", login, {
+    async (loginData) => {
+      return await axiosPrivate.post("/auth/login", loginData, {
         withCredentials: true,
       });
     },
     {
       onSuccess: (res) => {
+        console.log("User Login Response", res);
         // stop loading
         setSigningIn(false);
         // push to redux store
@@ -74,7 +80,8 @@ const Login = () => {
           variant: "success",
         });
         // push to home
-        if (res.status === 200 || res.status === 201) router.replace("/");
+        if (res.status === 200 || res.status === 201 || res.status === 202)
+          router.replace("/");
       },
       onError: (err) => {
         setSigningIn(false);
@@ -91,6 +98,10 @@ const Login = () => {
     const { email, password } = data;
 
     login({ email: email, pswd: password });
+  };
+
+  const rememberChoiceHandler = (e) => {
+    setRemember(e.target.checked);
   };
 
   const passwordResetRequest = (e) => {
@@ -321,10 +332,10 @@ const Login = () => {
                           value: true,
                           message: "Password is required for login",
                         },
-                        pattern: {
-                          value: regexCodes.password,
-                          message: "Password is not valid!",
-                        },
+                        // pattern: {
+                        //   value: regexCodes.password,
+                        //   message: "Password is not valid!",
+                        // },
                       })}
                     />
 
@@ -342,6 +353,17 @@ const Login = () => {
                   {errors?.password && (
                     <ErrorMessage message={errors?.password.message} />
                   )}
+                  <div className="flex items-center space-x-2">
+                    <input
+                      id="remember-device-checkbox"
+                      type="checkbox"
+                      value={remember}
+                      onChange={rememberChoiceHandler}
+                    />
+                    <Text component="label" htmlFor="remember-device-checkbox">
+                      Remember me
+                    </Text>
+                  </div>
                 </div>
 
                 <div className="flex justify-end mb-3">
@@ -369,16 +391,17 @@ const Login = () => {
             </div>
           </form>
         </div>
-        <div className="mt-3">
+        <div className="mt-3 flex items-center space-x-2">
+          <span>Don't have an account?</span>
           <span
-            className="link"
+            className="cursor-pointer font-medium text-primaryText hover:text-primary flex items-center transition-colors duration-150"
             onClick={() => {
               router.push({
                 pathname: "/auth/register",
               });
             }}
           >
-            Don't have an account? Signup
+            Signup
           </span>
         </div>
       </div>
