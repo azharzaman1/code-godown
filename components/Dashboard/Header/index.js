@@ -9,11 +9,10 @@ import {
   SET_DASHBOARD_CURRENT_STATE,
   SET_SNIPPET,
 } from "../../../redux/slices/appSlice";
-import { selectUserInDB } from "../../../redux/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { doc } from "firebase/firestore";
 import { db } from "../../../firebase";
-import { NIL as NIL_UUID, v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
 import { extractExtentionAndLanguage, fetcher } from "../../../files/utils";
@@ -25,13 +24,14 @@ import useSWR from "swr";
 import Modal from "../../Generic/Modal";
 import { useState } from "react";
 import PreEditor from "../PreEditor";
+import useAuth from "../../../hooks/auth/useAuth";
 
 const DashboardHeader = () => {
   const dispatch = useDispatch();
   const snippetArr = useSelector(selectSnippet);
   const snippetName = useSelector(selectSnippetName);
   const fileName = useSelector(selectFileName);
-  const userInDB = useSelector(selectUserInDB);
+  const currentUser = useAuth();
   const { data, error } = useSWR("/api/programming-langs", fetcher);
   const [addSnippetDialogOpen, setAddSnippetDialogOpen] = useState(false);
   const router = useRouter();
@@ -125,8 +125,8 @@ const DashboardHeader = () => {
       };
 
   const dashboardHeaderTagline = displaySnippets
-    ? userInDB?.userDetails?.displayName
-      ? `${userInDB?.userDetails?.displayName}'s Snippets`
+    ? currentUser?.firstName
+      ? `${currentUser?.firstName}'s Snippets`
       : "Your Snippets"
     : addingSnippetInfo || addingCodeToSnippet
     ? "Adding new snippet"

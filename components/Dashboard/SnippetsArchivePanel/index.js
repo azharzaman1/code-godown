@@ -1,23 +1,25 @@
 import { Grid } from "@mui/material";
 import { useSelector } from "react-redux";
-import { selectSnippets } from "../../../redux/slices/userSlice";
 import Heading from "../../Generic/Heading";
 import Button from "../../Generic/Button";
 import SnippetCard from "./SnippetCard";
 import { Add, DeleteSweep } from "@mui/icons-material";
+import useAuth from "../../../hooks/auth/useAuth";
+import { useState } from "react";
 
 const SnippetsArchivePanel = () => {
-  const snippets = useSelector(selectSnippets);
+  const currentUser = useAuth();
+  const [userSnippets, setUserSnippets] = useState([]);
   return (
     <div className="dashboard__snippetsArchiveCont w-full">
-      {snippets.length > 0 ? (
+      {currentUser.snippets.length > 0 ? (
         <Grid
           container
           spacing={{ xs: 1, md: 2 }}
           columns={{ xs: 4, sm: 8, md: 12 }}
           className="max-w-[100%] overflow-hidden"
         >
-          {snippets?.map(({ id, data }) => (
+          {userSnippets?.map(({ id, data }) => (
             <SnippetCard
               name={data.snippetName}
               key={id}

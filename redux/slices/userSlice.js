@@ -15,6 +15,7 @@ export const userSlice = createSlice({
     currentUser: null,
     persistSession: true,
     userType: "",
+    snippets: [],
   },
   reducers: {
     SET_USER: (state, action) => {

@@ -10,7 +10,7 @@ import Header from "../../Generic/Header";
 import Loader from "../../Generic/Loader";
 import Container from "../../Generic/Layout/Container";
 import { selectSnippet } from "../../../redux/slices/appSlice";
-import { selectSnippets } from "../../../redux/slices/userSlice";
+import useAuth from "../../../hooks/auth/useAuth";
 
 const DashboardLayout = ({
   children,
@@ -20,10 +20,10 @@ const DashboardLayout = ({
   descriptionName,
   icon,
 }) => {
-  const snippet = useSelector(selectSnippet);
   const { theme, setTheme } = useTheme();
+  const snippet = useSelector(selectSnippet);
   const [dashboardLoading, setDashboardLoading] = useState(true);
-  const userSnippets = useSelector(selectSnippets);
+  const currentUser = useAuth();
 
   useEffect(() => {
     setTheme("dark");
@@ -37,7 +37,8 @@ const DashboardLayout = ({
 
   const router = useRouter();
 
-  const showSidebar = router.asPath === "/dashboard" && userSnippets.length > 0;
+  const showSidebar =
+    router.asPath === "/dashboard" && currentUser.snippets.length > 0;
 
   console.log("Snippet", snippet);
 
