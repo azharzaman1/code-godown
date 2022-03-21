@@ -30,7 +30,7 @@ const SnippetsArchivePanel = () => {
           ))}
         </Grid>
       ) : (
-        <div className="flex flex-col items-center justify-center space-y-5">
+        <div className="flex flex-col items-center justify-center space-y-5 mt-10">
           <DeleteSweep
             sx={{
               fontSize: 100,

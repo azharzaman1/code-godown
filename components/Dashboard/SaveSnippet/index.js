@@ -1,8 +1,10 @@
-import { useTheme } from "@emotion/react";
 import { Divider, Paper } from "@mui/material";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  selectSnippet,
   selectSnippetName,
+  SET_SNIPPET,
   SET_SNIPPET_NAME,
 } from "../../../redux/slices/appSlice";
 import Heading from "../../Generic/Heading";
@@ -10,12 +12,31 @@ import Text from "../../Generic/Text";
 
 const SaveSnippet = () => {
   const dispatch = useDispatch();
+  const snippet = useSelector(selectSnippet);
   const snippetName = useSelector(selectSnippetName);
-  const { theme, setTheme } = useTheme();
-  const dark = theme === "dark";
+  const [desc, setDesc] = useState("");
+
+  const handleNameChange = (e) => {
+    dispatch(
+      SET_SNIPPET({
+        ...snippet,
+        snippetName: e.target.value,
+      })
+    );
+    dispatch(SET_SNIPPET_NAME(e.target.value));
+  };
+
+  const handleDescChange = (e) => {
+    dispatch(
+      SET_SNIPPET({
+        ...snippet,
+        description: e.target.value,
+      })
+    );
+  };
 
   return (
-    <Paper className="addingNewSnippet__intialPhaseContainer pt-4 pb-8 px-4">
+    <Paper className="w-full pt-4 pb-8 px-4">
       <div>
         <Heading type="tertiary">Add new snippet</Heading>
         <Divider className="pt-3" />
@@ -31,8 +52,8 @@ const SaveSnippet = () => {
               placeholder="e.g. Snippet #1"
               id="snippet-name"
               className={`input w-full`}
-              value={snippetName}
-              onChange={(e) => dispatch(SET_SNIPPET_NAME(e.target.value))}
+              value={snippet?.snippetName}
+              onChange={handleNameChange}
             />
           </div>
           <div className="flex flex-col w-full md:w-2/3 lg:w-1/2 xl:w-1/3 space-y-2">
@@ -44,8 +65,8 @@ const SaveSnippet = () => {
               placeholder="Add snippet description"
               id="snippet-desc"
               className={`input w-full`}
-              value={snippetName}
-              onChange={(e) => dispatch(SET_SNIPPET_NAME(e.target.value))}
+              value={snippet?.description}
+              onChange={handleDescChange}
             />
           </div>
         </div>

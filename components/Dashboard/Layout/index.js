@@ -11,6 +11,9 @@ import Loader from "../../Generic/Loader";
 import Container from "../../Generic/Layout/Container";
 import { selectSnippet } from "../../../redux/slices/appSlice";
 import useAuth from "../../../hooks/auth/useAuth";
+// code jsonify
+import SyntaxHighlighter from "react-syntax-highlighter";
+import a11yDark from "react-syntax-highlighter/dist/cjs/styles/hljs/a11y-dark";
 
 const DashboardLayout = ({
   children,
@@ -71,7 +74,7 @@ const DashboardLayout = ({
                   </Paper>
                 )}
                 <Paper
-                  className={`w-full flex items-center justify-center min-h-[60vh] bg-backgroundV1 dark:bg-backgroundV1Dark border-borderColor dark:border-dividerColor ${
+                  className={`w-full flex bg-backgroundV1 dark:bg-backgroundV1Dark border-borderColor dark:border-dividerColor ${
                     showSidebar && "md:w-5/6"
                   }`}
                 >
@@ -80,6 +83,16 @@ const DashboardLayout = ({
               </div>
             </Container>
           </main>
+          <div className="mt-3 z-10">
+            <SyntaxHighlighter
+              language={"javascript"}
+              style={a11yDark}
+              showLineNumbers
+              lineNumberStyle={{ fontSize: "10px" }}
+            >
+              {JSON.stringify(snippet, null, 4)}
+            </SyntaxHighlighter>
+          </div>
         </>
       )}
     </div>

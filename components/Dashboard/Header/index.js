@@ -62,6 +62,7 @@ const DashboardHeader = () => {
       );
       const snippetTemplate = {
         snippetName: snippetName,
+        description: "",
         uid: `snippet_${uuidv4()}`,
         snippetInfo: {
           createAt: new Date(),
