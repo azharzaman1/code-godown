@@ -1,21 +1,22 @@
 import Head from "next/head";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import Router from "next/router";
 import ThemeWrapper from "../theming/ThemeWrapper";
+import PersistLogin from "../components/Auth/PersistLogin";
 import AppWrapper from "../components/AppWrapper";
 import { Provider } from "react-redux";
 import { SnackbarProvider } from "notistack";
-import Router from "next/router";
 import ProgressBar from "@badrap/bar-of-progress";
 import { ThemeProvider } from "next-themes";
 import store from "../redux/store";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
-import "../components/Dashboard/SnippetsArchivePanel/SnippetsArchivePanel.css";
 import "../styles/globals.css";
 import "../styles/tailwind-theming.css";
 import "../components/Generic/Loader/Loader.css";
 import "../components/Dashboard/Editor.css";
+import "../components/Dashboard/SnippetsArchivePanel/SnippetsArchivePanel.css";
 
 const progress = new ProgressBar({
   size: 2,
@@ -54,16 +55,18 @@ function MyApp({ Component, pageProps }) {
 
       <ThemeProvider attribute="class">
         <Provider store={store}>
-          <ThemeWrapper>
-            <QueryClientProvider client={queryClient}>
-              <SnackbarProvider maxSnack={3}>
-                <AppWrapper>
-                  {getLayout(<Component {...pageProps} />)}
-                </AppWrapper>
-                <ReactQueryDevtools initialIsOpen={false} />
-              </SnackbarProvider>
-            </QueryClientProvider>
-          </ThemeWrapper>
+          <PersistLogin>
+            <ThemeWrapper>
+              <QueryClientProvider client={queryClient}>
+                <SnackbarProvider maxSnack={3}>
+                  <AppWrapper>
+                    {getLayout(<Component {...pageProps} />)}
+                  </AppWrapper>
+                  <ReactQueryDevtools initialIsOpen={false} />
+                </SnackbarProvider>
+              </QueryClientProvider>
+            </ThemeWrapper>
+          </PersistLogin>
         </Provider>
       </ThemeProvider>
     </>
