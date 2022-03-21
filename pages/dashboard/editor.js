@@ -1,19 +1,22 @@
 import { Paper } from "@mui/material";
 import Editor from "../../components/Dashboard/Editor";
-import Layout from "../../components/Dashboard/Layout";
+import DashboardLayout from "../../components/Dashboard/Layout";
 
 const AddCodePanel = () => {
   return (
-    <Paper>
+    <Paper className="w-full">
       <Editor />
     </Paper>
   );
 };
 
 AddCodePanel.getLayout = (page) => (
-  <Layout title="Add Snippet | Dashboard" className={`min-w-full`}>
+  <DashboardLayout
+    title="Add Snippet | Dashboard"
+    className={`min-w-full bg-slate-900`}
+  >
     {page}
-  </Layout>
+  </DashboardLayout>
 );
 
 export default AddCodePanel;
