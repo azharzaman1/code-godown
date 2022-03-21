@@ -19,7 +19,6 @@ export default function Header({ themeSwitch = false, variant = "dark" }) {
   const router = useRouter();
   const { theme, setTheme } = useTheme();
   const currentUser = useAuth();
-  const refreshToken = useRefreshToken();
 
   const handleLoginRedirect = () => {
     router.push({
@@ -71,13 +70,12 @@ export default function Header({ themeSwitch = false, variant = "dark" }) {
               )}
             </Popover>
 
-            <span
+            <a
               href="#"
-              onClick={() => refreshToken()}
               className="text-base font-medium text-secondaryText dark:text-secondaryTextDark cursor-pointer"
             >
               Docs
-            </span>
+            </a>
 
             <Popover className="relative">
               {({ open }) => (

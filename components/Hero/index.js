@@ -3,8 +3,10 @@ import Button from "../Generic/Button";
 import Heading from "../Generic/Heading";
 import ThemeText from "../Generic/Text";
 import Link from "next/link";
+import useAuth from "../../hooks/auth/useAuth";
 
 export default function Hero() {
+  const currentUser = useAuth();
   return (
     <div className="relative bg-backgroundV1 dark:bg-backgroundV1Dark overflow-hidden md: lg:py-20 xl:py-28">
       <div className="max-w-7xl mx-auto">
@@ -39,9 +41,9 @@ export default function Hero() {
               </ThemeText>
               <div className="mt-5 md:mt-8 lg:mt-10 flex items-center justify-center lg:justify-start space-x-3">
                 <div className="flex flex-wrap space-x-3 items-center justify-evenly">
-                  <Link href="/auth/login">
+                  <Link href={currentUser ? "/dashboard" : "/auth/login"}>
                     <Button className="mt-2" size="lg">
-                      Get Started
+                      {currentUser ? "Dashboard is ready" : "Get Started"}
                     </Button>
                   </Link>
                 </div>
