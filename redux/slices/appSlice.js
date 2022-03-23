@@ -7,7 +7,6 @@ export const appSlice = createSlice({
     fileName: "",
     snippet: {},
     editorActiveTabIndex: 0,
-    labelName: "",
     syntaxTheme: "a11yDark",
     dashboardLoading: true,
   },
@@ -36,20 +35,13 @@ export const appSlice = createSlice({
         editorActiveTabIndex: action.payload,
       };
     },
-    RESSET_SNIPPET: (state, action) => {
+    RESET_SNIPPET: (state, action) => {
       return {
         ...state,
         snippet: {},
         snippetName: "",
         fileName: "",
-        labelName: "",
         editorActiveTabIndex: 0,
-      };
-    },
-    SET_LABEL_NAME: (state, action) => {
-      return {
-        ...state,
-        labelName: action.payload,
       };
     },
     SET_SYNTAX_THEME: (state, action) => {
@@ -73,8 +65,7 @@ export const {
   SET_FILE_NAME,
   SET_SNIPPET,
   SET_EDITOR_ACTIVE_TAB_INDEX,
-  RESSET_SNIPPET,
-  SET_LABEL_NAME,
+  RESET_SNIPPET,
   SET_SYNTAX_THEME,
 } = appSlice.actions;
 
@@ -83,7 +74,6 @@ export const selectFileName = (state) => state.appStore.fileName;
 export const selectSnippet = (state) => state.appStore.snippet;
 export const selectActiveTabIndex = (state) =>
   state.appStore.editorActiveTabIndex;
-export const selectLabelName = (state) => state.appStore.labelName;
 export const selectSyntaxTheme = (state) => state.appStore.syntaxTheme;
 export const selectDashboardLoading = (state) =>
   state.appStore.dashboardLoading;

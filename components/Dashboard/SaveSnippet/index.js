@@ -1,20 +1,30 @@
 import { Divider, Paper } from "@mui/material";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  RESET_SNIPPET,
   selectSnippet,
-  selectSnippetName,
   SET_SNIPPET,
   SET_SNIPPET_NAME,
 } from "../../../redux/slices/appSlice";
+import Chip from "../../Generic/Chip";
+import Combobox from "../../Generic/Combobox";
 import Heading from "../../Generic/Heading";
 import Text from "../../Generic/Text";
+import LabelSelect from "./LabelSelect";
 
 const SaveSnippet = () => {
   const dispatch = useDispatch();
   const snippet = useSelector(selectSnippet);
-  const snippetName = useSelector(selectSnippetName);
-  const [desc, setDesc] = useState("");
+  const router = useRouter();
+
+  useEffect(() => {
+    if (snippet?.files?.length < 1) {
+      router.replace("/dashboard");
+      dispatch(RESET_SNIPPET());
+    }
+  }, [router, snippet.files]);
 
   const handleNameChange = (e) => {
     dispatch(
@@ -33,6 +43,12 @@ const SaveSnippet = () => {
         description: e.target.value,
       })
     );
+  };
+
+  const handleChipClose = (id) => {
+    console.log(id);
+    const restOfFiles = snippet?.files.filter((file) => file.key != id);
+    dispatch(SET_SNIPPET({ ...snippet, files: restOfFiles }));
   };
 
   return (
@@ -60,7 +76,7 @@ const SaveSnippet = () => {
             <Text component="label" htmlFor="snippet-desc">
               Description
             </Text>
-            <input
+            <textarea
               type="text"
               placeholder="Add snippet description"
               id="snippet-desc"
@@ -69,6 +85,28 @@ const SaveSnippet = () => {
               onChange={handleDescChange}
             />
           </div>
+          <div className="flex flex-col w-full md:w-2/3 lg:w-1/2 xl:w-1/3 space-y-2">
+            <Text>Files</Text>
+            <div className="flex items-center space-x-2 max-w-full flex-wrap">
+              {snippet.files?.map((file) => (
+                <Chip
+                  key={file.key}
+                  size="small"
+                  color="light"
+                  closeIconAction={() => handleChipClose(file.key)}
+                >
+                  {file.fileName}
+                </Chip>
+              ))}
+            </div>
+          </div>
+          {/* Labels */}
+          <div className="flex flex-col w-full md:w-2/3 lg:w-1/2 xl:w-1/3 space-y-2">
+            <Text>Labels</Text>
+            <LabelSelect />
+          </div>
+          {/* Tags */}
+          {/* Private */}
         </div>
       </form>
     </Paper>
@@ -76,3 +114,5 @@ const SaveSnippet = () => {
 };
 
 export default SaveSnippet;
+
+// TODO: redirect back to dashboard archive if no files inside snippet object

@@ -2,7 +2,7 @@ import { Add, ArrowBack, Close, Save, Send } from "@mui/icons-material";
 import { Paper } from "@mui/material";
 import { SearchIcon } from "@heroicons/react/solid";
 import {
-  RESSET_SNIPPET,
+  RESET_SNIPPET,
   selectFileName,
   selectSnippet,
   selectSnippetName,
@@ -45,7 +45,7 @@ const DashboardHeader = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const handleDiscard = () => {
-    dispatch(RESSET_SNIPPET());
+    dispatch(RESET_SNIPPET());
     router.push({ pathname: "/dashboard" });
   };
 
@@ -103,7 +103,7 @@ const DashboardHeader = () => {
     );
     await setDoc(snippetRef, snippetArr);
 
-    dispatch(RESSET_SNIPPET());
+    dispatch(RESET_SNIPPET());
     enqueueSnackbar(`Snippet saved successfully`, {
       variant: "success",
     });
