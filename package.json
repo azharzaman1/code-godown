@@ -20,6 +20,7 @@
     "@radix-ui/react-tooltip": "^0.1.7",
     "@reduxjs/toolkit": "^1.6.2",
     "axios": "^0.26.1",
+    "dashify": "^2.0.0",
     "firebase": "^9.4.0",
     "framer-motion": "^5.3.3",
     "monaco-editor": "^0.30.1",
