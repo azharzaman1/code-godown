@@ -1,3 +1,4 @@
+import { Switch } from "@headlessui/react";
 import { Divider, Paper } from "@mui/material";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -49,6 +50,15 @@ const SaveSnippet = () => {
     console.log(id);
     const restOfFiles = snippet?.files.filter((file) => file.key != id);
     dispatch(SET_SNIPPET({ ...snippet, files: restOfFiles }));
+  };
+
+  const handlesnippetScopeSwitch = (state) => {
+    dispatch(
+      SET_SNIPPET({
+        ...snippet,
+        snippetInfo: { ...snippet.snippetInfo, isPrivate: state },
+      })
+    );
   };
 
   return (
@@ -107,6 +117,30 @@ const SaveSnippet = () => {
           </div>
           {/* Tags */}
           {/* Private */}
+          <div className="flex flex-col w-full md:w-2/3 lg:w-1/2 xl:w-1/3 space-y-2 mt-2">
+            <Switch.Group>
+              <div className="flex items-center">
+                <Switch.Label className="mr-4">Keep code private?</Switch.Label>
+                <Switch
+                  checked={snippet?.snippetInfo.isPrivate}
+                  onChange={handlesnippetScopeSwitch}
+                  className={`${
+                    snippet?.snippetInfo.isPrivate
+                      ? "bg-primary"
+                      : "bg-gray-200 dark:bg-backgroundV1Dark"
+                  } relative inline-flex items-center h-6 rounded-full w-11 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 -z-0`}
+                >
+                  <span
+                    className={`${
+                      snippet?.snippetInfo.isPrivate
+                        ? "translate-x-6"
+                        : "translate-x-1"
+                    } inline-block w-4 h-4 transform bg-white rounded-full transition-transform`}
+                  />
+                </Switch>
+              </div>
+            </Switch.Group>
+          </div>
         </div>
       </form>
     </Paper>
