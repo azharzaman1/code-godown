@@ -1,32 +1,55 @@
 import { Grid } from "@mui/material";
-import { useSelector } from "react-redux";
 import Heading from "../../Generic/Heading";
 import Button from "../../Generic/Button";
-import SnippetCard from "./SnippetCard";
 import { Add, DeleteSweep } from "@mui/icons-material";
 import useAuth from "../../../hooks/auth/useAuth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useMutation } from "react-query";
+import useAxiosPrivate from "../../../hooks/auth/useAxiosPrivate";
+import SnippetCard from "./SnippetCard";
 
 const SnippetsArchivePanel = () => {
+  const axiosPrivate = useAxiosPrivate();
   const currentUser = useAuth();
   const [userSnippets, setUserSnippets] = useState([]);
+
+  const { mutate: fetchSnippets } = useMutation(
+    async (snippetIDs) => {
+      return await axiosPrivate.post("/api/v1/snippets/many", snippetIDs);
+    },
+    {
+      onSuccess: (res) => {
+        console.log("Snippets fetch response", res);
+
+        setUserSnippets(res.data.result);
+      },
+      onError: (err) => {
+        const statusCode = err.response.status;
+        const statusText = err.response.statusText;
+        enqueueSnackbar(statusText, {
+          variant: "error",
+        });
+      },
+    }
+  );
+
+  useEffect(() => {
+    fetchSnippets({ ids: currentUser?.snippets });
+  }, [currentUser?.snippets, fetchSnippets]);
+
+  console.log(userSnippets);
+
   return (
     <div className="dashboard__snippetsArchiveCont w-full">
-      {currentUser.snippets.length > 0 ? (
+      {userSnippets?.length > 0 ? (
         <Grid
           container
           spacing={{ xs: 1, md: 2 }}
           columns={{ xs: 4, sm: 8, md: 12 }}
           className="max-w-[100%] overflow-hidden"
         >
-          {userSnippets?.map(({ id, data }) => (
-            <SnippetCard
-              name={data.snippetName}
-              key={id}
-              uid={id}
-              info={data.snippetInfo}
-              files={data.files}
-            />
+          {userSnippets?.map((snippet) => (
+            <SnippetCard snippet={snippet} />
           ))}
         </Grid>
       ) : (

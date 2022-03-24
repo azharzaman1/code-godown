@@ -137,9 +137,7 @@ const LabelSelect = () => {
             leave="transition ease-in duration-100"
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
-            beforeEnter={() =>
-              labelsData.length < 1 && fetchLabels({ ids: labels })
-            }
+            beforeEnter={() => fetchLabels({ ids: labels })}
             afterLeave={() => setQuery("")}
           >
             <Combobox.Options className="absolute w-full z-50 py-1 mt-1 overflow-auto text-base bg-backgroundContrast dark:bg-backgroundContrastDark rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">

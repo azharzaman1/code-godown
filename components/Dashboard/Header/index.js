@@ -106,10 +106,14 @@ const DashboardHeader = () => {
     {
       onSuccess: (res) => {
         console.log("Snippet Post Response", res);
-        enqueueSnackbar(`Snippet added successfully`, {
-          variant: "success",
-        });
-        dispatch(RESET_SNIPPET());
+
+        if (res.status === 201 || res.status === 200) {
+          router.replace("/dashboard");
+          dispatch(RESET_SNIPPET());
+          enqueueSnackbar(`Snippet added successfully`, {
+            variant: "success",
+          });
+        }
       },
       onError: (err) => {
         const statusCode = err.response.status;

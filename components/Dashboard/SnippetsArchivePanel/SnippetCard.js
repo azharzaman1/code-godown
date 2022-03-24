@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Chip, Grid, IconButton, Paper, Stack, Tooltip } from "@mui/material";
 import { experimentalStyled as styled } from "@mui/material/styles";
 import { Delete, Download, Edit, Lock, Share } from "@mui/icons-material";
@@ -17,7 +17,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useSnackbar } from "notistack";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/dist/client/router";
-import { selectSnippets } from "../../../redux/slices/userSlice";
 import ThemeHeading from "../../Generic/Heading";
 import ThemeText from "../../Generic/Text";
 // syntax themes
@@ -31,6 +30,7 @@ import githubGist from "react-syntax-highlighter/dist/cjs/styles/hljs/github-gis
 import gradientDark from "react-syntax-highlighter/dist/cjs/styles/hljs/gradient-dark";
 import tomorrowNightBlue from "react-syntax-highlighter/dist/cjs/styles/hljs/tomorrow-night-blue";
 import schoolBook from "react-syntax-highlighter/dist/cjs/styles/hljs/school-book";
+import { format, parse, parseISO } from "date-fns";
 
 const syntaxThemes = {
   atomOneDark: atomOneDark,
@@ -45,64 +45,36 @@ const syntaxThemes = {
   schoolBook: schoolBook,
 };
 
-const Card = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(2),
-}));
-
-const SnippetCard = ({ name, uid, info, files, ...rest }) => {
-  const dispatch = useDispatch();
+const SnippetCard = ({ snippet, ...rest }) => {
+  console.log(snippet);
   const syntaxTheme = useSelector(selectSyntaxTheme);
-  const snippets = useSelector(selectSnippets);
-  let [snippetFiles, setSnippetFiles] = useState(() => files);
-  const [activeFile, setActiveFile] = useState(() => snippetFiles[0]);
-  const { createAt, isPrivate, tags, snippetLabels } = info;
-  const createdAtStr = new Date(createAt.toDate()).toLocaleString();
+  let [snippetFiles, setSnippetFiles] = useState(() => snippet.files);
+  const [activeFile, setActiveFile] = useState(() => snippet.files[0]);
+
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [user, loading, error] = useAuthState(auth);
-  const [snippetToDeleteUID, setSnippetToDeleteUID] = useState("");
-  const enqueueSnackbar = useSnackbar();
-  const router = useRouter();
 
-  useEffect(() => {
-    let p1 = snippetFiles.slice(0, activeFile.key + 1);
-    let p2 = snippetFiles.slice(activeFile.key + 1);
-    p1.push({
-      downloadButton: true,
-      onClick: () => handleFileDownload,
-    });
-    // setSnippetFiles(p1.concat(p2));
-  }, [activeFile]);
+  // const handleSnippetEdit = (uid) => {
+  //   dispatch(SET_DASHBOARD_LOADING(true));
+  //   const snippetToEdit = snippets?.find((snippet) => snippet.id === uid);
+  //   dispatch(SET_SNIPPET(snippetToEdit?.data));
+  //   dispatch(SET_SNIPPET_NAME(snippetToEdit?.data?.snippetName));
+  //   router.push({
+  //     pathname: "/dashboard",
+  //     query: {
+  //       display: "edit-snippet",
+  //     },
+  //   });
+  // };
 
-  const handleFileDownload = () => {};
+  // const handleSnippetDelete = async () => {
+  //   await deleteDoc(
+  //     doc(db, "users", user?.uid, "snippets", snippetToDeleteUID)
+  //   );
 
-  const handleSnippetDelete = async () => {
-    await deleteDoc(
-      doc(db, "users", user?.uid, "snippets", snippetToDeleteUID)
-    );
-
-    enqueueSnackbar(`Snippet was deleted successfully!`, {
-      variant: "info",
-    });
-  };
-
-  const handleSnippetShare = () => {
-    // setDialogOpen(true);
-  };
-
-  const handleSnippetEdit = (uid) => {
-    dispatch(SET_DASHBOARD_LOADING(true));
-    const snippetToEdit = snippets?.find((snippet) => snippet.id === uid);
-    dispatch(SET_SNIPPET(snippetToEdit?.data));
-    dispatch(SET_SNIPPET_NAME(snippetToEdit?.data?.snippetName));
-    router.push({
-      pathname: "/dashboard",
-      query: {
-        display: "edit-snippet",
-      },
-    });
-  };
-
-  const handleSnippetDownload = () => {};
+  //   enqueueSnackbar(`Snippet was deleted successfully!`, {
+  //     variant: "info",
+  //   });
+  // };
 
   return (
     <Grid
@@ -113,21 +85,26 @@ const SnippetCard = ({ name, uid, info, files, ...rest }) => {
       {...rest}
       className="snippet__card w-full min-h-[500px]"
     >
-      <Card className="flex flex-col">
+      <Paper sx={{ px: 2, py: 2 }} className="flex flex-col">
         <div className="snippetCard__header">
           <div className="flex items-center">
-            <ThemeHeading type="tertiary">{name}</ThemeHeading>
-            <Tooltip title="Private">
-              {isPrivate && (
+            <ThemeHeading type="tertiary">{snippet?.snippetName}</ThemeHeading>
+            {snippet?.snippetInfo?.isPrivate ? (
+              <Tooltip title="Private">
                 <Lock
                   sx={{ fontSize: "14px", marginLeft: "9px", marginTop: "2px" }}
                 />
-              )}
-            </Tooltip>
+              </Tooltip>
+            ) : (
+              <></>
+            )}
           </div>
           <div className="flex-between-center">
             <ThemeText type="info" className="mt-2">
-              {createdAtStr}
+              {format(
+                parseISO(snippet?.createdAt),
+                "yyyy/MM/dd hh:mm aaaaa'm'"
+              )}
             </ThemeText>
             <Stack
               className="snippetCard__actions"
@@ -136,41 +113,22 @@ const SnippetCard = ({ name, uid, info, files, ...rest }) => {
               alignItems="center"
             >
               <Tooltip title="Delete snippet">
-                <IconButton
-                  size="small"
-                  color="primary"
-                  onClick={() => {
-                    setDialogOpen(true);
-                    setSnippetToDeleteUID(uid);
-                  }}
-                >
+                <IconButton size="small" color="primary" onClick={() => {}}>
                   <Delete fontSize="inherit" />
                 </IconButton>
               </Tooltip>
               <Tooltip title="Download snippet">
-                <IconButton
-                  size="small"
-                  color="primary"
-                  onClick={handleSnippetDownload}
-                >
+                <IconButton size="small" color="primary" onClick={() => {}}>
                   <Download fontSize="inherit" />
                 </IconButton>
               </Tooltip>
               <Tooltip title="Share snippet">
-                <IconButton
-                  color="primary"
-                  size="small"
-                  onClick={handleSnippetShare}
-                >
+                <IconButton color="primary" size="small" onClick={() => {}}>
                   <Share fontSize="inherit" />
                 </IconButton>
               </Tooltip>
               <Tooltip title="Edit snippet">
-                <IconButton
-                  color="primary"
-                  size="small"
-                  onClick={() => handleSnippetEdit(uid)}
-                >
+                <IconButton color="primary" size="small" onClick={() => {}}>
                   <Edit fontSize="inherit" />
                 </IconButton>
               </Tooltip>
@@ -182,7 +140,7 @@ const SnippetCard = ({ name, uid, info, files, ...rest }) => {
           <SyntaxHighlighter
             language={activeFile?.language?.name?.toLowerCase() || "javascript"}
             style={syntaxThemes[syntaxTheme]}
-            // wrapLongLines
+            wrapLongLines
             lineNumberStyle={{ fontSize: "10px" }}
             className="max-h-[375px] min-h-[375px] max-w-[100%]"
           >
@@ -224,7 +182,7 @@ const SnippetCard = ({ name, uid, info, files, ...rest }) => {
             ))}
           </Stack>
         </div>
-      </Card>
+      </Paper>
       {/* For delete */}
       <Dialog
         title="Delete Snippet"
@@ -240,7 +198,7 @@ const SnippetCard = ({ name, uid, info, files, ...rest }) => {
           },
           {
             label: "Delete",
-            action: handleSnippetDelete,
+            action: () => {},
           },
         ]}
       />

@@ -57,7 +57,7 @@ const DashboardLayout = ({
         />
         <link rel="icon" href={icon || "/favicon.ico"} />
       </Head>
-      {dashboardLoading ? (
+      {false ? (
         <div className="loader-container w-full min-h-screen flex justify-center items-center">
           <Loader label="hang on, while we prepare a dashboard for you" />
         </div>
@@ -83,7 +83,7 @@ const DashboardLayout = ({
               </div>
             </Container>
           </main>
-          <div className="mt-3 z-10">
+          {/* <div className="mt-3 z-10">
             <SyntaxHighlighter
               language={"javascript"}
               style={a11yDark}
@@ -92,7 +92,7 @@ const DashboardLayout = ({
             >
               {JSON.stringify(snippet, null, 4)}
             </SyntaxHighlighter>
-          </div>
+          </div> */}
         </>
       )}
     </div>
