@@ -7,6 +7,7 @@ Improvements:
   Add disabled state to buttons
   Configure readable errors in Auth
   add react-hook-form in auth
+  add local next apis to node express
 
 Fixes:
   Auth Design

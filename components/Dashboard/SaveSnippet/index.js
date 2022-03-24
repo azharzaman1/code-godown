@@ -16,6 +16,7 @@ import Button from "../../Generic/Button";
 import Text from "../../Generic/Text";
 import LabelSelect from "./LabelSelect";
 import { splitAtCharacter } from "../../../files/utils";
+import dashify from "dashify";
 
 const SaveSnippet = () => {
   const dispatch = useDispatch();
@@ -56,7 +57,7 @@ const SaveSnippet = () => {
     dispatch(SET_SNIPPET({ ...snippet, files: restOfFiles }));
   };
 
-  const handlesnippetScopeSwitch = (state) => {
+  const handleSnippetScopeSwitch = (state) => {
     dispatch(
       SET_SNIPPET({
         ...snippet,
@@ -67,27 +68,20 @@ const SaveSnippet = () => {
 
   const handleTagsGen = () => {
     const tagsArr = splitAtCharacter(tagsString, ",");
-    console.log(tagsString);
-    console.log(tagsArr);
 
     let tagsToAdd = [];
     tagsArr?.forEach((tagName, index) => {
       tagsToAdd.push({
         name: tagName.trim(),
         key: index,
-        str: tagName.trim().replace(/\s/g, "_").toLowerCase(),
+        slug: dashify(tagName.trim()),
       });
     });
-
-    console.log("tagsToAdd", tagsToAdd);
 
     dispatch(
       SET_SNIPPET({
         ...snippet,
-        snippetInfo: {
-          ...snippet?.snippetInfo,
-          tags: tagsToAdd,
-        },
+        tags: tagsToAdd,
       })
     );
 
@@ -212,7 +206,7 @@ const SaveSnippet = () => {
                 <Switch.Label className="mr-4">Keep code private?</Switch.Label>
                 <Switch
                   checked={snippet?.snippetInfo?.isPrivate}
-                  onChange={handlesnippetScopeSwitch}
+                  onChange={handleSnippetScopeSwitch}
                   className={`${
                     snippet?.snippetInfo?.isPrivate
                       ? "bg-primary"

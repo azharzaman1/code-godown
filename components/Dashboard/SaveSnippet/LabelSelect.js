@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Combobox, Transition } from "@headlessui/react";
 import { SelectorIcon } from "@heroicons/react/solid";
 import { Add, Label } from "@mui/icons-material";
@@ -10,9 +10,11 @@ import useAxiosPrivate from "../../../hooks/auth/useAxiosPrivate";
 import useAuth from "../../../hooks/auth/useAuth";
 import { useSnackbar } from "notistack";
 import dashify from "dashify";
+import { selectSnippet, SET_SNIPPET } from "../../../redux/slices/appSlice";
 
 const LabelSelect = () => {
   const labels = useSelector(selectUser)?.labels || [];
+  const snippet = useSelector(selectSnippet);
   const [labelsData, setLabelsData] = useState([]);
   const [selectedLabel, setSelectedLabel] = useState();
   const [query, setQuery] = useState("");
@@ -20,6 +22,7 @@ const LabelSelect = () => {
   const axiosPrivate = useAxiosPrivate();
   const currentUser = useAuth();
 
+  const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
   const { mutate: fetchLabels } = useMutation(
@@ -101,9 +104,19 @@ const LabelSelect = () => {
     });
   };
 
+  const handleSelectedLabelChange = (label) => {
+    setSelectedLabel(label);
+    dispatch(
+      SET_SNIPPET({
+        ...snippet,
+        labels: [{ name: label.name, slug: label.slug, _id: label._id }],
+      })
+    );
+  };
+
   return (
     <div className="">
-      <Combobox value={selectedLabel} onChange={setSelectedLabel}>
+      <Combobox value={selectedLabel} onChange={handleSelectedLabelChange}>
         <div className="relative mt-1">
           <div className="relative w-full text-left bg-white rounded-lg shadow-md cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-teal-300 focus-visible:ring-offset-2 sm:text-sm overflow-hidden">
             <Combobox.Input

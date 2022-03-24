@@ -25,24 +25,28 @@ import Modal from "../../Generic/Modal";
 import { useState } from "react";
 import PreEditor from "../PreEditor";
 import useAuth from "../../../hooks/auth/useAuth";
+import { useMutation } from "react-query";
+import useAxiosPrivate from "../../../hooks/auth/useAxiosPrivate";
 
 const DashboardHeader = () => {
-  const dispatch = useDispatch();
-  const snippetArr = useSelector(selectSnippet);
+  const currentUser = useAuth();
+  const snippetObj = useSelector(selectSnippet);
   const snippetName = useSelector(selectSnippetName);
   const fileName = useSelector(selectFileName);
-  const currentUser = useAuth();
+
   const { data, error } = useSWR("/api/programming-langs", fetcher);
   const [addSnippetDialogOpen, setAddSnippetDialogOpen] = useState(false);
+
+  const dispatch = useDispatch();
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
+  const axiosPrivate = useAxiosPrivate();
 
   const displaySnippets = router.asPath === "/dashboard";
   const addingSnippetInfo =
     router.asPath === "/dashboard" && addSnippetDialogOpen;
   const addingCodeToSnippet = router.asPath === "/dashboard/editor";
   const savingSnippet = router.asPath === "/dashboard/save-snippet";
-
-  const { enqueueSnackbar } = useSnackbar();
 
   const handleDiscard = () => {
     dispatch(RESET_SNIPPET());
@@ -63,9 +67,7 @@ const DashboardHeader = () => {
       const snippetTemplate = {
         snippetName: snippetName,
         description: "",
-        uid: `snippet_${uuidv4()}`,
         snippetInfo: {
-          createAt: new Date(),
           isPrivate: true,
         },
         files: [
@@ -81,6 +83,8 @@ const DashboardHeader = () => {
             },
           },
         ],
+        labels: [],
+        tags: [],
       };
       dispatch(SET_SNIPPET(snippetTemplate));
       router.push({
@@ -93,21 +97,43 @@ const DashboardHeader = () => {
     }
   };
 
-  const handleSnippetSave = async () => {
-    const snippetRef = doc(
-      db,
-      "users",
-      user?.uid,
-      "snippets",
-      `snippet_${uuidv4()}`
-    );
-    await setDoc(snippetRef, snippetArr);
+  // add snippet to db react-query
 
-    dispatch(RESET_SNIPPET());
-    enqueueSnackbar(`Snippet saved successfully`, {
-      variant: "success",
+  const { mutate: postSnippet } = useMutation(
+    async (snippetData) => {
+      return await axiosPrivate.post("/api/v1/snippets", snippetData);
+    },
+    {
+      onSuccess: (res) => {
+        console.log("Snippet Post Response", res);
+        enqueueSnackbar(`Snippet added successfully`, {
+          variant: "success",
+        });
+        dispatch(RESET_SNIPPET());
+      },
+      onError: (err) => {
+        const statusCode = err.response.status;
+        const statusText = err.response.statusText;
+        enqueueSnackbar(statusText, {
+          variant: "error",
+        });
+      },
+    }
+  );
+
+  const handleSnippetSave = async () => {
+    postSnippet({
+      userID: currentUser._id,
+      snippet: {
+        ...snippetObj,
+        // ADDING INFO
+        owner: {
+          email: currentUser?.email,
+          userID: currentUser?._id,
+          fullName: currentUser?.fullName,
+        },
+      },
     });
-    dispatch(SET_DASHBOARD_CURRENT_STATE("displaySnippets"));
   };
 
   // <Dynamic Content>
