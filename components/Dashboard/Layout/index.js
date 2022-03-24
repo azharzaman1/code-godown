@@ -41,7 +41,7 @@ const DashboardLayout = ({
   const router = useRouter();
 
   const showSidebar =
-    router.asPath === "/dashboard" && currentUser.snippets.length > 0;
+    router.asPath === "/dashboard" && currentUser?.snippets?.length > 0;
 
   console.log("Snippet", snippet);
 
@@ -57,7 +57,7 @@ const DashboardLayout = ({
         />
         <link rel="icon" href={icon || "/favicon.ico"} />
       </Head>
-      {false ? (
+      {dashboardLoading ? (
         <div className="loader-container w-full min-h-screen flex justify-center items-center">
           <Loader label="hang on, while we prepare a dashboard for you" />
         </div>

@@ -140,9 +140,9 @@ const SnippetCard = ({ snippet, ...rest }) => {
           <SyntaxHighlighter
             language={activeFile?.language?.name?.toLowerCase() || "javascript"}
             style={syntaxThemes[syntaxTheme]}
-            wrapLongLines
             lineNumberStyle={{ fontSize: "10px" }}
             className="max-h-[375px] min-h-[375px] max-w-[100%]"
+            // wrapLongLines
           >
             {activeFile?.code}
           </SyntaxHighlighter>
