@@ -1,7 +1,8 @@
 import { Switch } from "@headlessui/react";
-import { Divider, Paper } from "@mui/material";
+import { Edit } from "@mui/icons-material";
+import { Divider, IconButton, Paper, Stack, Tooltip } from "@mui/material";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   RESET_SNIPPET,
@@ -10,14 +11,17 @@ import {
   SET_SNIPPET_NAME,
 } from "../../../redux/slices/appSlice";
 import Chip from "../../Generic/Chip";
-import Combobox from "../../Generic/Combobox";
 import Heading from "../../Generic/Heading";
+import Button from "../../Generic/Button";
 import Text from "../../Generic/Text";
 import LabelSelect from "./LabelSelect";
+import { splitAtCharacter } from "../../../files/utils";
 
 const SaveSnippet = () => {
   const dispatch = useDispatch();
   const snippet = useSelector(selectSnippet);
+  const [tagsString, setTagsString] = useState("");
+  const [tags, setTags] = useState([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -59,6 +63,41 @@ const SaveSnippet = () => {
         snippetInfo: { ...snippet.snippetInfo, isPrivate: state },
       })
     );
+  };
+
+  const handleTagsGen = () => {
+    const tagsArr = splitAtCharacter(tagsString, ",");
+    console.log(tagsString);
+    console.log(tagsArr);
+
+    let tagsToAdd = [];
+    tagsArr?.forEach((tagName, index) => {
+      tagsToAdd.push({
+        name: tagName.trim(),
+        key: index,
+        str: tagName.trim().replace(/\s/g, "_").toLowerCase(),
+      });
+    });
+
+    console.log("tagsToAdd", tagsToAdd);
+
+    dispatch(
+      SET_SNIPPET({
+        ...snippet,
+        snippetInfo: {
+          ...snippet?.snippetInfo,
+          tags: tagsToAdd,
+        },
+      })
+    );
+
+    setTags(tagsArr);
+  };
+
+  const handleTagDelete = (name) => {
+    let restOfTags = tags?.filter((tag) => tag !== name);
+    setTags(restOfTags);
+    setTagsString(restOfTags.join(","));
   };
 
   return (
@@ -115,24 +154,74 @@ const SaveSnippet = () => {
             <Text>Labels</Text>
             <LabelSelect />
           </div>
+
           {/* Tags */}
+          <div className="flex flex-col w-full md:w-2/3 lg:w-1/2 xl:w-1/3 space-y-2">
+            <Text component="label" htmlFor="snippet-tags-input">
+              Tags
+            </Text>
+            {tags.length > 0 ? (
+              <>
+                <div className="flex items-center space-x-2 max-w-full flex-wrap">
+                  {tags?.map((name, i) => (
+                    <Chip
+                      color="light"
+                      size="small"
+                      key={i}
+                      closeIconAction={() => {
+                        handleTagDelete(name);
+                      }}
+                    >
+                      {name}
+                    </Chip>
+                  ))}
+                  <Tooltip title="Edit" placement="right">
+                    <IconButton onClick={() => setTags([])}>
+                      <Edit fontSize="small" className="text-gray-400" />
+                    </IconButton>
+                  </Tooltip>
+                </div>
+              </>
+            ) : (
+              <>
+                <input
+                  type="text"
+                  placeholder="e.g. JavsScript,ReactJs,Components"
+                  id="snippet-tags-input"
+                  className={`input w-full`}
+                  value={tagsString}
+                  onChange={(e) => setTagsString(e.target.value)}
+                />
+                {tagsString.length > 0 && (
+                  <Button
+                    type="text"
+                    className="w-full flex justify-center mt-3"
+                    onClick={handleTagsGen}
+                  >
+                    Add
+                  </Button>
+                )}
+              </>
+            )}
+          </div>
+
           {/* Private */}
           <div className="flex flex-col w-full md:w-2/3 lg:w-1/2 xl:w-1/3 space-y-2 mt-2">
             <Switch.Group>
               <div className="flex items-center">
                 <Switch.Label className="mr-4">Keep code private?</Switch.Label>
                 <Switch
-                  checked={snippet?.snippetInfo.isPrivate}
+                  checked={snippet?.snippetInfo?.isPrivate}
                   onChange={handlesnippetScopeSwitch}
                   className={`${
-                    snippet?.snippetInfo.isPrivate
+                    snippet?.snippetInfo?.isPrivate
                       ? "bg-primary"
                       : "bg-gray-200 dark:bg-backgroundV1Dark"
                   } relative inline-flex items-center h-6 rounded-full w-11 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 -z-0`}
                 >
                   <span
                     className={`${
-                      snippet?.snippetInfo.isPrivate
+                      snippet?.snippetInfo?.isPrivate
                         ? "translate-x-6"
                         : "translate-x-1"
                     } inline-block w-4 h-4 transform bg-white rounded-full transition-transform`}

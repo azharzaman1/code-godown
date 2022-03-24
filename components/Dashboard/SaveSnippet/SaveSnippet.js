@@ -77,7 +77,7 @@ const SaveSnippet = () => {
         ...snippet,
         snippetInfo: {
           ...snippet?.snippetInfo,
-          snippetTags: tagsToAdd,
+          tags: tagsToAdd,
         },
       })
     );

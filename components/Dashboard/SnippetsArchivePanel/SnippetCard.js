@@ -55,7 +55,7 @@ const SnippetCard = ({ name, uid, info, files, ...rest }) => {
   const snippets = useSelector(selectSnippets);
   let [snippetFiles, setSnippetFiles] = useState(() => files);
   const [activeFile, setActiveFile] = useState(() => snippetFiles[0]);
-  const { createAt, isPrivate, snippetTags, snippetLabels } = info;
+  const { createAt, isPrivate, tags, snippetLabels } = info;
   const createdAtStr = new Date(createAt.toDate()).toLocaleString();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [user, loading, error] = useAuthState(auth);
