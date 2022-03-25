@@ -34,7 +34,8 @@ const SnippetsArchivePanel = () => {
   );
 
   useEffect(() => {
-    fetchSnippets({ ids: currentUser?.snippets });
+    currentUser?.snippets?.length > 0 &&
+      fetchSnippets({ ids: currentUser?.snippets });
   }, [currentUser?.snippets, fetchSnippets]);
 
   console.log(userSnippets);

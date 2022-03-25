@@ -8,6 +8,7 @@ Improvements:
   Configure readable errors in Auth
   add react-hook-form in auth
   add local next apis to node express
+  add loader to add label button
 
 Fixes:
   Auth Design
