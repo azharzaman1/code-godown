@@ -27,6 +27,7 @@ import PreEditor from "../PreEditor";
 import useAuth from "../../../hooks/auth/useAuth";
 import { useMutation } from "react-query";
 import useAxiosPrivate from "../../../hooks/auth/useAxiosPrivate";
+import { SET_USER } from "../../../redux/slices/userSlice";
 
 const DashboardHeader = () => {
   const currentUser = useAuth();
@@ -110,6 +111,7 @@ const DashboardHeader = () => {
         if (res.status === 201 || res.status === 200) {
           router.replace("/dashboard");
           dispatch(RESET_SNIPPET());
+          dispatch(SET_USER(res.data.updatedUser));
           enqueueSnackbar(`Snippet added successfully`, {
             variant: "success",
           });

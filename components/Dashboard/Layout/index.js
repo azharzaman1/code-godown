@@ -43,8 +43,6 @@ const DashboardLayout = ({
   const showSidebar =
     router.asPath === "/dashboard" && currentUser?.snippets?.length > 0;
 
-  console.log("Snippet", snippet);
-
   return (
     <div className={`${className} dashboard-container min-h-screen`}>
       <Head>
@@ -69,7 +67,7 @@ const DashboardLayout = ({
               <DashboardHeader />
               <div className="w-full flex flex-col space-y-2 md:flex-row md:space-y-0 mt-2 md:space-x-2 mb-2">
                 {showSidebar && (
-                  <Paper className="w-full md:w-1/6">
+                  <Paper className="w-full md:w-1/6 max-h-96">
                     <Navigation />
                   </Paper>
                 )}

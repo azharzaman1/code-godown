@@ -46,7 +46,6 @@ const syntaxThemes = {
 };
 
 const SnippetCard = ({ snippet, ...rest }) => {
-  console.log(snippet);
   const syntaxTheme = useSelector(selectSyntaxTheme);
   let [snippetFiles, setSnippetFiles] = useState(() => snippet.files);
   const [activeFile, setActiveFile] = useState(() => snippet.files[0]);

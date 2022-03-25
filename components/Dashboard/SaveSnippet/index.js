@@ -67,16 +67,17 @@ const SaveSnippet = () => {
   };
 
   const handleTagsGen = () => {
-    const tagsArr = splitAtCharacter(tagsString, ",");
+    const tagsArr = splitAtCharacter(tagsString, ",").filter(
+      (tag) => tag !== ""
+    );
 
-    let tagsToAdd = [];
-    tagsArr?.forEach((tagName, index) => {
-      tagsToAdd.push({
+    const tagsToAdd = tagsArr.map((tagName, index) => [
+      {
         name: tagName.trim(),
         key: index,
         slug: dashify(tagName.trim()),
-      });
-    });
+      },
+    ]);
 
     dispatch(
       SET_SNIPPET({

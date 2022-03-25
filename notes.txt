@@ -9,6 +9,7 @@ Improvements:
   add react-hook-form in auth
   add local next apis to node express
   add loader to add label button
+  improve dropdowns contrast
 
 Fixes:
   Auth Design
