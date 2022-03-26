@@ -3,7 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 export const appSlice = createSlice({
   name: "app",
   initialState: {
-    snippetName: "",
     fileName: "",
     snippet: {},
     editorActiveTabIndex: 0,
@@ -11,10 +10,18 @@ export const appSlice = createSlice({
     dashboardLoading: true,
   },
   reducers: {
-    SET_SNIPPET_NAME: (state, action) => {
+    SET_SNIPPET: (state, action) => {
       return {
         ...state,
-        snippetName: action.payload,
+        snippet: action.payload,
+      };
+    },
+    RESET_SNIPPET: (state, action) => {
+      return {
+        ...state,
+        snippet: {},
+        fileName: "",
+        editorActiveTabIndex: 0,
       };
     },
     SET_FILE_NAME: (state, action) => {
@@ -23,25 +30,10 @@ export const appSlice = createSlice({
         fileName: action.payload,
       };
     },
-    SET_SNIPPET: (state, action) => {
-      return {
-        ...state,
-        snippet: action.payload,
-      };
-    },
     SET_EDITOR_ACTIVE_TAB_INDEX: (state, action) => {
       return {
         ...state,
         editorActiveTabIndex: action.payload,
-      };
-    },
-    RESET_SNIPPET: (state, action) => {
-      return {
-        ...state,
-        snippet: {},
-        snippetName: "",
-        fileName: "",
-        editorActiveTabIndex: 0,
       };
     },
     SET_SYNTAX_THEME: (state, action) => {

@@ -11,7 +11,6 @@ import { useSnackbar } from "notistack";
 import {
   selectActiveTabIndex,
   selectSnippet,
-  selectSnippetName,
   SET_EDITOR_ACTIVE_TAB_INDEX,
   SET_SNIPPET,
 } from "../../redux/slices/appSlice";
@@ -22,7 +21,6 @@ import useSWR from "swr";
 import { useTheme } from "next-themes";
 
 const MonacoEditor = () => {
-  const snippetName = useSelector(selectSnippetName);
   let snippetObj = useSelector(selectSnippet);
   const activeTabIndex = useSelector(selectActiveTabIndex);
   const [activeTab, setActiveTab] = useState(
@@ -38,7 +36,6 @@ const MonacoEditor = () => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
-  const { snippet } = router.query;
   useEffect(() => {
     let mounted = true;
     if (mounted) {
@@ -90,7 +87,7 @@ const MonacoEditor = () => {
           files: [
             ...snippetObj?.files,
             {
-              snippetName: snippetObj?.snippetName || snippetName,
+              snippetName: snippetObj?.snippetName,
               key: snippetObj?.files?.at(-1).key + 1,
               extention: fileExtention,
               fileName: newFileName,
@@ -108,7 +105,7 @@ const MonacoEditor = () => {
         fileKey = 0;
 
         snippetToSet = {
-          snippetName: snippet,
+          snippetName: "",
           uid: `snippet_${uuidv4()}`,
           snippetInfo: {
             createAt: new Date(),
@@ -116,7 +113,7 @@ const MonacoEditor = () => {
           },
           files: [
             {
-              snippetName: snippet,
+              snippetName: "",
               key: fileKey,
               fileName: newFileName,
               code: `// start coding here`,

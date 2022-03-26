@@ -8,6 +8,11 @@ import useAxiosPrivate from "../../../../hooks/auth/useAxiosPrivate";
 import Modal from "../../../Generic/Modal";
 import { useDispatch } from "react-redux";
 import { SET_USER } from "../../../../redux/slices/userSlice";
+import {
+  SET_SNIPPET,
+  SET_SNIPPET_NAME,
+} from "../../../../redux/slices/appSlice";
+import { useRouter } from "next/router";
 
 const SnippetCardActions = ({ snippet }) => {
   const currentUser = useAuth();
@@ -16,6 +21,7 @@ const SnippetCardActions = ({ snippet }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const axiosPrivate = useAxiosPrivate();
 
+  const router = useRouter();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -63,18 +69,13 @@ const SnippetCardActions = ({ snippet }) => {
     },
   };
 
-  //   const handleSnippetEdit = (uid) => {
-  //     dispatch(SET_DASHBOARD_LOADING(true));
-  //     const snippetToEdit = snippets?.find((snippet) => snippet.id === uid);
-  //     dispatch(SET_SNIPPET(snippetToEdit?.data));
-  //     dispatch(SET_SNIPPET_NAME(snippetToEdit?.data?.snippetName));
-  //     router.push({
-  //       pathname: "/dashboard",
-  //       query: {
-  //         display: "edit-snippet",
-  //       },
-  //     });
-  //   };
+  const handleSnippetEdit = () => {
+    dispatch(SET_SNIPPET(snippet));
+    dispatch(SET_SNIPPET_NAME(snippet?.snippetName));
+    router.push({
+      pathname: "/dashboard/editor",
+    });
+  };
 
   return (
     <>
@@ -107,7 +108,7 @@ const SnippetCardActions = ({ snippet }) => {
           </IconButton>
         </Tooltip>
         <Tooltip title="Edit snippet">
-          <IconButton color="primary" size="small" onClick={() => {}}>
+          <IconButton color="primary" size="small" onClick={handleSnippetEdit}>
             <Edit fontSize="inherit" />
           </IconButton>
         </Tooltip>

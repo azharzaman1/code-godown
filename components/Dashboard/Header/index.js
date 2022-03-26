@@ -12,7 +12,6 @@ import {
   RESET_SNIPPET,
   selectFileName,
   selectSnippet,
-  selectSnippetName,
   SET_SNIPPET,
 } from "../../../redux/slices/appSlice";
 import { extractExtentionAndLanguage, fetcher } from "../../../files/utils";
@@ -30,7 +29,6 @@ import { SET_USER } from "../../../redux/slices/userSlice";
 const DashboardHeader = () => {
   const currentUser = useAuth();
   const snippetObj = useSelector(selectSnippet);
-  const snippetName = useSelector(selectSnippetName);
   const fileName = useSelector(selectFileName);
 
   const [saving, setSaving] = useState();
@@ -66,14 +64,14 @@ const DashboardHeader = () => {
         data
       );
       const snippetTemplate = {
-        snippetName: snippetName,
+        snippetName: snippetObj?.snippetName,
         description: "",
         snippetInfo: {
           isPrivate: true,
         },
         files: [
           {
-            snippetName: snippetName,
+            snippetName: snippetObj?.snippetName,
             key: 0,
             fileName: fileName,
             code: `// start coding here`,
@@ -167,7 +165,7 @@ const DashboardHeader = () => {
     : addingSnippetInfo || addingCodeToSnippet
     ? "Adding new snippet"
     : savingSnippet
-    ? `Saving ${snippetName}`
+    ? `Saving ${snippetObj?.snippetName}`
     : "Code Godown";
 
   // </Dynamic Content>

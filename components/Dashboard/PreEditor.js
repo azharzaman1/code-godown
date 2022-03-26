@@ -3,16 +3,16 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import {
   selectFileName,
-  selectSnippetName,
+  selectSnippet,
   SET_FILE_NAME,
-  SET_SNIPPET_NAME,
+  SET_SNIPPET,
 } from "../../redux/slices/appSlice";
 import Heading from "../Generic/Heading";
 import ThemeText from "../Generic/Text";
 
 const PreEditor = () => {
   const dispatch = useDispatch();
-  const snippetName = useSelector(selectSnippetName);
+  const snippet = useSelector(selectSnippet);
   const fileName = useSelector(selectFileName);
 
   return (
@@ -29,8 +29,10 @@ const PreEditor = () => {
             placeholder="e.g. Snippet #1"
             id="snippet-name"
             className={`input w-full`}
-            value={snippetName}
-            onChange={(e) => dispatch(SET_SNIPPET_NAME(e.target.value))}
+            value={snippet?.snippetName}
+            onChange={(e) =>
+              dispatch(SET_SNIPPET({ ...snippet, snippetName: e.target.value }))
+            }
           />
         </div>
         <div className="flex flex-col space-y-2 mt-4 w-full">
