@@ -25,6 +25,7 @@ import useAuth from "../../../hooks/auth/useAuth";
 import { useMutation } from "react-query";
 import useAxiosPrivate from "../../../hooks/auth/useAxiosPrivate";
 import { SET_USER } from "../../../redux/slices/userSlice";
+import { findAllByDisplayValue } from "@testing-library/react";
 
 const DashboardHeader = () => {
   const currentUser = useAuth();
@@ -74,7 +75,23 @@ const DashboardHeader = () => {
   };
 
   const handleBackDirect = () => {
-    router.push({ pathname: "/dashboard/editor" });
+    if (savingEditedSnippet) {
+      router.push({
+        pathname: "/dashboard/editor",
+        query: {
+          mode: "edit-snippet",
+          snippet: snippetObj?.snippetName,
+        },
+      });
+    } else {
+      router.push({
+        pathname: "/dashboard/editor",
+        query: {
+          mode: "adding-snippet",
+          snippet: snippetObj?.snippetName,
+        },
+      });
+    }
   };
 
   const pushToEditor = () => {
@@ -176,11 +193,38 @@ const DashboardHeader = () => {
   // <Dynamic Content>
 
   const mainButtonTitle =
-    addingSnippetInfo || addingCodeToNewSnippet ? "Continue" : "Save Snippet";
+    addingSnippetInfo || addingCodeToNewSnippet || editingSnippet
+      ? "Continue"
+      : "Save Snippet";
 
   const mainButtonAction = addingCodeToNewSnippet
     ? () => {
-        if (!editingSnippet) {
+        router.push({
+          pathname: "/dashboard/save-snippet",
+          query: {
+            mode: "new-snippet",
+          },
+        });
+      }
+    : editingSnippet
+    ? () => {
+        router.push({
+          pathname: "/dashboard/save-snippet",
+          query: {
+            mode: "edit-snippet",
+          },
+        });
+      }
+    : savingSnippet
+    ? handleSnippetSave
+    : savingEditedSnippet
+    ? handleSnippetUpdate
+    : () => {
+        alert("Unknown Action");
+      };
+
+  /*
+      if (!editingSnippet) {
           router.push({
             pathname: "/dashboard/save-snippet",
             query: {
@@ -195,12 +239,7 @@ const DashboardHeader = () => {
             },
           });
         }
-      }
-    : savingSnippet
-    ? handleSnippetSave
-    : () => {
-        alert("Unknown Action");
-      };
+      */
 
   const dashboardHeaderTagline = displaySnippets
     ? currentUser?.firstName
@@ -231,8 +270,9 @@ const DashboardHeader = () => {
           <SearchIcon className="cursor-pointer h-6 mr-2" />
         </div>
         {displaySnippets && <ThemeSwitch themes={SyntaxThemes} />}
+
         {/* Header Dynamic Buttons */}
-        {savingSnippet && (
+        {savingSnippet || savingEditedSnippet ? (
           <Button
             type="text-icon"
             startIcon={<ArrowBack />}
@@ -240,6 +280,8 @@ const DashboardHeader = () => {
           >
             Back
           </Button>
+        ) : (
+          <></>
         )}
         {!displaySnippets && (
           <Button
@@ -265,8 +307,8 @@ const DashboardHeader = () => {
           <Button
             type="icon"
             loading={saving}
-            startIcon={savingSnippet && <Save />}
-            endIcon={!savingSnippet && <Send />}
+            startIcon={savingSnippet || savingEditedSnippet ? <Save /> : null}
+            endIcon={!savingSnippet && !savingEditedSnippet ? <Send /> : null}
             onClick={mainButtonAction}
           >
             {mainButtonTitle}
