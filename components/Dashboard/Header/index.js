@@ -210,6 +210,7 @@ const DashboardHeader = () => {
         )}
         {displaySnippets ? (
           <Button
+            id="add-new-snippet-btn"
             type="icon"
             endIcon={<Add />}
             onClick={() => {

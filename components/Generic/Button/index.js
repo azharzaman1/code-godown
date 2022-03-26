@@ -7,8 +7,6 @@ const Button = ({
   className,
   href,
   size = "sm",
-  fluid,
-  isDark,
   startIcon, // only for icon button
   endIcon, // only for icon button
   shrinkTrans = true,
@@ -42,9 +40,7 @@ const Button = ({
         href={href}
         className={`text-primaryText dark:text-primaryTextDark bg-primary bg-opacity-10 hover:bg-primary hover:text-white font-medium rounded shadow-md border-2 border-primary cursor-pointer select-none transition duration-150 ${
           shrinkTrans && "active:scale-95"
-        } ${sm ? "px-3.5 py-1.5" : "px-5 py-2.5"} ${
-          fluid && "min-w-full text-center"
-        } ${className}`}
+        } ${sm ? "px-3.5 py-1.5" : "px-5 py-2.5"} ${className}`}
         {...rest}
       >
         {children}

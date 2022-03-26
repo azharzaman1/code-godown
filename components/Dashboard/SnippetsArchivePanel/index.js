@@ -36,6 +36,10 @@ const SnippetsArchivePanel = () => {
     fetchSnippets({ ids: currentUser?.snippets });
   }, [currentUser?.snippets, fetchSnippets]);
 
+  const handleAddNewSnippet = () => {
+    document.getElementById("add-new-snippet-btn").click();
+  };
+
   return (
     <div className="dashboard__snippetsArchiveCont w-full">
       {userSnippets?.length > 0 ? (
@@ -58,7 +62,7 @@ const SnippetsArchivePanel = () => {
             }}
           />
           <Heading type="secondary">No Snippets Found!</Heading>
-          <Button type="icon" endIcon={<Add />}>
+          <Button type="icon" endIcon={<Add />} onClick={handleAddNewSnippet}>
             Create
           </Button>
         </div>
