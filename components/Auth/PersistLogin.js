@@ -1,8 +1,10 @@
+import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useLocalStorage } from "react-use";
 import useAuth from "../../hooks/auth/useAuth";
 import useRefreshToken from "../../hooks/auth/useRefreshToken";
+import Loader from "../Generic/Loader";
 
 const PersistLogin = ({ children }) => {
   const dispatch = useDispatch();
@@ -35,7 +37,22 @@ const PersistLogin = ({ children }) => {
   }, [currentUser, remember, refresh, dispatch]);
 
   return (
-    <>{!remember ? children : isLoading ? <div>Loading...</div> : children}</>
+    <>
+      {!remember ? (
+        children
+      ) : isLoading ? (
+        <div>
+          <Head>
+            <title>Loading...</title>itle
+          </Head>
+          <div>
+            <Loader type={2} />
+          </div>
+        </div>
+      ) : (
+        children
+      )}
+    </>
   );
 };
 

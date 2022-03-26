@@ -1,24 +1,12 @@
 import { useState } from "react";
-import { Chip, Grid, IconButton, Paper, Stack, Tooltip } from "@mui/material";
-import { experimentalStyled as styled } from "@mui/material/styles";
-import { Delete, Download, Edit, Lock, Share } from "@mui/icons-material";
+import { Chip, Grid, Paper, Stack, Tooltip } from "@mui/material";
+import { Lock } from "@mui/icons-material";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { useSelector } from "react-redux";
-import {
-  selectSyntaxTheme,
-  SET_DASHBOARD_LOADING,
-  SET_SNIPPET,
-  SET_SNIPPET_NAME,
-} from "../../../redux/slices/appSlice";
-import Dialog from "../../Generic/Dialog";
-import { deleteDoc, doc } from "firebase/firestore";
-import { auth, db } from "../../../firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { useSnackbar } from "notistack";
-import { useDispatch } from "react-redux";
-import { useRouter } from "next/dist/client/router";
-import ThemeHeading from "../../Generic/Heading";
-import ThemeText from "../../Generic/Text";
+import { selectSyntaxTheme } from "../../../../redux/slices/appSlice";
+import Dialog from "../../../Generic/Dialog";
+import ThemeHeading from "../../../Generic/Heading";
+import ThemeText from "../../../Generic/Text";
 // syntax themes
 import atomOneDark from "react-syntax-highlighter/dist/cjs/styles/hljs/atom-one-dark";
 import atomOneLight from "react-syntax-highlighter/dist/cjs/styles/hljs/atom-one-light";
@@ -30,7 +18,8 @@ import githubGist from "react-syntax-highlighter/dist/cjs/styles/hljs/github-gis
 import gradientDark from "react-syntax-highlighter/dist/cjs/styles/hljs/gradient-dark";
 import tomorrowNightBlue from "react-syntax-highlighter/dist/cjs/styles/hljs/tomorrow-night-blue";
 import schoolBook from "react-syntax-highlighter/dist/cjs/styles/hljs/school-book";
-import { format, parse, parseISO } from "date-fns";
+import { format, parseISO } from "date-fns";
+import SnippetCardActions from "./SnippetCardActions";
 
 const syntaxThemes = {
   atomOneDark: atomOneDark,
@@ -51,29 +40,6 @@ const SnippetCard = ({ snippet, ...rest }) => {
   const [activeFile, setActiveFile] = useState(() => snippet.files[0]);
 
   const [dialogOpen, setDialogOpen] = useState(false);
-
-  // const handleSnippetEdit = (uid) => {
-  //   dispatch(SET_DASHBOARD_LOADING(true));
-  //   const snippetToEdit = snippets?.find((snippet) => snippet.id === uid);
-  //   dispatch(SET_SNIPPET(snippetToEdit?.data));
-  //   dispatch(SET_SNIPPET_NAME(snippetToEdit?.data?.snippetName));
-  //   router.push({
-  //     pathname: "/dashboard",
-  //     query: {
-  //       display: "edit-snippet",
-  //     },
-  //   });
-  // };
-
-  // const handleSnippetDelete = async () => {
-  //   await deleteDoc(
-  //     doc(db, "users", user?.uid, "snippets", snippetToDeleteUID)
-  //   );
-
-  //   enqueueSnackbar(`Snippet was deleted successfully!`, {
-  //     variant: "info",
-  //   });
-  // };
 
   return (
     <Grid
@@ -105,33 +71,7 @@ const SnippetCard = ({ snippet, ...rest }) => {
                 "yyyy/MM/dd hh:mm aaaaa'm'"
               )}
             </ThemeText>
-            <Stack
-              className="snippetCard__actions"
-              direction="row"
-              spacing={1}
-              alignItems="center"
-            >
-              <Tooltip title="Delete snippet">
-                <IconButton size="small" color="primary" onClick={() => {}}>
-                  <Delete fontSize="inherit" />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Download snippet">
-                <IconButton size="small" color="primary" onClick={() => {}}>
-                  <Download fontSize="inherit" />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Share snippet">
-                <IconButton color="primary" size="small" onClick={() => {}}>
-                  <Share fontSize="inherit" />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Edit snippet">
-                <IconButton color="primary" size="small" onClick={() => {}}>
-                  <Edit fontSize="inherit" />
-                </IconButton>
-              </Tooltip>
-            </Stack>
+            <SnippetCardActions snippet={snippet} />
           </div>
         </div>
 
@@ -155,29 +95,19 @@ const SnippetCard = ({ snippet, ...rest }) => {
             className="mt-3 w-full overflow-x-scroll"
           >
             {snippetFiles?.map(({ fileName, key, downloadButton, onClick }) => (
-              <>
-                {downloadButton ? (
-                  <Tooltip title="Download file" key={key}>
-                    <IconButton color="primary" size="small" onClick={onClick}>
-                      <Download fontSize="small" sx={{ color: "gray" }} />
-                    </IconButton>
-                  </Tooltip>
-                ) : (
-                  <Chip
-                    key={key}
-                    color="primary"
-                    label={fileName}
-                    variant={activeFile.key == key ? "" : "outlined"}
-                    size="small"
-                    sx={{
-                      marginBottom: "8px !important",
-                    }}
-                    onClick={() => {
-                      setActiveFile(snippetFiles[key]);
-                    }}
-                  />
-                )}
-              </>
+              <Chip
+                key={key}
+                color="primary"
+                label={fileName}
+                variant={activeFile.key == key ? "" : "outlined"}
+                size="small"
+                sx={{
+                  marginBottom: "8px !important",
+                }}
+                onClick={() => {
+                  setActiveFile(snippetFiles[key]);
+                }}
+              />
             ))}
           </Stack>
         </div>

@@ -13,6 +13,7 @@ const Modal = ({
   warning,
   success,
   error,
+  loading,
   cancelLabel,
   confirmLabel,
   cancelAction,
@@ -96,8 +97,9 @@ const Modal = ({
               </div>
               <div className="py-2 px-4 flex flex-col sm:flex-row-reverse space-y-3 sm:space-y-0 sm:px-6 bg-gray-50 dark:bg-backgroundContrastDark border-t border-dividerColorDark">
                 <Button
+                  loading={loading}
                   onClick={confirmAction}
-                  className="justify-center text-center"
+                  className="justify-center text-center min-w-[100px]"
                 >
                   {confirmLabel || "Confirm"}
                 </Button>

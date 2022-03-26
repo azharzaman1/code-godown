@@ -11,8 +11,7 @@ Improvements:
   add loader to add label button
   improve dropdowns contrast
 
-Fixes:
-  Auth Design
 
-Snippets:
-  dateExample: Timestamp.fromDate(new Date("December 10, 1815")),
+
+Fixes:
+  unmount monaco once snippet saved

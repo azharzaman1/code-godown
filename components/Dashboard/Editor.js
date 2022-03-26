@@ -235,7 +235,7 @@ const MonacoEditor = () => {
       <Modal
         warning
         title={`Delete file`}
-        desc={`Are you sure you want to deactivate your account? All of your data will be permanently removed. This action cannot be undone.`}
+        desc={`Are you sure you want to delete this file. This action cannot be undone.`}
         open={dialogOpen}
         setOpen={setDialogOpen}
         confirmAction={handleFileDelete}

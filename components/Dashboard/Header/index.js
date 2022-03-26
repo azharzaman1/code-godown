@@ -1,28 +1,26 @@
+import { useState } from "react";
+import { useSnackbar } from "notistack";
+import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import useSWR from "swr";
+
 import { Add, ArrowBack, Close, Save, Send } from "@mui/icons-material";
 import { Paper } from "@mui/material";
 import { SearchIcon } from "@heroicons/react/solid";
+
 import {
   RESET_SNIPPET,
   selectFileName,
   selectSnippet,
   selectSnippetName,
-  SET_DASHBOARD_CURRENT_STATE,
   SET_SNIPPET,
 } from "../../../redux/slices/appSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { doc } from "firebase/firestore";
-import { db } from "../../../firebase";
-import { v4 as uuidv4 } from "uuid";
-import { useRouter } from "next/router";
-import { useSnackbar } from "notistack";
 import { extractExtentionAndLanguage, fetcher } from "../../../files/utils";
 import Button from "../../../components/Generic/Button";
 import ThemeSwitch from "../../../components/Dashboard/ThemeSwitch";
 import SyntaxThemes from "../../../theming/SyntaxThemes";
 import ThemeHeading from "../../../components/Generic/Heading";
-import useSWR from "swr";
 import Modal from "../../Generic/Modal";
-import { useState } from "react";
 import PreEditor from "../PreEditor";
 import useAuth from "../../../hooks/auth/useAuth";
 import { useMutation } from "react-query";
@@ -34,6 +32,8 @@ const DashboardHeader = () => {
   const snippetObj = useSelector(selectSnippet);
   const snippetName = useSelector(selectSnippetName);
   const fileName = useSelector(selectFileName);
+
+  const [saving, setSaving] = useState();
 
   const { data, error } = useSWR("/api/programming-langs", fetcher);
   const [addSnippetDialogOpen, setAddSnippetDialogOpen] = useState(false);
@@ -115,6 +115,7 @@ const DashboardHeader = () => {
           enqueueSnackbar(`Snippet added successfully`, {
             variant: "success",
           });
+          setSaving(false);
         }
       },
       onError: (err) => {
@@ -123,11 +124,13 @@ const DashboardHeader = () => {
         enqueueSnackbar(statusText, {
           variant: "error",
         });
+        setSaving(false);
       },
     }
   );
 
   const handleSnippetSave = async () => {
+    setSaving(true);
     postSnippet({
       userID: currentUser._id,
       snippet: {
@@ -218,6 +221,7 @@ const DashboardHeader = () => {
         ) : (
           <Button
             type="icon"
+            loading={saving}
             startIcon={savingSnippet && <Save />}
             endIcon={!savingSnippet && <Send />}
             onClick={mainButtonAction}

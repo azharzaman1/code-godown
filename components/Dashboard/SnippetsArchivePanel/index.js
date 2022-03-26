@@ -20,7 +20,6 @@ const SnippetsArchivePanel = () => {
     {
       onSuccess: (res) => {
         console.log("Snippets fetch response", res);
-
         setUserSnippets(res.data.result);
       },
       onError: (err) => {
@@ -34,11 +33,8 @@ const SnippetsArchivePanel = () => {
   );
 
   useEffect(() => {
-    currentUser?.snippets?.length > 0 &&
-      fetchSnippets({ ids: currentUser?.snippets });
+    fetchSnippets({ ids: currentUser?.snippets });
   }, [currentUser?.snippets, fetchSnippets]);
-
-  console.log(userSnippets);
 
   return (
     <div className="dashboard__snippetsArchiveCont w-full">
@@ -54,7 +50,7 @@ const SnippetsArchivePanel = () => {
           ))}
         </Grid>
       ) : (
-        <div className="flex flex-col items-center justify-center space-y-5 mt-10">
+        <div className="flex flex-col items-center justify-center space-y-5 my-7">
           <DeleteSweep
             sx={{
               fontSize: 100,
