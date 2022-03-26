@@ -38,14 +38,35 @@ const DashboardHeader = () => {
 
   const dispatch = useDispatch();
   const router = useRouter();
-  const { enqueueSnackbar } = useSnackbar();
   const axiosPrivate = useAxiosPrivate();
+  const { enqueueSnackbar } = useSnackbar();
 
-  const displaySnippets = router.asPath === "/dashboard";
+  // display snippet
+  const displaySnippets = router.pathname === "/dashboard";
+
+  // initiating snippet
   const addingSnippetInfo =
-    router.asPath === "/dashboard" && addSnippetDialogOpen;
-  const addingCodeToSnippet = router.asPath === "/dashboard/editor";
-  const savingSnippet = router.asPath === "/dashboard/save-snippet";
+    router.pathname === "/dashboard" && addSnippetDialogOpen;
+
+  // adding code to new snippet
+  const addingCodeToNewSnippet =
+    router.pathname === "/dashboard/editor" &&
+    router.query.mode === "adding-snippet";
+
+  // editing snippet
+  const editingSnippet =
+    router.pathname === "/dashboard/editor" &&
+    router.query.mode === "edit-snippet";
+
+  // saving new snippet
+  const savingSnippet =
+    router.pathname === "/dashboard/save-snippet" &&
+    router.query.mode === "new-snippet";
+
+  // saving edited snippet
+  const savingEditedSnippet =
+    router.pathname === "/dashboard/save-snippet" &&
+    router.query.mode === "edit-snippet";
 
   const handleDiscard = () => {
     dispatch(RESET_SNIPPET());
@@ -88,6 +109,10 @@ const DashboardHeader = () => {
       dispatch(SET_SNIPPET(snippetTemplate));
       router.push({
         pathname: "/dashboard/editor",
+        query: {
+          mode: "adding-snippet",
+          snippet: snippetObj?.snippetName,
+        },
       });
     } else {
       enqueueSnackbar(`File name must contain extention, please recheck`, {
@@ -128,29 +153,48 @@ const DashboardHeader = () => {
   );
 
   const handleSnippetSave = async () => {
-    setSaving(true);
-    postSnippet({
-      userID: currentUser._id,
-      snippet: {
-        ...snippetObj,
-        // ADDING INFO
-        owner: {
-          email: currentUser?.email,
-          userID: currentUser?._id,
-          fullName: currentUser?.fullName,
-        },
-      },
-    });
+    console.log("Save");
+    // setSaving(true);
+    // postSnippet({
+    //   userID: currentUser._id,
+    //   snippet: {
+    //     ...snippetObj,
+    //     // ADDING INFO
+    //     owner: {
+    //       email: currentUser?.email,
+    //       userID: currentUser?._id,
+    //       fullName: currentUser?.fullName,
+    //     },
+    //   },
+    // });
+  };
+
+  const handleSnippetUpdate = () => {
+    console.log("Update");
   };
 
   // <Dynamic Content>
 
   const mainButtonTitle =
-    addingSnippetInfo || addingCodeToSnippet ? "Continue" : "Save Snippet";
+    addingSnippetInfo || addingCodeToNewSnippet ? "Continue" : "Save Snippet";
 
-  const mainButtonAction = addingCodeToSnippet
+  const mainButtonAction = addingCodeToNewSnippet
     ? () => {
-        router.push({ pathname: "/dashboard/save-snippet" });
+        if (!editingSnippet) {
+          router.push({
+            pathname: "/dashboard/save-snippet",
+            query: {
+              mode: "new-snippet",
+            },
+          });
+        } else {
+          router.push({
+            pathname: "/dashboard/save-snippet",
+            query: {
+              mode: "edit-snippet",
+            },
+          });
+        }
       }
     : savingSnippet
     ? handleSnippetSave
@@ -162,7 +206,7 @@ const DashboardHeader = () => {
     ? currentUser?.firstName
       ? `${currentUser?.firstName}'s Snippets`
       : "Your Snippets"
-    : addingSnippetInfo || addingCodeToSnippet
+    : addingSnippetInfo || addingCodeToNewSnippet
     ? "Adding new snippet"
     : savingSnippet
     ? `Saving ${snippetObj?.snippetName}`

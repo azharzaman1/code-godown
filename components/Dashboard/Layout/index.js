@@ -41,7 +41,7 @@ const DashboardLayout = ({
   const router = useRouter();
 
   const showSidebar =
-    router.asPath === "/dashboard" && currentUser?.snippets?.length > 0;
+    router.pathname === "/dashboard" && currentUser?.snippets?.length > 0;
 
   return (
     <div className={`${className} dashboard-container min-h-screen`}>

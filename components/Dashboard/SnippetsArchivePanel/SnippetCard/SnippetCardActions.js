@@ -71,9 +71,12 @@ const SnippetCardActions = ({ snippet }) => {
 
   const handleSnippetEdit = () => {
     dispatch(SET_SNIPPET(snippet));
-    dispatch(SET_SNIPPET_NAME(snippet?.snippetName));
     router.push({
       pathname: "/dashboard/editor",
+      query: {
+        mode: "edit-snippet",
+        snippet: snippet?.snippetName,
+      },
     });
   };
 
