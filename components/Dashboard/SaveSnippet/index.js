@@ -8,7 +8,6 @@ import {
   RESET_SNIPPET,
   selectSnippet,
   SET_SNIPPET,
-  SET_SNIPPET_NAME,
 } from "../../../redux/slices/appSlice";
 import Chip from "../../Generic/Chip";
 import Heading from "../../Generic/Heading";
@@ -39,7 +38,6 @@ const SaveSnippet = () => {
         snippetName: e.target.value,
       })
     );
-    dispatch(SET_SNIPPET_NAME(e.target.value));
   };
 
   const handleDescChange = (e) => {

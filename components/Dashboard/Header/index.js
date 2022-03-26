@@ -139,7 +139,6 @@ const DashboardHeader = () => {
   };
 
   // add snippet to db react-query
-
   const { mutate: postSnippet } = useMutation(
     async (snippetData) => {
       return await axiosPrivate.post("/api/v1/snippets", snippetData);
@@ -170,24 +169,57 @@ const DashboardHeader = () => {
   );
 
   const handleSnippetSave = async () => {
-    console.log("Save");
-    // setSaving(true);
-    // postSnippet({
-    //   userID: currentUser._id,
-    //   snippet: {
-    //     ...snippetObj,
-    //     // ADDING INFO
-    //     owner: {
-    //       email: currentUser?.email,
-    //       userID: currentUser?._id,
-    //       fullName: currentUser?.fullName,
-    //     },
-    //   },
-    // });
+    setSaving(true);
+    postSnippet({
+      userID: currentUser._id,
+      snippet: {
+        ...snippetObj,
+        // ADDING INFO
+        owner: {
+          email: currentUser?.email,
+          userID: currentUser?._id,
+          fullName: currentUser?.fullName,
+        },
+      },
+    });
   };
+
+  // update snippet react-query
+  const { mutate: updateSnippet } = useMutation(
+    async (snippetData) => {
+      return await axiosPrivate.put(
+        `/api/v1/snippets/${snippetObj?._id}`,
+        snippetData
+      );
+    },
+    {
+      onSuccess: (res) => {
+        console.log("Snippet Update Response", res);
+
+        if (res.status === 201 || res.status === 200) {
+          router.replace("/dashboard");
+          dispatch(RESET_SNIPPET());
+          enqueueSnackbar(`Snippet updated successfully`, {
+            variant: "success",
+          });
+          setSaving(false);
+        }
+      },
+      onError: (err) => {
+        const statusCode = err.response.status;
+        const statusText = err.response.statusText;
+        enqueueSnackbar(statusText, {
+          variant: "error",
+        });
+        setSaving(false);
+      },
+    }
+  );
 
   const handleSnippetUpdate = () => {
     console.log("Update");
+    setSaving(true);
+    updateSnippet({ mode: "basic-update", snippet: snippetObj });
   };
 
   // <Dynamic Content>
@@ -222,24 +254,6 @@ const DashboardHeader = () => {
     : () => {
         alert("Unknown Action");
       };
-
-  /*
-      if (!editingSnippet) {
-          router.push({
-            pathname: "/dashboard/save-snippet",
-            query: {
-              mode: "new-snippet",
-            },
-          });
-        } else {
-          router.push({
-            pathname: "/dashboard/save-snippet",
-            query: {
-              mode: "edit-snippet",
-            },
-          });
-        }
-      */
 
   const dashboardHeaderTagline = displaySnippets
     ? currentUser?.firstName
