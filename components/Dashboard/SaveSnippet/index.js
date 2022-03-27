@@ -1,6 +1,6 @@
 import { Switch } from "@headlessui/react";
 import { Edit } from "@mui/icons-material";
-import { Divider, IconButton, Paper, Stack, Tooltip } from "@mui/material";
+import { Divider, IconButton, Paper, Tooltip } from "@mui/material";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -32,10 +32,12 @@ const SaveSnippet = () => {
   }, [router, snippet.files]);
 
   const handleNameChange = (e) => {
+    const name = e.target.value;
     dispatch(
       SET_SNIPPET({
         ...snippet,
-        snippetName: e.target.value,
+        snippetName: name,
+        slug: dashify(name),
       })
     );
   };

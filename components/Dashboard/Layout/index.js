@@ -81,7 +81,7 @@ const DashboardLayout = ({
               </div>
             </Container>
           </main>
-          {/* <div className="mt-3 z-10">
+          <div className="mt-3 z-10">
             <SyntaxHighlighter
               language={"javascript"}
               style={a11yDark}
@@ -90,7 +90,7 @@ const DashboardLayout = ({
             >
               {JSON.stringify(snippet, null, 4)}
             </SyntaxHighlighter>
-          </div> */}
+          </div>
         </>
       )}
     </div>

@@ -11,7 +11,7 @@ Improvements:
   add loader to add label button
   improve dropdowns contrast
 
-
-
 Fixes:
   unmount monaco once snippet saved
+
+  snippetName in files

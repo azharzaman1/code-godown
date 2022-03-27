@@ -43,7 +43,7 @@ export default function Hero() {
                 <div className="flex flex-wrap space-x-3 items-center justify-evenly">
                   <Link href={currentUser ? "/dashboard" : "/auth/login"}>
                     <Button className="mt-2" size="lg">
-                      {currentUser ? "Dashboard is ready" : "Get Started"}
+                      {currentUser ? "My Dashboard" : "Get Started"}
                     </Button>
                   </Link>
                 </div>

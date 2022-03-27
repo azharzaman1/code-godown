@@ -19,8 +19,11 @@ import Loader from "../Generic/Loader";
 import Modal from "../Generic/Modal";
 import useSWR from "swr";
 import { useTheme } from "next-themes";
+import dashify from "dashify";
+import useAuth from "../../hooks/auth/useAuth";
 
 const MonacoEditor = () => {
+  const currentUser = useAuth();
   let snippetObj = useSelector(selectSnippet);
   const activeTabIndex = useSelector(selectActiveTabIndex);
   const [activeTab, setActiveTab] = useState(
@@ -31,9 +34,9 @@ const MonacoEditor = () => {
   const [newFileName, setNewFileName] = useState("");
   const { data: languages, error } = useSWR("/api/programming-langs", fetcher);
 
+  const router = useRouter();
   const dispatch = useDispatch();
   const { theme: themePreference, setTheme } = useTheme();
-  const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
@@ -79,6 +82,7 @@ const MonacoEditor = () => {
 
       let snippetToSet;
       let fileKey;
+      const snippetUID = `snippet_${uuidv4()}`;
       if (snippetObj?.files?.length > 0) {
         // normal behaviour
         fileKey = snippetObj?.files?.at(-1).key + 1;
@@ -87,10 +91,13 @@ const MonacoEditor = () => {
           files: [
             ...snippetObj?.files,
             {
-              snippetName: snippetObj?.snippetName,
               key: snippetObj?.files?.at(-1).key + 1,
-              extention: fileExtention,
               fileName: newFileName,
+              snippetName: snippetObj?.snippetName,
+              snippetUID: snippetUID || `snippet_${uuidv4()}`,
+              ownerID: currentUser?._id,
+              extention: fileExtention,
+
               code: `// start coding here`,
               language: {
                 ...language,
@@ -101,21 +108,22 @@ const MonacoEditor = () => {
         };
       } else {
         // if page refreshed by user
-        console.log("altered called");
         fileKey = 0;
 
         snippetToSet = {
-          snippetName: "",
-          uid: `snippet_${uuidv4()}`,
+          snippetName: router.query.snippet || "",
+          slug: dashify(router.query.snippet) || "",
+          uid: snippetUID || `snippet_${uuidv4()}`,
           snippetInfo: {
-            createAt: new Date(),
             isPrivate: true,
           },
           files: [
             {
-              snippetName: "",
               key: fileKey,
               fileName: newFileName,
+              snippetUID: snippetUID || `snippet_${uuidv4()}`,
+              ownerID: currentUser?._id,
+              snippetName: "",
               code: `// start coding here`,
               extention: fileExtention,
               language: {

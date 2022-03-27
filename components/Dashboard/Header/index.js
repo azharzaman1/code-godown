@@ -3,6 +3,7 @@ import { useSnackbar } from "notistack";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import useSWR from "swr";
+import { v4 as uuidv4 } from "uuid";
 
 import { Add, ArrowBack, Close, Save, Send } from "@mui/icons-material";
 import { Paper } from "@mui/material";
@@ -25,7 +26,7 @@ import useAuth from "../../../hooks/auth/useAuth";
 import { useMutation } from "react-query";
 import useAxiosPrivate from "../../../hooks/auth/useAxiosPrivate";
 import { SET_USER } from "../../../redux/slices/userSlice";
-import { findAllByDisplayValue } from "@testing-library/react";
+import dashify from "dashify";
 
 const DashboardHeader = () => {
   const currentUser = useAuth();
@@ -101,17 +102,22 @@ const DashboardHeader = () => {
         fileName,
         data
       );
+      const snippetUID = `snippet_${uuidv4()}`;
       const snippetTemplate = {
         snippetName: snippetObj?.snippetName,
+        slug: dashify(snippetObj?.snippetName),
+        uid: snippetUID || `snippet_${uuidv4()}`,
         description: "",
         snippetInfo: {
           isPrivate: true,
         },
         files: [
           {
-            snippetName: snippetObj?.snippetName,
             key: 0,
             fileName: fileName,
+            snippetName: snippetObj?.snippetName,
+            snippetUID: snippetUID || `snippet_${uuidv4()}`,
+            ownerID: currentUser?._id,
             code: `// start coding here`,
             extention: fileExtention,
             language: {
@@ -170,7 +176,7 @@ const DashboardHeader = () => {
 
   const handleSnippetSave = async () => {
     setSaving(true);
-    postSnippet({
+    const snippetToSave = {
       userID: currentUser._id,
       snippet: {
         ...snippetObj,
@@ -181,7 +187,8 @@ const DashboardHeader = () => {
           fullName: currentUser?.fullName,
         },
       },
-    });
+    };
+    postSnippet(snippetToSave);
   };
 
   // update snippet react-query
@@ -217,9 +224,22 @@ const DashboardHeader = () => {
   );
 
   const handleSnippetUpdate = () => {
-    console.log("Update");
     setSaving(true);
-    updateSnippet({ mode: "basic-update", snippet: snippetObj });
+    let updatedFiles = [];
+    snippetObj?.files?.forEach((file) => {
+      updatedFiles.push({ ...file, snippetName: snippetObj?.snippetName });
+    });
+    updateSnippet({
+      snippet: {
+        snippetName: snippetObj?.snippetName,
+        description: snippetObj?.description,
+        slug: snippetObj?.slug,
+        snippetInfo: snippetObj?.snippetInfo,
+        files: updatedFiles,
+        tags: snippetObj?.tags,
+        labels: snippetObj?.labels,
+      },
+    });
   };
 
   // <Dynamic Content>
