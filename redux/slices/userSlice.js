@@ -14,6 +14,7 @@ export const userSlice = createSlice({
   initialState: {
     currentUser: null,
     persistSession: true,
+    snippets: [],
     userType: "",
   },
   reducers: {
@@ -49,14 +50,26 @@ export const userSlice = createSlice({
           : "",
       };
     },
+    SET_SNIPPETS: (state, action) => {
+      return {
+        ...state,
+        snippets: action.payload,
+      };
+    },
   },
 });
 
-export const { SET_USER, SET_USER_TYPE, LOGOUT, SET_SESSION_PERSIST } =
-  userSlice.actions;
+export const {
+  SET_USER,
+  SET_USER_TYPE,
+  LOGOUT,
+  SET_SESSION_PERSIST,
+  SET_SNIPPETS,
+} = userSlice.actions;
 
 export const selectUser = (state) => state.userStore.currentUser;
 export const selectSessionPersist = (state) => state.userStore.persistSession;
 export const selectUserType = (state) => state.userStore.userType;
+export const selectSnippets = (state) => state.userStore.snippets;
 
 export default userSlice.reducer;

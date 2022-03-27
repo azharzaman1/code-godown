@@ -25,13 +25,14 @@ import PreEditor from "../PreEditor";
 import useAuth from "../../../hooks/auth/useAuth";
 import { useMutation } from "react-query";
 import useAxiosPrivate from "../../../hooks/auth/useAxiosPrivate";
-import { SET_USER } from "../../../redux/slices/userSlice";
+import { selectSnippets, SET_USER } from "../../../redux/slices/userSlice";
 import dashify from "dashify";
 
 const DashboardHeader = () => {
   const currentUser = useAuth();
   const snippetObj = useSelector(selectSnippet);
   const fileName = useSelector(selectFileName);
+  const snippets = useSelector(selectSnippets);
 
   const [saving, setSaving] = useState();
 
@@ -226,6 +227,28 @@ const DashboardHeader = () => {
   const handleSnippetUpdate = () => {
     setSaving(true);
 
+    let targetSnippet = {
+      ...snippets?.filter((snippet) => snippet._id === snippetObj?._id)[0],
+    };
+
+    const prevSnapshots = targetSnippet?.snapshots;
+
+    console.log("targetSnippet", targetSnippet);
+
+    // deleting not to include in snapshot
+    delete targetSnippet?._id;
+    delete targetSnippet?.createdAt;
+    delete targetSnippet?.updatedAt;
+    delete targetSnippet?.__v;
+    delete targetSnippet?.snapshots;
+    delete targetSnippet?.likes;
+    delete targetSnippet?.owners;
+    delete targetSnippet?.owner;
+    delete targetSnippet?.forks;
+    delete targetSnippet?.comments;
+
+    console.log("snapshot", targetSnippet);
+
     let updatedFiles = [];
     snippetObj?.files?.forEach((file) => {
       updatedFiles.push({ ...file, snippetName: snippetObj?.snippetName });
@@ -240,6 +263,7 @@ const DashboardHeader = () => {
         files: updatedFiles,
         tags: snippetObj?.tags,
         labels: snippetObj?.labels,
+        snapshots: [...prevSnapshots, { snapshot: targetSnippet }],
       },
     });
   };

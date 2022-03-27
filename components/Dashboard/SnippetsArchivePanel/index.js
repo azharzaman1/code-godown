@@ -1,17 +1,20 @@
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "@mui/material";
 import Heading from "../../Generic/Heading";
 import Button from "../../Generic/Button";
 import { Add, DeleteSweep } from "@mui/icons-material";
 import useAuth from "../../../hooks/auth/useAuth";
-import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import useAxiosPrivate from "../../../hooks/auth/useAxiosPrivate";
 import SnippetCard from "./SnippetCard";
+import { selectSnippets, SET_SNIPPETS } from "../../../redux/slices/userSlice";
 
 const SnippetsArchivePanel = () => {
+  const dispatch = useDispatch();
   const axiosPrivate = useAxiosPrivate();
   const currentUser = useAuth();
-  const [userSnippets, setUserSnippets] = useState([]);
+  const userSnippets = useSelector(selectSnippets);
 
   const { mutate: fetchSnippets } = useMutation(
     async (snippetIDs) => {
@@ -20,7 +23,7 @@ const SnippetsArchivePanel = () => {
     {
       onSuccess: (res) => {
         console.log("Snippets fetch response", res);
-        setUserSnippets(res.data.result);
+        dispatch(SET_SNIPPETS(res.data.result));
       },
       onError: (err) => {
         const statusCode = err.response.status;
