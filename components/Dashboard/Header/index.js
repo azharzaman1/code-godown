@@ -225,10 +225,12 @@ const DashboardHeader = () => {
 
   const handleSnippetUpdate = () => {
     setSaving(true);
+
     let updatedFiles = [];
     snippetObj?.files?.forEach((file) => {
       updatedFiles.push({ ...file, snippetName: snippetObj?.snippetName });
     });
+
     updateSnippet({
       snippet: {
         snippetName: snippetObj?.snippetName,

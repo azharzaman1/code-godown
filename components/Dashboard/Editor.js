@@ -94,7 +94,7 @@ const MonacoEditor = () => {
               key: snippetObj?.files?.at(-1).key + 1,
               fileName: newFileName,
               snippetName: snippetObj?.snippetName,
-              snippetUID: snippetUID || `snippet_${uuidv4()}`,
+              snippetUID: snippetObj?.files[0].snippetUID,
               ownerID: currentUser?._id,
               extention: fileExtention,
 
