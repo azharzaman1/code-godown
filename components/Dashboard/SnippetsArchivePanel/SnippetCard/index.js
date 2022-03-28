@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { selectSyntaxTheme } from "../../../../redux/slices/appSlice";
 import Dialog from "../../../Generic/Dialog";
 import ThemeHeading from "../../../Generic/Heading";
-import ThemeText from "../../../Generic/Text";
+import Text from "../../../Generic/Text";
 // syntax themes
 import atomOneDark from "react-syntax-highlighter/dist/cjs/styles/hljs/atom-one-dark";
 import atomOneLight from "react-syntax-highlighter/dist/cjs/styles/hljs/atom-one-light";
@@ -65,12 +65,12 @@ const SnippetCard = ({ snippet, ...rest }) => {
             )}
           </div>
           <div className="flex-between-center">
-            <ThemeText type="info" className="mt-2">
+            <Text type="info" className="mt-2">
               {format(
                 parseISO(snippet?.createdAt),
                 "yyyy/MM/dd hh:mm aaaaa'm'"
               )}
-            </ThemeText>
+            </Text>
             <SnippetCardActions snippet={snippet} />
           </div>
         </div>

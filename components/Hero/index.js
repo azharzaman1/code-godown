@@ -1,7 +1,7 @@
 import { Popover } from "@headlessui/react";
 import Button from "../Generic/Button";
 import Heading from "../Generic/Heading";
-import ThemeText from "../Generic/Text";
+import Text from "../Generic/Text";
 import Link from "next/link";
 import useAuth from "../../hooks/auth/useAuth";
 
@@ -23,7 +23,7 @@ export default function Hero() {
 
           <main className="py-2 lg:py-4 xl:py-6 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center lg:text-left">
-              <Heading type="primary">
+              <Heading>
                 <span
                   className="block xl:inline"
                   data-testid="hero-main-heading"
@@ -31,14 +31,20 @@ export default function Hero() {
                   Save. Edit. Share.
                 </span>{" "}
                 <span className="block text-primary xl:inline">
-                  your code snippets
+                  your code & thoughts
                 </span>
               </Heading>
-              <ThemeText className="mt-3 font-sans sm:mt-5 sm:max-w-xl sm:mx-auto md:mt-5 lg:mx-0">
-                Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui
-                lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat
-                fugiat aliqua.
-              </ThemeText>
+              <Text
+                type="heading"
+                colorVariant="dim"
+                className="mt-3 sm:mt-5 sm:max-w-xl sm:mx-auto md:mt-5 lg:mx-0"
+              >
+                Now, every important snippet of your code, on single click
+                ahead.{" "}
+                <span className="text-primaryText dark:text-primaryTextDark">
+                  Share snippets with friends, and collaborate.
+                </span>
+              </Text>
               <div className="mt-5 md:mt-8 lg:mt-10 flex items-center justify-center lg:justify-start space-x-3">
                 <div className="flex flex-wrap space-x-3 items-center justify-evenly">
                   <Link href={currentUser ? "/dashboard" : "/auth/login"}>

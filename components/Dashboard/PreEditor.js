@@ -8,7 +8,7 @@ import {
   SET_SNIPPET,
 } from "../../redux/slices/appSlice";
 import Heading from "../Generic/Heading";
-import ThemeText from "../Generic/Text";
+import Text from "../Generic/Text";
 
 const PreEditor = () => {
   const dispatch = useDispatch();
@@ -21,9 +21,9 @@ const PreEditor = () => {
       <Divider className="pt-3" />
       <form className="mt-5">
         <div className="flex flex-col space-y-2 mt-4 w-full">
-          <ThemeText component="label" htmlFor="snippet-name">
+          <Text component="label" htmlFor="snippet-name">
             Snippet name
-          </ThemeText>
+          </Text>
           <input
             type="text"
             placeholder="e.g. Snippet #1"
@@ -36,9 +36,9 @@ const PreEditor = () => {
           />
         </div>
         <div className="flex flex-col space-y-2 mt-4 w-full">
-          <ThemeText component="label" htmlFor="file-name">
+          <Text component="label" htmlFor="file-name">
             File name
-          </ThemeText>
+          </Text>
           <input
             type="text"
             placeholder="e.g. index.html"

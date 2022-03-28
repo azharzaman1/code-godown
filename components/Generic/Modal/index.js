@@ -87,7 +87,7 @@ const Modal = ({
                         <Heading type="tertiary">{title}</Heading>
                       </Dialog.Title>
                       <div className="mt-2">
-                        <Text dim>{desc}</Text>
+                        <Text colorVariant="dim">{desc}</Text>
                       </div>
                     </div>
                   </div>

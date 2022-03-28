@@ -2,7 +2,7 @@ const Heading = ({ type, className, children, ...rest }) => {
   if (type === "primary" || !type)
     return (
       <h1
-        className={`${className} text-4xl md:text-5xl lg:text-6xl tracking-tight font-extrabold text-primaryText dark:text-primaryTextDark`}
+        className={`text-4xl md:text-5xl lg:text-6xl tracking-tight font-extrabold text-primaryText dark:text-primaryTextDark ${className}`}
         {...rest}
       >
         {children}
@@ -12,7 +12,7 @@ const Heading = ({ type, className, children, ...rest }) => {
   if (type === "secondary")
     return (
       <h2
-        className={`secondary-heading ${className} text-lg sm:text-xl md:text-3xl tracking-tight font-bold text-primaryText dark:text-primaryTextDark`}
+        className={`text-lg sm:text-xl md:text-3xl tracking-tight font-bold text-primaryText dark:text-primaryTextDark ${className}`}
         {...rest}
       >
         {children}
@@ -22,7 +22,7 @@ const Heading = ({ type, className, children, ...rest }) => {
   if (type === "tertiary")
     return (
       <h2
-        className={`tertiary-heading ${className} text-sm md:text-base lg:text-lg font-medium text-primaryText dark:text-primaryTextDark`}
+        className={`text-sm md:text-base lg:text-lg font-medium text-primaryText dark:text-primaryTextDark ${className}`}
         {...rest}
       >
         {children}

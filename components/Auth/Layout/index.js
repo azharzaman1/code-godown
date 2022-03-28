@@ -164,7 +164,7 @@ const AuthLayout = ({
         <link rel="icon" href={icon || "/favicon.ico"} />
       </Head>
       <main>
-        <Container className="flex justify-center items-center min-h-screen">
+        <Container className="flex justify-center pt-4 min-h-screen">
           <div className="flex flex-col justify-center items-center w-[450px] max-w-[100vw] mx-auto">
             <div className="form__header">
               <Heading type="secondary" className="mb-4">

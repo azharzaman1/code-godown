@@ -13,5 +13,6 @@ Improvements:
 
 Fixes:
   unmount monaco once snippet saved
+  labels refetch on reopen of labels dropdown
 
   snippetName in files
