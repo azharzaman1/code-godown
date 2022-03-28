@@ -25,7 +25,11 @@ import PreEditor from "../PreEditor";
 import useAuth from "../../../hooks/auth/useAuth";
 import { useMutation } from "react-query";
 import useAxiosPrivate from "../../../hooks/auth/useAxiosPrivate";
-import { selectSnippets, SET_USER } from "../../../redux/slices/userSlice";
+import {
+  selectSnippets,
+  SET_SNIPPETS,
+  SET_USER,
+} from "../../../redux/slices/userSlice";
 import dashify from "dashify";
 
 const DashboardHeader = () => {
@@ -205,6 +209,11 @@ const DashboardHeader = () => {
         console.log("Snippet Update Response", res);
 
         if (res.status === 201 || res.status === 200) {
+          // updating snippet in the global(redux) state
+          const restOfSnippets = snippets?.filter(
+            (snippet) => snippet._id !== res.data.updated._id
+          );
+          dispatch(SET_SNIPPETS([res.data.updated, ...restOfSnippets]));
           router.replace("/dashboard");
           dispatch(RESET_SNIPPET());
           enqueueSnackbar(`Snippet updated successfully`, {

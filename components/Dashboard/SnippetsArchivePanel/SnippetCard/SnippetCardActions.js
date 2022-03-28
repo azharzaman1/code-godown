@@ -88,6 +88,16 @@ const SnippetCardActions = ({ snippet }) => {
         spacing={1}
         alignItems="center"
       >
+        <Tooltip title="Download snippet">
+          <IconButton size="small" color="primary" onClick={() => {}}>
+            <Download fontSize="inherit" />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Edit snippet">
+          <IconButton color="primary" size="small" onClick={handleSnippetEdit}>
+            <Edit fontSize="inherit" />
+          </IconButton>
+        </Tooltip>
         <Tooltip title="Delete snippet">
           <IconButton
             size="small"
@@ -100,19 +110,9 @@ const SnippetCardActions = ({ snippet }) => {
             <Delete fontSize="inherit" />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Download snippet">
-          <IconButton size="small" color="primary" onClick={() => {}}>
-            <Download fontSize="inherit" />
-          </IconButton>
-        </Tooltip>
         <Tooltip title="Share snippet">
           <IconButton color="primary" size="small" onClick={() => {}}>
             <Share fontSize="inherit" />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Edit snippet">
-          <IconButton color="primary" size="small" onClick={handleSnippetEdit}>
-            <Edit fontSize="inherit" />
           </IconButton>
         </Tooltip>
       </Stack>
