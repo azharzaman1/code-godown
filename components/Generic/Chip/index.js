@@ -8,7 +8,7 @@ const Chip = ({
   size = "medium",
   startIcon,
   endIcon,
-  closeIconAction = true,
+  closeIconAction,
 }) => {
   const colorSchemes = {
     light:

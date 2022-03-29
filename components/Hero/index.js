@@ -8,7 +8,7 @@ import useAuth from "../../hooks/auth/useAuth";
 export default function Hero() {
   const currentUser = useAuth();
   return (
-    <div className="relative bg-backgroundV1 dark:bg-backgroundV1Dark overflow-hidden md: lg:py-20 xl:py-28">
+    <div className="relative bg-backgroundV1 dark:bg-backgroundV1Dark overflow-hidden lg:py-20">
       <div className="max-w-7xl mx-auto">
         <div className="relative z-0 lg:z-10 py-8 lg:py-12 xl:py-16 lg:max-w-2xl lg:w-full bg-white shadow-sm">
           <svg

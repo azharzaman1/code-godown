@@ -6,13 +6,11 @@ import { useTheme } from "next-themes";
 import { IconButton } from "@mui/material";
 import { MoonIcon, SunIcon } from "@heroicons/react/outline";
 import MenuDropdown from "./MenuDropdown";
-import ThemeButton from "../Button";
 import UserMenu, { MenuItem } from "./UserMenu";
 import Link from "../Link";
 import Button from "../Button";
 import { auth } from "../../../firebase";
 import useAuth from "../../../hooks/auth/useAuth";
-import useRefreshToken from "../../../hooks/auth/useRefreshToken";
 import { callsToAction, dropdownMenu, resources, solutions } from "./data";
 
 export default function Header({ themeSwitch = false, variant = "dark" }) {
@@ -110,12 +108,10 @@ export default function Header({ themeSwitch = false, variant = "dark" }) {
                 <UserMenu />
               ) : (
                 <div className="flex items-center space-x-3">
-                  <ThemeButton type="text" onClick={handleLoginRedirect}>
+                  <Button type="text" onClick={handleLoginRedirect}>
                     Sign in
-                  </ThemeButton>
-                  <ThemeButton onClick={handleRegisterRedirect}>
-                    Sign up
-                  </ThemeButton>
+                  </Button>
+                  <Button onClick={handleRegisterRedirect}>Sign up</Button>
                 </div>
               )}
             </div>

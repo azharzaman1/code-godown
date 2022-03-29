@@ -17,6 +17,7 @@ import "../styles/tailwind-theming.css";
 import "../components/Generic/Loader/Loader.css";
 import "../components/Dashboard/Editor.css";
 import "../components/Dashboard/SnippetsArchivePanel/SnippetsArchivePanel.css";
+import { CssBaseline } from "@mui/material";
 
 const progress = new ProgressBar({
   size: 2,
@@ -61,6 +62,7 @@ function MyApp({ Component, pageProps }) {
                 <SnackbarProvider maxSnack={3}>
                   <AppWrapper>
                     {getLayout(<Component {...pageProps} />)}
+                    <CssBaseline />
                   </AppWrapper>
                   <ReactQueryDevtools initialIsOpen={false} />
                 </SnackbarProvider>

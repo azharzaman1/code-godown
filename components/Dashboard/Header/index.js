@@ -19,7 +19,7 @@ import { extractExtentionAndLanguage, fetcher } from "../../../files/utils";
 import Button from "../../../components/Generic/Button";
 import ThemeSwitch from "../../../components/Dashboard/ThemeSwitch";
 import SyntaxThemes from "../../../theming/SyntaxThemes";
-import ThemeHeading from "../../../components/Generic/Heading";
+import Heading from "../../../components/Generic/Heading";
 import Modal from "../../Generic/Modal";
 import PreEditor from "../PreEditor";
 import useAuth from "../../../hooks/auth/useAuth";
@@ -263,6 +263,14 @@ const DashboardHeader = () => {
       updatedFiles.push({ ...file, snippetName: snippetObj?.snippetName });
     });
 
+    const updatedTags = targetSnippet?.tags.map((tag) => ({
+      name: tag.name,
+      key: tag.key,
+      slug: tag.slug,
+    }));
+
+    console.log({ updatedTags });
+
     updateSnippet({
       snippet: {
         snippetName: snippetObj?.snippetName,
@@ -270,7 +278,7 @@ const DashboardHeader = () => {
         slug: snippetObj?.slug,
         snippetInfo: snippetObj?.snippetInfo,
         files: updatedFiles,
-        tags: snippetObj?.tags,
+        tags: updatedTags,
         labels: snippetObj?.labels,
         snapshots: [...prevSnapshots, { snapshot: targetSnippet }],
       },
@@ -327,9 +335,7 @@ const DashboardHeader = () => {
       <div className="hidden sm:block">
         <div className="flex space-x-2">
           <div className="flex flex-col">
-            <ThemeHeading type="tertiary">
-              {dashboardHeaderTagline}
-            </ThemeHeading>
+            <Heading type="tertiary">{dashboardHeaderTagline}</Heading>
           </div>
         </div>
       </div>

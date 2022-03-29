@@ -5,7 +5,7 @@ import Editor from "@monaco-editor/react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { PlusIcon } from "@heroicons/react/outline";
-import ThemeButton from "../Generic/Button";
+import Button from "../Generic/Button";
 import { v4 as uuidv4 } from "uuid";
 import { useSnackbar } from "notistack";
 import {
@@ -176,7 +176,7 @@ const MonacoEditor = () => {
       <div className="editor-navigation text-white flex items-center select-none overflow-x-scroll">
         {snippetObj &&
           snippetObj?.files?.map(({ fileName, key }) => (
-            <ThemeButton
+            <Button
               key={key}
               type="tab"
               active={key == activeTabIndex}
@@ -189,7 +189,7 @@ const MonacoEditor = () => {
               }}
             >
               {fileName}
-            </ThemeButton>
+            </Button>
           ))}
         {addingNewFile && (
           <form onSubmit={handleAddNewFile}>

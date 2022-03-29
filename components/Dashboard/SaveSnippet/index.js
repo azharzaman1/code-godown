@@ -1,9 +1,11 @@
-import { Switch } from "@headlessui/react";
-import { Edit } from "@mui/icons-material";
-import { Divider, IconButton, Paper, Tooltip } from "@mui/material";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import dashify from "dashify";
+import { Switch } from "@headlessui/react";
+import { Edit } from "@mui/icons-material";
+import { Divider, IconButton, Paper, Tooltip } from "@mui/material";
+
 import {
   RESET_SNIPPET,
   selectSnippet,
@@ -15,13 +17,28 @@ import Button from "../../Generic/Button";
 import Text from "../../Generic/Text";
 import LabelSelect from "./LabelSelect";
 import { splitAtCharacter } from "../../../files/utils";
-import dashify from "dashify";
+import { selectSnippets } from "../../../redux/slices/userSlice";
 
 const SaveSnippet = () => {
   const dispatch = useDispatch();
   const snippet = useSelector(selectSnippet);
+  const snippets = useSelector(selectSnippets);
+  const [targetSnippet, setTargetSnippet] = useState(
+    () => snippets?.filter((snip) => snip._id === snippet._id)[0]
+  );
+  console.log(targetSnippet?.tags);
   const [tagsString, setTagsString] = useState("");
-  const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState(
+    targetSnippet?.tags
+      ? () => {
+          let res = [];
+          targetSnippet?.tags?.forEach((tag) => {
+            res.push(tag.name);
+          });
+          return res;
+        }
+      : []
+  );
   const router = useRouter();
 
   useEffect(() => {
@@ -71,13 +88,11 @@ const SaveSnippet = () => {
       (tag) => tag !== ""
     );
 
-    const tagsToAdd = tagsArr.map((tagName, index) => [
-      {
-        name: tagName.trim(),
-        key: index,
-        slug: dashify(tagName.trim()),
-      },
-    ]);
+    const tagsToAdd = tagsArr.map((tagName, index) => ({
+      name: tagName.trim(),
+      key: index,
+      slug: dashify(tagName.trim()),
+    }));
 
     dispatch(
       SET_SNIPPET({
@@ -87,6 +102,11 @@ const SaveSnippet = () => {
     );
 
     setTags(tagsArr);
+  };
+
+  const handleTagsEdit = () => {
+    setTagsString(tags.join(","));
+    setTags([]);
   };
 
   const handleTagDelete = (name) => {
@@ -129,15 +149,16 @@ const SaveSnippet = () => {
               onChange={handleDescChange}
             />
           </div>
-          <div className="flex flex-col w-full md:w-2/3 lg:w-1/2 xl:w-1/3 space-y-2">
+          <div className="flex flex-col w-full md:w-2/3 lg:w-1/2 xl:w-1/3 space-y-1">
             <Text>Files</Text>
-            <div className="flex items-center space-x-2 max-w-full flex-wrap">
+            <div className="flex items-center max-w-full flex-wrap">
               {snippet.files?.map((file) => (
                 <Chip
                   key={file.key}
                   size="small"
                   color="light"
                   closeIconAction={() => handleChipClose(file.key)}
+                  className="mt-1 mr-2"
                 >
                   {file.fileName}
                 </Chip>
@@ -151,13 +172,13 @@ const SaveSnippet = () => {
           </div>
 
           {/* Tags */}
-          <div className="flex flex-col w-full md:w-2/3 lg:w-1/2 xl:w-1/3 space-y-2">
+          <div className="flex flex-col w-full md:w-2/3 lg:w-1/2 xl:w-1/3 space-y-1">
             <Text component="label" htmlFor="snippet-tags-input">
               Tags
             </Text>
-            {tags.length > 0 ? (
+            {tags?.length > 0 ? (
               <>
-                <div className="flex items-center space-x-2 max-w-full flex-wrap">
+                <div className="flex items-center max-w-full flex-wrap">
                   {tags?.map((name, i) => (
                     <Chip
                       color="light"
@@ -166,12 +187,13 @@ const SaveSnippet = () => {
                       closeIconAction={() => {
                         handleTagDelete(name);
                       }}
+                      className="mt-1 mr-2"
                     >
                       {name}
                     </Chip>
                   ))}
                   <Tooltip title="Edit" placement="right">
-                    <IconButton onClick={() => setTags([])}>
+                    <IconButton onClick={handleTagsEdit}>
                       <Edit fontSize="small" className="text-gray-400" />
                     </IconButton>
                   </Tooltip>
