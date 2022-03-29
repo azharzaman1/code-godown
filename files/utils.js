@@ -60,3 +60,14 @@ export const formInputGuide = {
   password: `8 to 24 characters.
   Must include uppercase and lowercase letters, a number and a special character. Allowed special characters: !@#$%`,
 };
+
+export const CompareObjects = (x, y) => {
+  let objectsAreSame = true;
+  for (let propertyName in x) {
+    if (x[propertyName] !== y[propertyName]) {
+      objectsAreSame = false;
+      break;
+    }
+  }
+  return objectsAreSame;
+};

@@ -4,7 +4,7 @@ import { Combobox, Transition } from "@headlessui/react";
 import { SelectorIcon } from "@heroicons/react/solid";
 import { Add, Label } from "@mui/icons-material";
 import Button from "../../Generic/Button";
-import { selectUser } from "../../../redux/slices/userSlice";
+import { selectSnippets, selectUser } from "../../../redux/slices/userSlice";
 import { useMutation, useQuery } from "react-query";
 import useAxiosPrivate from "../../../hooks/auth/useAxiosPrivate";
 import useAuth from "../../../hooks/auth/useAuth";
@@ -16,7 +16,13 @@ const LabelSelect = () => {
   const labels = useSelector(selectUser)?.labels || [];
   const snippet = useSelector(selectSnippet);
   const [labelsData, setLabelsData] = useState([]);
-  const [selectedLabel, setSelectedLabel] = useState();
+  const snippets = useSelector(selectSnippets);
+  const [targetSnippet, setTargetSnippet] = useState(
+    () => snippets?.filter((snip) => snip._id === snippet._id)[0]
+  );
+  const [selectedLabel, setSelectedLabel] = useState(
+    () => targetSnippet?.labels[0]
+  );
   const [query, setQuery] = useState("");
   const [labelFound, setLabelFound] = useState(true);
   const axiosPrivate = useAxiosPrivate();
@@ -33,11 +39,6 @@ const LabelSelect = () => {
       enabled: false,
       onSuccess: (res) => {
         console.log("Multiple labels fetch response", res);
-        const preparedData = res.data.result.map((label, i) => ({
-          name: label.name,
-          slug: label.slug,
-          id: i + 1,
-        }));
         setLabelsData([
           { name: "None", slug: "none", id: 0 },
           ...res.data.result,
@@ -121,7 +122,7 @@ const LabelSelect = () => {
           <div className="relative w-full text-left bg-white rounded-lg shadow-md cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-teal-300 focus-visible:ring-offset-2 sm:text-sm overflow-hidden">
             <Combobox.Input
               className="w-full dark:bg-backgroundContrastDark text-primaryTextDark border border-borderColor dark:border-borderColorDark focus:ring-0 py-2 pl-3 pr-10 text-sm leading-5"
-              displayValue={(person) => person.name}
+              displayValue={(person) => (person?.name ? person?.name : "")}
               placeholder="Search or add new label"
               onChange={handleQueryChange}
             />
@@ -137,7 +138,7 @@ const LabelSelect = () => {
             leave="transition ease-in duration-100"
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
-            beforeEnter={() => fetchLabels({ ids: labels })}
+            afterEnter={() => !labelsData && fetchLabels({ ids: labels })}
             afterLeave={() => setQuery("")}
           >
             <Combobox.Options className="absolute w-full z-50 py-1 mt-1 overflow-auto text-base bg-backgroundContrast dark:bg-backgroundContrastDark rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">

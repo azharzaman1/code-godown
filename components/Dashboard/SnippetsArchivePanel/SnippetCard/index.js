@@ -89,28 +89,21 @@ const SnippetCard = ({ snippet, ...rest }) => {
 
         <div className="snippetCard__footer mt-auto">
           <Stack direction="column">
-            <Stack
-              direction="row"
-              spacing={1}
-              alignItems="center"
-              className="mt-3 w-full overflow-x-scroll"
-            >
+            <div className="files mt-2 w-full flex items-center flex-wrap">
               {snippetFiles?.map(({ fileName, key }) => (
-                <Chip
+                <ThemeChip
                   key={key}
-                  color="primary"
-                  label={fileName}
-                  variant={activeFile.key == key ? "" : "outlined"}
+                  color={activeFile.key == key ? "primaryContained" : "light"}
                   size="small"
-                  sx={{
-                    marginBottom: "8px !important",
-                  }}
+                  className="mb-2 mr-2 mt-1"
                   onClick={() => {
                     setActiveFile(snippetFiles[key]);
                   }}
-                />
+                >
+                  {fileName}
+                </ThemeChip>
               ))}
-            </Stack>
+            </div>
             <div className="flex flex-col space-y-2 mt-1">
               <div className="tags flex items-center flex-wrap">
                 {snippet?.tags?.map((tag) => (

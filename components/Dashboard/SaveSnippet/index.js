@@ -26,7 +26,6 @@ const SaveSnippet = () => {
   const [targetSnippet, setTargetSnippet] = useState(
     () => snippets?.filter((snip) => snip._id === snippet._id)[0]
   );
-  console.log(targetSnippet?.tags);
   const [tagsString, setTagsString] = useState("");
   const [tags, setTags] = useState(
     targetSnippet?.tags

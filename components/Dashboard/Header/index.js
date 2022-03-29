@@ -15,7 +15,11 @@ import {
   selectSnippet,
   SET_SNIPPET,
 } from "../../../redux/slices/appSlice";
-import { extractExtentionAndLanguage, fetcher } from "../../../files/utils";
+import {
+  CompareObjects,
+  extractExtentionAndLanguage,
+  fetcher,
+} from "../../../files/utils";
 import Button from "../../../components/Generic/Button";
 import ThemeSwitch from "../../../components/Dashboard/ThemeSwitch";
 import SyntaxThemes from "../../../theming/SyntaxThemes";
@@ -239,10 +243,9 @@ const DashboardHeader = () => {
     let targetSnippet = {
       ...snippets?.filter((snippet) => snippet._id === snippetObj?._id)[0],
     };
+    const tagsAreSame = CompareObjects(targetSnippet?.tags, snippetObj?.tags);
 
     const prevSnapshots = targetSnippet?.snapshots;
-
-    console.log("targetSnippet", targetSnippet);
 
     // deleting not to include in snapshot
     delete targetSnippet?._id;
@@ -255,8 +258,9 @@ const DashboardHeader = () => {
     delete targetSnippet?.owner;
     delete targetSnippet?.forks;
     delete targetSnippet?.comments;
-
-    console.log("snapshot", targetSnippet);
+    if (tagsAreSame) {
+      delete targetSnippet?.tags;
+    }
 
     let updatedFiles = [];
     snippetObj?.files?.forEach((file) => {
@@ -268,8 +272,6 @@ const DashboardHeader = () => {
       key: tag.key,
       slug: tag.slug,
     }));
-
-    console.log({ updatedTags });
 
     updateSnippet({
       snippet: {
