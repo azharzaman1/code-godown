@@ -1,5 +1,8 @@
 import { useRouter } from "next/dist/client/router";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useMutation } from "react-query";
+import { useSnackbar } from "notistack";
 import { GitHub, Google, Info } from "@mui/icons-material";
 import { EyeIcon, EyeOffIcon } from "@heroicons/react/outline";
 import {
@@ -7,9 +10,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from "@firebase/auth";
-import Divider from "@mui/material/Divider";
 import { doc, serverTimestamp, setDoc, getDoc } from "@firebase/firestore";
-import { useSnackbar } from "notistack";
 import {
   auth,
   db,
@@ -17,13 +18,9 @@ import {
   googleAuthProvider,
 } from "../../firebase";
 import { formInputGuide, regexCodes } from "../../files/utils";
-import Layout from "../../components/Generic/Layout";
-import Container from "../../components/Generic/Layout/Container";
 import Button from "../../components/Generic/Button";
 import Heading from "../../components/Generic/Heading";
 import Tooltip from "../../components/Generic/Tooltip";
-import { useForm } from "react-hook-form";
-import { useMutation } from "react-query";
 import axios from "../../api/axios";
 import AuthLayout from "../../components/Auth/Layout";
 
@@ -320,7 +317,7 @@ export const ErrorMessage = ({ message, guide, areaDescribedBy }) => {
     <div className="flex space-x-2">
       <span className="text-xs md:text-sm text-error">{message}</span>
       {guide && (
-        <Tooltip content={guide}>
+        <Tooltip content={guide} className="w-[250px] py-3">
           <Info
             fontSize="small"
             color="primary"

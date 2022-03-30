@@ -13,6 +13,7 @@ import store from "../redux/store";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import "../styles/globals.css";
+import "../styles/theme.css";
 import "../styles/tailwind-theming.css";
 import "../components/Generic/Loader/Loader.css";
 import "../components/Dashboard/Editor.css";

@@ -41,7 +41,8 @@ const SaveSnippet = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (snippet?.files?.length < 1) {
+    if (!snippet?.files || snippet?.files?.length < 1) {
+      console.log("CALLED");
       router.replace("/dashboard");
       dispatch(RESET_SNIPPET());
     }

@@ -1,18 +1,16 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
 import { useSnackbar } from "notistack";
 import { useMutation } from "react-query";
 import { Delete, Download, Edit, Share } from "@mui/icons-material";
-import { IconButton, Stack, Tooltip } from "@mui/material";
+import { IconButton, Stack } from "@mui/material";
 import useAuth from "../../../../hooks/auth/useAuth";
 import useAxiosPrivate from "../../../../hooks/auth/useAxiosPrivate";
 import Modal from "../../../Generic/Modal";
-import { useDispatch } from "react-redux";
 import { SET_USER } from "../../../../redux/slices/userSlice";
-import {
-  SET_SNIPPET,
-  SET_SNIPPET_NAME,
-} from "../../../../redux/slices/appSlice";
-import { useRouter } from "next/router";
+import { SET_SNIPPET } from "../../../../redux/slices/appSlice";
+import Tooltip from "../../../Generic/Tooltip";
 
 const SnippetCardActions = ({ snippet }) => {
   const currentUser = useAuth();
@@ -88,17 +86,17 @@ const SnippetCardActions = ({ snippet }) => {
         spacing={1}
         alignItems="center"
       >
-        <Tooltip title="Download snippet">
+        <Tooltip content="Download snippet" className="">
           <IconButton size="small" color="primary" onClick={() => {}}>
             <Download fontSize="inherit" />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Edit snippet">
+        <Tooltip content="Edit snippet">
           <IconButton color="primary" size="small" onClick={handleSnippetEdit}>
             <Edit fontSize="inherit" />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Delete snippet">
+        <Tooltip content="Delete snippet">
           <IconButton
             size="small"
             color="primary"
@@ -110,7 +108,7 @@ const SnippetCardActions = ({ snippet }) => {
             <Delete fontSize="inherit" />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Share snippet">
+        <Tooltip content="Share snippet">
           <IconButton color="primary" size="small" onClick={() => {}}>
             <Share fontSize="inherit" />
           </IconButton>

@@ -231,6 +231,19 @@ const ThemeWrapper = ({ children }) => {
           },
         },
       },
+      MuiTooltip: {
+        styleOverrides: {
+          tooltip: {
+            backgroundColor: "#fff",
+            color: "#333333",
+            fontSize: 12,
+            boxShadow: "0px 0 15px 0px rgba(255,255,255,0.8)",
+          },
+        },
+        popperArrow: {
+          fill: "#fff",
+        },
+      },
     },
     shadows: [
       "none",

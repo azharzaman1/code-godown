@@ -8,7 +8,7 @@ const LoadingPage = () => {
         <title>Loading...</title>
       </Head>
       <div>
-        <Loader type={2} />
+        <Loader />
       </div>
     </div>
   );

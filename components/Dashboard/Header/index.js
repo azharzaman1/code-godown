@@ -244,6 +244,8 @@ const DashboardHeader = () => {
       ...snippets?.filter((snippet) => snippet._id === snippetObj?._id)[0],
     };
     const tagsAreSame = CompareObjects(targetSnippet?.tags, snippetObj?.tags);
+    const labelIsSame =
+      targetSnippet?.labels[0]?.name === snippetObj?.labels[0]?.name;
 
     const prevSnapshots = targetSnippet?.snapshots;
 
@@ -258,20 +260,17 @@ const DashboardHeader = () => {
     delete targetSnippet?.owner;
     delete targetSnippet?.forks;
     delete targetSnippet?.comments;
-    if (tagsAreSame) {
-      delete targetSnippet?.tags;
-    }
 
     let updatedFiles = [];
     snippetObj?.files?.forEach((file) => {
       updatedFiles.push({ ...file, snippetName: snippetObj?.snippetName });
     });
 
-    const updatedTags = targetSnippet?.tags.map((tag) => ({
-      name: tag.name,
-      key: tag.key,
-      slug: tag.slug,
-    }));
+    // const updatedTags = targetSnippet?.tags.map((tag) => ({
+    //   name: tag.name,
+    //   key: tag.key,
+    //   slug: tag.slug,
+    // }));
 
     updateSnippet({
       snippet: {
@@ -280,8 +279,8 @@ const DashboardHeader = () => {
         slug: snippetObj?.slug,
         snippetInfo: snippetObj?.snippetInfo,
         files: updatedFiles,
-        tags: updatedTags,
-        labels: snippetObj?.labels,
+        tags: tagsAreSame ? null : snippetObj?.tags,
+        labels: labelIsSame ? null : snippetObj?.labels,
         snapshots: [...prevSnapshots, { snapshot: targetSnippet }],
       },
     });
