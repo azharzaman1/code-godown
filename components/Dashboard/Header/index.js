@@ -79,6 +79,9 @@ const DashboardHeader = () => {
     router.pathname === "/dashboard/save-snippet" &&
     router.query.mode === "edit-snippet";
 
+  // displaying indiv snippet
+  const viewingSnippet = router.pathname === "/dashboard/snippet/[snippetID]";
+
   const handleDiscard = () => {
     dispatch(RESET_SNIPPET());
     router.push({ pathname: "/dashboard" });
@@ -266,12 +269,6 @@ const DashboardHeader = () => {
       updatedFiles.push({ ...file, snippetName: snippetObj?.snippetName });
     });
 
-    // const updatedTags = targetSnippet?.tags.map((tag) => ({
-    //   name: tag.name,
-    //   key: tag.key,
-    //   slug: tag.slug,
-    // }));
-
     updateSnippet({
       snippet: {
         snippetName: snippetObj?.snippetName,
@@ -327,6 +324,8 @@ const DashboardHeader = () => {
     ? "Adding new snippet"
     : savingSnippet
     ? `Saving ${snippetObj?.snippetName}`
+    : viewingSnippet
+    ? "[SNIPPET NAME]"
     : "Code Godown";
 
   // </Dynamic Content>
@@ -342,9 +341,11 @@ const DashboardHeader = () => {
       </div>
 
       <div className="flex items-center justify-between sm:justify-end space-x-2 ml-auto flex-1">
-        <div className="lg:hidden">
-          <SearchIcon className="cursor-pointer h-6 mr-2" />
-        </div>
+        {!viewingSnippet && (
+          <div className="lg:hidden">
+            <SearchIcon className="cursor-pointer h-6 mr-2" />
+          </div>
+        )}
         {displaySnippets && <ThemeSwitch themes={SyntaxThemes} />}
 
         {/* Header Dynamic Buttons */}
@@ -359,7 +360,7 @@ const DashboardHeader = () => {
         ) : (
           <></>
         )}
-        {!displaySnippets && (
+        {!displaySnippets && !viewingSnippet ? (
           <Button
             type="text-icon"
             startIcon={<Close />}
@@ -367,8 +368,10 @@ const DashboardHeader = () => {
           >
             Discard
           </Button>
+        ) : (
+          <></>
         )}
-        {displaySnippets ? (
+        {displaySnippets && (
           <Button
             id="add-new-snippet-btn"
             type="icon"
@@ -379,7 +382,8 @@ const DashboardHeader = () => {
           >
             Add Snippet
           </Button>
-        ) : (
+        )}
+        {!viewingSnippet && !displaySnippets ? (
           <Button
             type="icon"
             loading={saving}
@@ -389,6 +393,8 @@ const DashboardHeader = () => {
           >
             {mainButtonTitle}
           </Button>
+        ) : (
+          <></>
         )}
       </div>
       <Modal

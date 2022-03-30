@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { format, parseISO } from "date-fns";
 import SyntaxHighlighter from "react-syntax-highlighter";
-import { Chip, Grid, Stack, Tooltip } from "@mui/material";
+import { Grid, Stack, Tooltip } from "@mui/material";
 import { Lock } from "@mui/icons-material";
 import { selectSyntaxTheme } from "../../../../redux/slices/appSlice";
 import SnippetCardActions from "./SnippetCardActions";
@@ -20,6 +20,7 @@ import githubGist from "react-syntax-highlighter/dist/cjs/styles/hljs/github-gis
 import gradientDark from "react-syntax-highlighter/dist/cjs/styles/hljs/gradient-dark";
 import tomorrowNightBlue from "react-syntax-highlighter/dist/cjs/styles/hljs/tomorrow-night-blue";
 import schoolBook from "react-syntax-highlighter/dist/cjs/styles/hljs/school-book";
+import Link from "next/link";
 
 const syntaxThemes = {
   atomOneDark: atomOneDark,
@@ -39,8 +40,6 @@ const SnippetCard = ({ snippet, ...rest }) => {
   let [snippetFiles, setSnippetFiles] = useState(() => snippet.files);
   const [activeFile, setActiveFile] = useState(() => snippet.files[0]);
 
-  const [dialogOpen, setDialogOpen] = useState(false);
-
   return (
     <Grid
       item
@@ -53,7 +52,15 @@ const SnippetCard = ({ snippet, ...rest }) => {
       <div className="flex flex-col px-4 pt-4 pb-2 bg-backgroundContrast dark:bg-backgroundContrastDark rounded-lg shadow-md">
         <div className="snippetCard__header">
           <div className="flex items-center">
-            <Heading type="tertiary">{snippet?.snippetName}</Heading>
+            <Link href={`/dashboard/snippet/${snippet?.slug}`}>
+              <Heading
+                type="tertiary"
+                className="cursor-pointer hover:underline underline-offset-2"
+              >
+                {snippet?.snippetName}
+              </Heading>
+            </Link>
+
             {snippet?.snippetInfo?.isPrivate ? (
               <Tooltip title="Private">
                 <Lock
