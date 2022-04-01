@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DashboardLayout from "../../../components/Dashboard/Layout";
 import SnippetLeftPanel from "../../../components/Dashboard/Snippet/SnippetLeftPanel";
+import SnippetCardActions from "../../../components/Dashboard/SnippetsArchivePanel/SnippetCard/SnippetCardActions";
 import Button from "../../../components/Generic/Button";
 import Loader from "../../../components/Generic/Loader";
 import {
@@ -60,7 +61,9 @@ const Snippet = () => {
                 ))}
             </div>
 
-            <div className="hidden lg:block">[Actions]</div>
+            <div className="hidden lg:block">
+              <SnippetCardActions snippet={snippet} />
+            </div>
           </div>
 
           <div className="w-full mt-1">

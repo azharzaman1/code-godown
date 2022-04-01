@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { IconButton, Tooltip } from "@mui/material";
+import useSWR from "swr";
+import { useTheme } from "next-themes";
+import dashify from "dashify";
 import { useRouter } from "next/dist/client/router";
 import Editor from "@monaco-editor/react";
 import { useSelector } from "react-redux";
@@ -17,9 +20,6 @@ import {
 import { extractExtentionAndLanguage, fetcher } from "../../files/utils";
 import Loader from "../Generic/Loader";
 import Modal from "../Generic/Modal";
-import useSWR from "swr";
-import { useTheme } from "next-themes";
-import dashify from "dashify";
 import useAuth from "../../hooks/auth/useAuth";
 
 const MonacoEditor = () => {

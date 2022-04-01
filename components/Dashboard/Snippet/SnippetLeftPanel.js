@@ -74,29 +74,31 @@ const SnippetLeftPanel = () => {
             <Heading type="tertiary">Recent activity</Heading>
           </div>
         </div>
-        {snippet?.snapshots?.length > 0 &&
-          snippet?.snapshots
-            ?.slice()
-            ?.reverse()
-            ?.map((snap, i) => {
-              // preparing versions to display
-              let versions = [];
-              for (let y = 2; y < snippet?.snapshots?.length + 2; y++) {
-                versions.push(y);
-              }
-              return (
-                <ActivityEvent
-                  event={`Updated (v-0.${versions[i]})`}
-                  at={snap?.createdAt}
-                  className="mt-2"
-                />
-              );
-            })}
-        <ActivityEvent
-          event="Added (v-0.1)"
-          at={snippet?.createdAt}
-          className="mt-2"
-        />
+        <div className="snippet-page-activity overflow-y-scroll max-h-64 mt-2">
+          {snippet?.snapshots?.length > 0 &&
+            snippet?.snapshots
+              ?.slice()
+              ?.reverse()
+              ?.map((snap, i) => {
+                // preparing versions to display
+                let versions = [];
+                for (let y = 2; y < snippet?.snapshots?.length + 2; y++) {
+                  versions.push(y);
+                }
+                return (
+                  <ActivityEvent
+                    event={`Updated (v-0.${versions.reverse()[i]})`}
+                    at={snap?.createdAt}
+                    className="mt-2"
+                  />
+                );
+              })}
+          <ActivityEvent
+            event="Added (v-0.1)"
+            at={snippet?.createdAt}
+            className="mt-2"
+          />
+        </div>
       </Paper>
     </div>
   );

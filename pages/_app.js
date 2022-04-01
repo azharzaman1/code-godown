@@ -18,6 +18,7 @@ import "../styles/tailwind-theming.css";
 import "../components/Generic/Loader/Loader.css";
 import "../components/Dashboard/Editor.css";
 import "../components/Dashboard/SnippetsArchivePanel/SnippetsArchivePanel.css";
+import "../components/Dashboard/Snippet/SnippetLeftPanel.css";
 import { CssBaseline } from "@mui/material";
 
 const progress = new ProgressBar({
