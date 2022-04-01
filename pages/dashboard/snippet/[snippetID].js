@@ -38,7 +38,7 @@ const Snippet = () => {
   }
 
   return (
-    <div className="w-full p-2 md:p-4">
+    <div className="w-full p-2 md:p-4 pl-0 md:pl-0">
       <div className="snippet-content-container flex flex-col space-y-5 lg:flex-row lg:items-start lg:space-y-0 lg:space-x-2">
         <SnippetLeftPanel />
         <div className="snippet-code-container w-full">

@@ -278,7 +278,10 @@ const DashboardHeader = () => {
         files: updatedFiles,
         tags: tagsAreSame ? null : snippetObj?.tags,
         labels: labelIsSame ? null : snippetObj?.labels,
-        snapshots: [...prevSnapshots, { snapshot: targetSnippet }],
+        snapshots: [
+          ...prevSnapshots,
+          { createdAt: new Date(), snapshot: targetSnippet },
+        ],
       },
     });
   };
