@@ -17,7 +17,7 @@ const SnippetLeftPanel = () => {
 
       <div className="">
         {/* Snippet Info Header */}
-        <div className="snippet-info-header">
+        <div className="snippet-info-header pl-2 md:pl-4">
           <div className="flex items-center space-x-2">
             <Heading type="tertiary">{snippet?.snippetName}</Heading>
             {snippet?.snippetInfo?.isPrivate && (
@@ -40,7 +40,7 @@ const SnippetLeftPanel = () => {
 
         <Divider className="hidden lg:block py-1" />
 
-        <div className="snippet-info-body hidden lg:flex lg:flex-col lg:space-y-2 py-3">
+        <div className="snippet-info-body hidden lg:flex lg:flex-col lg:space-y-2 py-3 pl-2 md:pl-4">
           <div className="">
             <Text bold>{snippet?.owner?.fullName}</Text>
             <Text type="info">{snippet?.owner?.email}</Text>
@@ -52,7 +52,7 @@ const SnippetLeftPanel = () => {
 
       {/* Portion 2 */}
 
-      <div className="snippet-info-footer hidden lg:flex lg:flex-col lg:space-y-2 mt-3">
+      <div className="snippet-info-footer hidden lg:flex lg:flex-col lg:space-y-2 mt-3 pl-2 md:pl-4">
         <div className="tags flex items-center flex-wrap">
           {snippet?.labels?.map((label) => (
             <Label>{label.name}</Label>
@@ -67,27 +67,36 @@ const SnippetLeftPanel = () => {
       </div>
 
       {/* Portion 3 */}
-      <Paper className="p-2 mt-5 hidden lg:block">
+      <Paper className="p-2 mt-5 hidden lg:block ml-2">
         {/* Snippet Info Header */}
         <div className="snippet-info-header">
           <div className="flex items-center space-x-2">
             <Heading type="tertiary">Recent activity</Heading>
           </div>
         </div>
-
+        {snippet?.snapshots?.length > 0 &&
+          snippet?.snapshots
+            ?.slice()
+            ?.reverse()
+            ?.map((snap, i) => {
+              // preparing versions to display
+              let versions = [];
+              for (let y = 2; y < snippet?.snapshots?.length + 2; y++) {
+                versions.push(y);
+              }
+              return (
+                <ActivityEvent
+                  event={`Updated (v-0.${versions.recerse()[i]})`}
+                  at={snap?.createdAt}
+                  className="mt-2"
+                />
+              );
+            })}
         <ActivityEvent
           event="Added (v-0.1)"
           at={snippet?.createdAt}
           className="mt-2"
         />
-        {snippet?.snapshots?.length > 0 &&
-          snippet?.snapshots?.map((snap, i) => (
-            <ActivityEvent
-              event={`Updated (v-0.${i + 2})`}
-              at={snap?.createdAt}
-              className="mt-2"
-            />
-          ))}
       </Paper>
     </div>
   );
