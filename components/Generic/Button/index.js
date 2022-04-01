@@ -6,7 +6,7 @@ const Button = ({
   children,
   className,
   href,
-  size = "sm",
+  size = "small",
   startIcon, // only for icon button
   endIcon, // only for icon button
   shrinkTrans = true,
@@ -17,7 +17,13 @@ const Button = ({
   closeButtonOnClick, // only for tab button
   ...rest
 }) => {
-  const sm = size === "sm";
+  const sm = size === "small";
+
+  const tabButtonSizes = {
+    small: `px-2 py-1 text-sm md:text-base`,
+    medium: `px-2 py-1 md:px-3 md:py-1.5 xl:px-4 xl:py-2 text-sm md:text-base`,
+    large: `px-4 py-2 text-base`,
+  };
 
   if (type === "primary")
     return (
@@ -109,11 +115,10 @@ const Button = ({
     return (
       <button
         role="tab"
-        data-testid="primary-btn"
         className={`flex items-center space-x-4 text-gray-200 bg-white bg-opacity-10 hover:bg-opacity-20 border-r border-dividerColor dark:border-dividerColorDark cursor-pointer ${
           active &&
           "pl-4 pr-3 bg-transparent text-primary transition duration-150"
-        } ${sm ? "px-4 py-2" : "px-4 py-2"} ${className}`}
+        } ${tabButtonSizes[size]} ${className}`}
         {...rest}
       >
         <span>{children}</span>

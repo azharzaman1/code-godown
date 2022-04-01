@@ -41,9 +41,10 @@ const MonacoEditor = () => {
 
   useEffect(() => {
     let mounted = true;
-    if (mounted) {
+
+    mounted &&
       setActiveTab(snippetObj?.files?.find((tab) => tab.key == activeTabIndex));
-    }
+
     return () => {
       mounted = false;
     };
@@ -179,6 +180,7 @@ const MonacoEditor = () => {
             <Button
               key={key}
               type="tab"
+              size="large"
               active={key == activeTabIndex}
               tabCloseButton
               onClick={() => {

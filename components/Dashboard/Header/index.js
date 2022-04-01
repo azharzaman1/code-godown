@@ -378,6 +378,7 @@ const DashboardHeader = () => {
             endIcon={<Add />}
             onClick={() => {
               setAddSnippetDialogOpen(true);
+              dispatch(RESET_SNIPPET());
             }}
           >
             Add Snippet

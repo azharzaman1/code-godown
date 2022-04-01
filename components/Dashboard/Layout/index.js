@@ -43,6 +43,9 @@ const DashboardLayout = ({
   const showSidebar =
     router.pathname === "/dashboard" && currentUser?.snippets?.length > 0;
 
+  const hideDashboardHeader =
+    router.pathname === "/dashboard/snippet/[snippetID]";
+
   return (
     <div className={`${className} dashboard-container min-h-screen`}>
       <Head>
@@ -64,10 +67,10 @@ const DashboardLayout = ({
           <Header />
           <main>
             <Container className="mt-1" maxWidth={false}>
-              <DashboardHeader />
-              <div className="w-full flex flex-col space-y-2 md:flex-row md:space-y-0 mt-2 md:space-x-2 mb-2">
+              {!hideDashboardHeader && <DashboardHeader />}
+              <div className="w-full flex flex-col space-y-2 md:flex-row md:items-start md:space-y-0 mt-2 md:space-x-2 mb-2">
                 {showSidebar && (
-                  <Paper className="w-full md:w-1/6 max-h-96">
+                  <Paper className="w-full md:w-1/6">
                     <Navigation />
                   </Paper>
                 )}
@@ -81,7 +84,7 @@ const DashboardLayout = ({
               </div>
             </Container>
           </main>
-          <div className="mt-3 z-10">
+          {/* <div className="mt-3 z-10">
             <SyntaxHighlighter
               language={"javascript"}
               style={a11yDark}
@@ -90,7 +93,7 @@ const DashboardLayout = ({
             >
               {JSON.stringify(snippet, null, 4)}
             </SyntaxHighlighter>
-          </div>
+          </div> */}
         </>
       )}
     </div>

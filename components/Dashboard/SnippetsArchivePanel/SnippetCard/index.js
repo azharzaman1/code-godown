@@ -1,14 +1,18 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/dist/client/router";
 import { format, parseISO } from "date-fns";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { Grid, Stack, Tooltip } from "@mui/material";
 import { Lock } from "@mui/icons-material";
-import { selectSyntaxTheme } from "../../../../redux/slices/appSlice";
+import {
+  selectSyntaxTheme,
+  SET_SNIPPET,
+} from "../../../../redux/slices/appSlice";
 import SnippetCardActions from "./SnippetCardActions";
 import Heading from "../../../Generic/Heading";
 import Text from "../../../Generic/Text";
-import ThemeChip from "../../../Generic/Chip";
+import Chip from "../../../Generic/Chip";
 // syntax themes
 import atomOneDark from "react-syntax-highlighter/dist/cjs/styles/hljs/atom-one-dark";
 import atomOneLight from "react-syntax-highlighter/dist/cjs/styles/hljs/atom-one-light";
@@ -20,7 +24,6 @@ import githubGist from "react-syntax-highlighter/dist/cjs/styles/hljs/github-gis
 import gradientDark from "react-syntax-highlighter/dist/cjs/styles/hljs/gradient-dark";
 import tomorrowNightBlue from "react-syntax-highlighter/dist/cjs/styles/hljs/tomorrow-night-blue";
 import schoolBook from "react-syntax-highlighter/dist/cjs/styles/hljs/school-book";
-import Link from "next/link";
 
 const syntaxThemes = {
   atomOneDark: atomOneDark,
@@ -40,6 +43,14 @@ const SnippetCard = ({ snippet, ...rest }) => {
   let [snippetFiles, setSnippetFiles] = useState(() => snippet.files);
   const [activeFile, setActiveFile] = useState(() => snippet.files[0]);
 
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  const handleSnippetOpen = () => {
+    router.push(`/dashboard/snippet/${snippet?.slug}`);
+    dispatch(SET_SNIPPET(snippet));
+  };
+
   return (
     <Grid
       item
@@ -52,14 +63,13 @@ const SnippetCard = ({ snippet, ...rest }) => {
       <div className="flex flex-col px-4 pt-4 pb-2 bg-backgroundContrast dark:bg-backgroundContrastDark rounded-lg shadow-md">
         <div className="snippetCard__header">
           <div className="flex items-center">
-            <Link href={`/dashboard/snippet/${snippet?.slug}`}>
-              <Heading
-                type="tertiary"
-                className="cursor-pointer hover:underline underline-offset-2"
-              >
-                {snippet?.snippetName}
-              </Heading>
-            </Link>
+            <Heading
+              type="tertiary"
+              className="cursor-pointer hover:underline underline-offset-2"
+              onClick={handleSnippetOpen}
+            >
+              {snippet?.snippetName}
+            </Heading>
 
             {snippet?.snippetInfo?.isPrivate ? (
               <Tooltip title="Private">
@@ -98,7 +108,7 @@ const SnippetCard = ({ snippet, ...rest }) => {
           <Stack direction="column">
             <div className="files mt-2 w-full flex items-center flex-wrap">
               {snippetFiles?.map(({ fileName, key }) => (
-                <ThemeChip
+                <Chip
                   key={key}
                   color={activeFile.key == key ? "primaryContained" : "light"}
                   size="small"
@@ -108,7 +118,7 @@ const SnippetCard = ({ snippet, ...rest }) => {
                   }}
                 >
                   {fileName}
-                </ThemeChip>
+                </Chip>
               ))}
             </div>
             <div className="flex flex-col space-y-2 mt-1">
