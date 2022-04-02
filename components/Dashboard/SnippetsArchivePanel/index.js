@@ -10,6 +10,7 @@ import useAxiosPrivate from "../../../hooks/auth/useAxiosPrivate";
 import SnippetCard from "./SnippetCard";
 import { selectSnippets, SET_SNIPPETS } from "../../../redux/slices/userSlice";
 import LoaderModal from "../../Generic/Loader/LoaderModal";
+import SnippetCardSkeleton from "./SnippetCard/SnippetCardSkeleton";
 
 const SnippetsArchivePanel = () => {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ const SnippetsArchivePanel = () => {
       onSuccess: (res) => {
         console.log("Snippets fetch response", res);
         dispatch(SET_SNIPPETS(res.data.result));
+        // dispatch(SET_SNIPPETS([]));
       },
       onError: (err) => {
         const statusCode = err.response.status;
@@ -46,18 +48,29 @@ const SnippetsArchivePanel = () => {
 
   return (
     <div className="dashboard__snippetsArchiveCont w-full">
-      {userSnippets?.length > 0 ? (
+      {currentUser?.snippets?.length > 0 ? (
         <Grid
           container
           spacing={{ xs: 1, md: 2 }}
           columns={{ xs: 4, sm: 8, md: 12 }}
           className="max-w-[100%] overflow-hidden"
         >
-          {userSnippets?.map((snippet) => (
-            <SnippetCard snippet={snippet} />
-          ))}
+          {/* Display snippets itself if, snippets are present in currentUser obj, and */}
+          {/* Individual snippets are fetched from db */}
+          {userSnippets?.length > 0 ? (
+            userSnippets?.map((snippet) => <SnippetCard snippet={snippet} />)
+          ) : (
+            // display skeleton in case individiual snippets are being fetched
+            // from ids present in currentUser object
+            <>
+              {currentUser?.snippets.map((skeleton) => (
+                <SnippetCardSkeleton />
+              ))}
+            </>
+          )}
         </Grid>
       ) : (
+        // display empty snippets screen, if no snippets were present in db
         <div className="flex flex-col items-center justify-center space-y-5 my-7">
           <DeleteSweep
             sx={{
@@ -71,11 +84,6 @@ const SnippetsArchivePanel = () => {
           </Button>
         </div>
       )}
-      <LoaderModal
-        type={2}
-        loading={isLoading && userSnippets?.length < 0}
-        label="hang on, while we prepare a dashboard for you"
-      />
     </div>
   );
 };

@@ -8,7 +8,12 @@ const LoadingPage = () => {
         <title>Loading...</title>
       </Head>
       <div>
-        <LoaderModal type={2} loading={true} label="loading, please wait..." />
+        <LoaderModal
+          type={2}
+          loading={true}
+          solidBG
+          label="loading, please wait..."
+        />
       </div>
     </div>
   );

@@ -2,7 +2,13 @@ import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Loader from ".";
 
-const LoaderModal = ({ loading, setLoading = () => {}, label, type = 1 }) => {
+const LoaderModal = ({
+  loading,
+  solidBG,
+  setLoading = () => {},
+  label,
+  type = 1,
+}) => {
   return (
     <Transition.Root show={loading} as={Fragment}>
       <Dialog
@@ -20,7 +26,13 @@ const LoaderModal = ({ loading, setLoading = () => {}, label, type = 1 }) => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Dialog.Overlay className="fixed inset-0 bg-gray-100 dark:bg-gray-600 bg-opacity-0 dark:bg-opacity-0 transition-opacity" />
+            <Dialog.Overlay
+              className={`fixed inset-0 bg-gray-100 dark:bg-gray-600 ${
+                solidBG
+                  ? "bg-opacity-0 dark:bg-opacity-0"
+                  : "bg-opacity-75 dark:bg-opacity-75"
+              }  transition-opacity`}
+            />
           </Transition.Child>
 
           {/* This element is to trick the browser into centering the modal contents. */}
