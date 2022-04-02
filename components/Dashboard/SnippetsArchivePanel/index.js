@@ -9,6 +9,7 @@ import { useMutation } from "react-query";
 import useAxiosPrivate from "../../../hooks/auth/useAxiosPrivate";
 import SnippetCard from "./SnippetCard";
 import { selectSnippets, SET_SNIPPETS } from "../../../redux/slices/userSlice";
+import LoaderModal from "../../Generic/Loader/LoaderModal";
 
 const SnippetsArchivePanel = () => {
   const dispatch = useDispatch();
@@ -16,7 +17,7 @@ const SnippetsArchivePanel = () => {
   const currentUser = useAuth();
   const userSnippets = useSelector(selectSnippets);
 
-  const { mutate: fetchSnippets } = useMutation(
+  const { isLoading, mutate: fetchSnippets } = useMutation(
     async (snippetIDs) => {
       return await axiosPrivate.post("/api/v1/snippets/many", snippetIDs);
     },
@@ -70,6 +71,11 @@ const SnippetsArchivePanel = () => {
           </Button>
         </div>
       )}
+      <LoaderModal
+        type={2}
+        loading={isLoading && userSnippets?.length < 0}
+        label="hang on, while we prepare a dashboard for you"
+      />
     </div>
   );
 };

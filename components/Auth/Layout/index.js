@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { useTheme } from "next-themes";
 import { useRouter } from "next/dist/client/router";
 import { useEffect, useState } from "react";
 import Divider from "@mui/material/Divider";
@@ -29,15 +28,10 @@ const AuthLayout = ({
   descriptionName,
   icon,
 }) => {
-  const { theme, setTheme } = useTheme();
   const [ghAuthInProgress, setGhAuthInProgress] = useState(false);
   const [googleAuthInProgress, setGoogleAuthInProgress] = useState(false);
 
   const { enqueueSnackbar } = useSnackbar();
-
-  useEffect(() => {
-    setTheme("light");
-  }, [setTheme]);
 
   const continueWithGoogle = () => {
     setGoogleAuthInProgress(true);

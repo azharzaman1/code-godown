@@ -12,6 +12,7 @@ Improvements:
   improve dropdowns contrast
 
 Fixes:
+  dont allow edit code on snippet page
   unmount monaco once snippet saved
   labels refetch on reopen of labels dropdown
 

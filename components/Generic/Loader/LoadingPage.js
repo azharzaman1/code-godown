@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Loader from ".";
+import LoaderModal from "./LoaderModal";
 
 const LoadingPage = () => {
   return (
@@ -8,7 +8,7 @@ const LoadingPage = () => {
         <title>Loading...</title>
       </Head>
       <div>
-        <Loader />
+        <LoaderModal type={2} loading={true} label="loading, please wait..." />
       </div>
     </div>
   );

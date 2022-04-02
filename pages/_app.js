@@ -8,7 +8,7 @@ import AppWrapper from "../components/AppWrapper";
 import { Provider } from "react-redux";
 import { SnackbarProvider } from "notistack";
 import ProgressBar from "@badrap/bar-of-progress";
-import { ThemeProvider } from "next-themes";
+import { ThemeProvider, useTheme } from "next-themes";
 import store from "../redux/store";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
@@ -58,19 +58,19 @@ function MyApp({ Component, pageProps }) {
 
       <ThemeProvider attribute="class">
         <Provider store={store}>
-          <PersistLogin>
-            <ThemeWrapper>
-              <QueryClientProvider client={queryClient}>
-                <SnackbarProvider maxSnack={3}>
-                  <AppWrapper>
+          <ThemeWrapper>
+            <QueryClientProvider client={queryClient}>
+              <SnackbarProvider maxSnack={3}>
+                <AppWrapper>
+                  <PersistLogin>
                     {getLayout(<Component {...pageProps} />)}
                     <CssBaseline />
-                  </AppWrapper>
-                  <ReactQueryDevtools initialIsOpen={false} />
-                </SnackbarProvider>
-              </QueryClientProvider>
-            </ThemeWrapper>
-          </PersistLogin>
+                  </PersistLogin>
+                </AppWrapper>
+                <ReactQueryDevtools initialIsOpen={false} />
+              </SnackbarProvider>
+            </QueryClientProvider>
+          </ThemeWrapper>
         </Provider>
       </ThemeProvider>
     </>
