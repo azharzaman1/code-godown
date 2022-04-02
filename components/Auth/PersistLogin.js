@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useLocalStorage } from "react-use";
 import useAuth from "../../hooks/auth/useAuth";
 import useRefreshToken from "../../hooks/auth/useRefreshToken";
+import { SET_AUTH_LOADING } from "../../redux/slices/appSlice";
 import LoadingPage from "../Generic/Loader/LoadingPage";
 
 const PersistLogin = ({ children }) => {
@@ -11,7 +12,7 @@ const PersistLogin = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const refresh = useRefreshToken();
   const currentUser = useAuth();
-  const [remember, setRemember, remove] = useLocalStorage(
+  const [remember, setRemember, removeRemeber] = useLocalStorage(
     "cg-remember-device",
     false
   );
@@ -24,12 +25,16 @@ const PersistLogin = ({ children }) => {
       } catch (err) {
         console.log(err);
       } finally {
+        dispatch(SET_AUTH_LOADING(false));
         mounted && setIsLoading(false);
       }
     };
     !currentUser?.accessToken && remember
       ? verifyRefreshToken()
-      : setIsLoading(false);
+      : () => {
+          setIsLoading(false);
+          dispatch(SET_AUTH_LOADING(false));
+        };
 
     return () => {
       mounted = false;
