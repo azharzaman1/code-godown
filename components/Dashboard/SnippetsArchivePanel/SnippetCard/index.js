@@ -47,8 +47,13 @@ const SnippetCard = ({ snippet, ...rest }) => {
   const dispatch = useDispatch();
 
   const handleSnippetOpen = () => {
-    router.push(`/dashboard/snippet/${snippet?.slug}`);
-    dispatch(SET_SNIPPET(snippet));
+    router.push({
+      pathname: `/dashboard/snippet/${snippet?.slug}`,
+      query: {
+        snippet: snippet?.snippetName,
+        _id: snippet?._id,
+      },
+    });
   };
 
   return (

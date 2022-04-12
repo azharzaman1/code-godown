@@ -9,8 +9,7 @@ import Tooltip from "../../Generic/Tooltip";
 import Tag from "../../Generic/Tag";
 import Label from "../../Generic/Label";
 
-const SnippetLeftPanel = () => {
-  const snippet = useSelector(selectSnippet);
+const SnippetLeftPanel = ({ snippet }) => {
   return (
     <div className="snippet-left-panel mt-2">
       {/* Portion 1 */}
@@ -31,7 +30,7 @@ const SnippetLeftPanel = () => {
           <div className="flex justify-between items-center mt-1">
             <Text type="info">
               {format(
-                parseISO(snippet?.createdAt),
+                parseISO(snippet?.createdAt || new Date().toISOString()),
                 "yyyy/MM/dd hh:mm aaaaa'm'"
               )}
             </Text>
@@ -109,7 +108,11 @@ const ActivityEvent = ({ event, at, ...rest }) => {
     <div {...rest}>
       <Text>{event}</Text>
       <Text type="info">
-        @{format(parseISO(at), "yyyy/MM/dd hh:mm aaaaa'm'")}
+        @
+        {format(
+          parseISO(at || new Date().toISOString()),
+          "yyyy/MM/dd hh:mm aaaaa'm'"
+        )}
       </Text>
     </div>
   );

@@ -58,33 +58,33 @@ const DashboardLayout = ({
         />
         <link rel="icon" href={icon || "/favicon.ico"} />
       </Head>
-      {dashboardLoading ? (
+      {/* {dashboardLoading ? (
         <div className="loader-container w-full min-h-screen flex justify-center items-center">
           <Loader label="hang on, while we prepare a dashboard for you" />
         </div>
       ) : (
-        <>
-          <Header />
-          <main>
-            <Container className="mt-1" maxWidth={false}>
-              {!hideDashboardHeader && <DashboardHeader />}
-              <div className="w-full flex flex-col space-y-2 md:flex-row md:items-start md:space-y-0 mt-2 md:space-x-2 mb-2">
-                {showSidebar && (
-                  <Paper className="w-full md:w-1/6">
-                    <Navigation />
-                  </Paper>
-                )}
-                <Paper
-                  className={`w-full flex bg-backgroundV1 dark:bg-backgroundV1Dark border-borderColor dark:border-dividerColor ${
-                    showSidebar && "md:w-5/6"
-                  }`}
-                >
-                  {children}
-                </Paper>
-              </div>
-            </Container>
-          </main>
-          {/* <div className="mt-3 z-10">
+        <> */}
+      <Header />
+      <main>
+        <Container className="mt-1" maxWidth={false}>
+          {!hideDashboardHeader && <DashboardHeader />}
+          <div className="w-full flex flex-col space-y-2 md:flex-row md:items-start md:space-y-0 mt-2 md:space-x-2 mb-2">
+            {showSidebar && (
+              <Paper className="w-full md:w-1/6">
+                <Navigation />
+              </Paper>
+            )}
+            <Paper
+              className={`w-full flex bg-backgroundV1 dark:bg-backgroundV1Dark border-borderColor dark:border-dividerColor ${
+                showSidebar && "md:w-5/6"
+              }`}
+            >
+              {children}
+            </Paper>
+          </div>
+        </Container>
+      </main>
+      {/* <div className="mt-3 z-10">
             <SyntaxHighlighter
               language={"javascript"}
               style={a11yDark}
@@ -94,8 +94,8 @@ const DashboardLayout = ({
               {JSON.stringify(snippet, null, 4)}
             </SyntaxHighlighter>
           </div> */}
-        </>
-      )}
+      {/* </>
+      )} */}
     </div>
   );
 };
