@@ -61,7 +61,7 @@ const SnippetCardActions = ({ snippet }) => {
 
   const actions = {
     delete: {
-      title: `Delete "${snippet?.snippetName.trim()}" snippet`,
+      title: `Delete "${snippet?.snippetName?.trim()}" snippet`,
       desc: `Are you sure you want to delete this snippet. This action cannot be undone.`,
       confirmAction: handleSnippetDelete,
     },

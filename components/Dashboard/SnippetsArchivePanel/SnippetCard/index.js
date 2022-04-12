@@ -54,7 +54,6 @@ const SnippetCard = ({ snippet, ...rest }) => {
         _id: snippet?._id,
       },
     });
-    dispatch(SET_SNIPPET(snippet));
   };
 
   return (

@@ -1,17 +1,19 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import DashboardHeader from "../Header";
 import Navigation from "../Navigation";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/router";
 import { Paper } from "@mui/material";
 import Header from "../../Generic/Header";
+import Loader from "../../Generic/Loader";
 import Container from "../../Generic/Layout/Container";
+import { selectSnippet } from "../../../redux/slices/appSlice";
 import useAuth from "../../../hooks/auth/useAuth";
 // code jsonify
 import SyntaxHighlighter from "react-syntax-highlighter";
 import a11yDark from "react-syntax-highlighter/dist/cjs/styles/hljs/a11y-dark";
-import LoaderModal from "../../Generic/Loader/LoaderModal";
 
 const DashboardLayout = ({
   children,
@@ -21,7 +23,21 @@ const DashboardLayout = ({
   descriptionName,
   icon,
 }) => {
+  const { theme, setTheme } = useTheme();
+  const snippet = useSelector(selectSnippet);
+  const [dashboardLoading, setDashboardLoading] = useState(true);
   const currentUser = useAuth();
+
+  useEffect(() => {
+    setTheme("dark");
+  }, [setTheme]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setDashboardLoading(false);
+    }, 2000);
+  }, []);
+
   const router = useRouter();
 
   const showSidebar =
@@ -31,7 +47,7 @@ const DashboardLayout = ({
     router.pathname === "/dashboard/snippet/[snippetID]";
 
   return (
-    <div className={`dashboard-container min-h-screen min-w-full ${className}`}>
+    <div className={`${className} dashboard-container min-h-screen`}>
       <Head>
         <title>{title || "Dashboard | Code Godown"}</title>
         <meta
@@ -42,6 +58,12 @@ const DashboardLayout = ({
         />
         <link rel="icon" href={icon || "/favicon.ico"} />
       </Head>
+      {/* {dashboardLoading ? (
+        <div className="loader-container w-full min-h-screen flex justify-center items-center">
+          <Loader label="hang on, while we prepare a dashboard for you" />
+        </div>
+      ) : (
+        <> */}
       <Header />
       <main>
         <Container className="mt-1" maxWidth={false}>
@@ -72,6 +94,8 @@ const DashboardLayout = ({
               {JSON.stringify(snippet, null, 4)}
             </SyntaxHighlighter>
           </div> */}
+      {/* </>
+      )} */}
     </div>
   );
 };

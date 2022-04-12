@@ -41,7 +41,19 @@ const PersistLogin = ({ children }) => {
     };
   }, [currentUser, remember, refresh, dispatch]);
 
-  return <>{!remember ? children : isLoading ? <LoadingPage /> : children}</>;
+  return (
+    <>
+      {!remember ? (
+        children
+      ) : isLoading ? (
+        <>
+          <div>Loading ....</div>
+        </>
+      ) : (
+        children
+      )}
+    </>
+  );
 };
 
 export default PersistLogin;
