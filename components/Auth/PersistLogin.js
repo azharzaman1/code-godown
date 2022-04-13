@@ -46,9 +46,12 @@ const PersistLogin = ({ children }) => {
       {!remember ? (
         children
       ) : isLoading ? (
-        <>
+        <div className="loading-screen">
+          <Head>
+            <title>Loading...</title>
+          </Head>
           <div>Loading ....</div>
-        </>
+        </div>
       ) : (
         children
       )}

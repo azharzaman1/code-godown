@@ -9,7 +9,6 @@ import Button from "../../../components/Generic/Button";
 import Loader from "../../../components/Generic/Loader";
 import {
   selectActiveTabIndex,
-  selectSnippet,
   SET_EDITOR_ACTIVE_TAB_INDEX,
 } from "../../../redux/slices/appSlice";
 import { useQuery } from "react-query";
@@ -34,14 +33,12 @@ const Snippet = () => {
   // react-query snippet fetch by id
   const {
     data: snippet,
-    isIdle,
     isLoading: loadingSnippet,
     isError: errorLoadingSnippet,
     error,
     refetch: fetchSnippet,
-    isFetching,
   } = useQuery(
-    "fetch-snippet-by-id",
+    ["fetch-snippet-by-id", router.query._id],
     async () => {
       console.log(router);
       return await axiosPrivate.get(`/api/v1/snippets/${router.query._id}`);
