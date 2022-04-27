@@ -45,7 +45,7 @@ const MenuDropdown = ({
       >
         <Popover.Panel className="absolute z-50 -ml-4 mt-3 transform px-2 w-screen max-w-md sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2">
           <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
-            <div className="relative grid gap-6 bg-white dark:bg-backgroundContrastDark px-5 py-6 sm:gap-8 sm:p-8">
+            <div className="relative grid gap-6 bg-white dark:bg-backgroundContrastDark py-6 sm:gap-8 sm:py-8 sm:px-8">
               {links.map((item) => (
                 <a
                   key={item.name}
@@ -75,7 +75,7 @@ const MenuDropdown = ({
                   <div key={item.name} className="flow-root">
                     <a
                       href={item.href}
-                      className="-m-3 p-3 flex items-center rounded-md text-base font-medium text-gray-900 dark:text-primaryText hover:bg-backgroundV1Dark dark:hover:bg-backgroundV1Dark transition duration-150"
+                      className="-m-3 p-3 flex items-center rounded-md text-base font-medium text-gray-900 dark:text-primaryText hover:bg-backgroundContrast dark:hover:bg-backgroundV1Dark transition duration-150"
                     >
                       <item.icon
                         className="flex-shrink-0 h-6 w-6 text-gray-400"

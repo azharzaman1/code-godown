@@ -83,7 +83,7 @@
   /* Input */
 
   .input {
-    @apply py-2 px-3 my-3 bg-transparent rounded-md text-secondaryText dark:text-secondaryTextDark placeholder:text-infoText dark:placeholder:text-infoTextDark border border-borderColor dark:border-borderColorDark outline-none;
+    @apply py-2 px-3 my-3 bg-transparent rounded-md text-primaryText dark:text-primaryTextDark placeholder:text-infoText dark:placeholder:text-infoTextDark border border-borderColor dark:border-borderColorDark outline-none;
   }
 
   /* .input.dark {
