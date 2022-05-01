@@ -6,12 +6,7 @@ export default function Home() {
 }
 
 Home.getLayout = (page) => (
-  <Layout
-    title="Code Godown"
-    className="w-full"
-    tranparentHeader={true}
-    themeSwitch={false}
-  >
+  <Layout title="Code Godown" tranparentHeader={true} themeSwitch={false}>
     {page}
   </Layout>
 );
