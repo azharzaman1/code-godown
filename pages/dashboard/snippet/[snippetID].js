@@ -14,6 +14,7 @@ import {
 import { useQuery } from "react-query";
 import useAxiosPrivate from "../../../hooks/auth/useAxiosPrivate";
 import { useSnackbar } from "notistack";
+import { Skeleton } from "@mui/material";
 
 const Snippet = () => {
   const activeTabIndex = useSelector(selectActiveTabIndex);
@@ -77,57 +78,98 @@ const Snippet = () => {
     fetchSnippet();
   }, [router.query._id, fetchSnippet]);
 
-  if (loadingSnippet) {
-    return <span>Loading...</span>;
-  } else if (errorLoadingSnippet) {
-    return <span>Error: {error.message}</span>;
-  } else {
-    return (
-      <div className="w-full p-2 md:p-4 pl-0 md:pl-0">
-        <div className="snippet-content-container flex flex-col space-y-5 lg:flex-row lg:items-start lg:space-y-0 lg:space-x-2">
-          <SnippetLeftPanel snippet={snippet?.data?.found} />
-          <div className="snippet-code-container w-full">
-            <div className="flex items-center justify-between pr-2">
-              <div className="editor-navigation text-white flex-1 flex items-center select-none overflow-x-scroll">
-                {snippet?.data?.found &&
-                  snippet?.data?.found.files?.map(({ fileName, key }) => (
-                    <Button
-                      key={key}
-                      type="tab"
-                      size="medium"
-                      active={key == activeTabIndex}
-                      onClick={() => {
-                        dispatch(SET_EDITOR_ACTIVE_TAB_INDEX(key));
-                      }}
-                    >
-                      {fileName}
-                    </Button>
-                  ))}
-              </div>
+  return (
+    <div className="w-full p-2 md:p-4 pl-0 md:pl-0">
+      <div className="snippet-content-container max-w-full flex flex-col space-y-5 lg:flex-row lg:items-start lg:justify-start lg:space-y-0 lg:space-x-2">
+        <div className="lg:min-w-[200px] xl:min-w-[250px]">
+          <SnippetLeftPanel
+            snippet={snippet?.data?.found}
+            dataIsLoading={loadingSnippet}
+          />
+        </div>
 
-              <div className="hidden lg:block">
+        <div className="snippet-code-container flex-1">
+          {/* snippet code header - tabs - actions */}
+          <div className="flex items-center justify-between pr-2">
+            <div className="editor-navigation text-white flex-1 flex items-center select-none overflow-x-scroll">
+              {loadingSnippet ? (
+                <div className="flex items-center space-x-1">
+                  <Skeleton variant="rectangular" width={110} height={37} />
+                  <Skeleton variant="rectangular" width={90} height={37} />
+                  <Skeleton variant="rectangular" width={130} height={37} />
+                </div>
+              ) : (
+                <>
+                  {snippet?.data?.found &&
+                    snippet?.data?.found.files?.map(({ fileName, key }) => (
+                      <Button
+                        key={key}
+                        type="tab"
+                        size="medium"
+                        active={key == activeTabIndex}
+                        onClick={() => {
+                          dispatch(SET_EDITOR_ACTIVE_TAB_INDEX(key));
+                        }}
+                      >
+                        {fileName}
+                      </Button>
+                    ))}
+                </>
+              )}
+            </div>
+
+            <div className="hidden lg:block">
+              {loadingSnippet ? (
+                <div className="flex items-center space-x-4">
+                  <Skeleton
+                    variant="rectangular"
+                    width={20}
+                    height={20}
+                    sx={{ borderRadius: 9999 }}
+                  />
+                  <Skeleton
+                    variant="rectangular"
+                    width={20}
+                    height={20}
+                    sx={{ borderRadius: 9999 }}
+                  />
+                  <Skeleton
+                    variant="rectangular"
+                    width={20}
+                    height={20}
+                    sx={{ borderRadius: 9999 }}
+                  />
+                  <Skeleton
+                    variant="rectangular"
+                    width={20}
+                    height={20}
+                    sx={{ borderRadius: 9999 }}
+                  />
+                </div>
+              ) : (
                 <SnippetCardActions snippet={snippet?.data?.found} />
-              </div>
+              )}
             </div>
+          </div>
 
-            <div className="w-full mt-1">
-              <Editor
-                height="70vh"
-                defaultLanguage={
-                  activeTab?.language?.name?.toLowerCase() || "javascript"
-                }
-                defaultValue={activeTab?.code}
-                path={activeTab?.fileName}
-                onMount={handleEditorDidMount}
-                theme={"vs-dark"}
-                loading={<Loader />}
-              />
-            </div>
+          {/* snippet code editor */}
+          <div className="mt-1 w-full">
+            <Editor
+              height="70vh"
+              defaultLanguage={
+                activeTab?.language?.name?.toLowerCase() || "javascript"
+              }
+              defaultValue={activeTab?.code}
+              path={activeTab?.fileName}
+              onMount={handleEditorDidMount}
+              theme={"vs-dark"}
+              loading={<Loader />}
+            />
           </div>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 };
 
 Snippet.getLayout = (page) => (
