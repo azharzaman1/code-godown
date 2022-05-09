@@ -24,7 +24,7 @@ const ThemeSwitch = ({ themes }) => {
   };
 
   return (
-    <div className="z-50">
+    <div className="z-[250]">
       <Listbox value={syntaxTheme} onChange={onThemeChange}>
         <div className="relative">
           <Listbox.Button className="relative w-full min-w-[200px] sm:text-sm py-2 pl-3 pr-10 text-left bg-backgroundV1 dark:bg-backgroundV1Dark rounded-lg shadow-md cursor-default">

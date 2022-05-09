@@ -55,7 +55,7 @@ const SnippetsArchivePanel = () => {
           spacing={{ xs: 1, md: 2 }}
           justifyContent={isAboveMDBreakpoint ? "flex-start" : "center"}
           alignItems="center"
-          className="max-w-[100%] overflow-hidden translate-x-0.5 md:translate-x-1.5 lg:translate-x-0"
+          className="max-w-[100%] overflow-hidden"
         >
           {/* Display snippets itself if, snippets are present in currentUser obj, and */}
           {/* Individual snippets are fetched from db */}
