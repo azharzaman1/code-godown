@@ -58,12 +58,6 @@ const DashboardLayout = ({
         />
         <link rel="icon" href={icon || "/favicon.ico"} />
       </Head>
-      {/* {dashboardLoading ? (
-        <div className="loader-container w-full min-h-screen flex justify-center items-center">
-          <Loader label="hang on, while we prepare a dashboard for you" />
-        </div>
-      ) : (
-        <> */}
       <Header />
       <main>
         <Container className="mt-1" maxWidth={false}>

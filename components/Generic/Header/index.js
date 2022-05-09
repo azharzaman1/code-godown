@@ -42,7 +42,7 @@ export default function Header({ themeSwitch = false, variant = "dark" }) {
   return (
     <Popover className={`relative bg-white dark:bg-backgroundV1Dark`}>
       <div className="max-w-9xl mx-auto px-4 sm:px-6 border-b border-dividerColor shadow-md">
-        <div className="flex justify-between items-center py-3 md:justify-start md:space-x-10 z-50">
+        <div className="flex justify-between items-center py-3 md:justify-start md:space-x-10 z-40">
           <div
             className="flex justify-start lg:w-0 lg:flex-1 cursor-pointer"
             onClick={() => {

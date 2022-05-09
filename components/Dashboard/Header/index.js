@@ -35,6 +35,7 @@ import {
   SET_USER,
 } from "../../../redux/slices/userSlice";
 import dashify from "dashify";
+import { PlusIcon, XIcon } from "@heroicons/react/outline";
 
 const DashboardHeader = () => {
   const currentUser = useAuth();
@@ -334,73 +335,103 @@ const DashboardHeader = () => {
   // </Dynamic Content>
 
   return (
-    <Paper className="dashboard__contentHeader flex justify-between items-center w-full py-2 px-3 space-x-3">
-      <div className="hidden sm:block">
-        <div className="flex space-x-2">
-          <div className="flex flex-col">
-            <Heading type="tertiary">{dashboardHeaderTagline}</Heading>
+    <Paper className="dashboard__contentHeader">
+      <div className="dashboardContentHeader__content w-full flex justify-between items-center py-2 px-3 sm:space-x-2 md:space-x-3">
+        <div className="dashboardContentHeader__leftContainer hidden sm:block">
+          <div className="dashboardContentHeader__leftContent">
+            <div className="dashboardContentHeader__leftTagline">
+              <Heading type="tertiary">{dashboardHeaderTagline}</Heading>
+            </div>
+          </div>
+        </div>
+
+        <div className="dashboardContentHeader__rightContainer flex-1">
+          <div className="dashboardContentHeader__rightContent flex items-center justify-between sm:justify-end sm:space-x-2">
+            {!viewingSnippet && (
+              <div className="dashboardContentHeader__rightSearchContainer">
+                <div className="dashboardContentHeader__rightSearchIcon">
+                  <SearchIcon className="cursor-pointer h-6 mr-2" />
+                </div>
+              </div>
+            )}
+
+            <div className="dashboardContentHeader__rightSyntaxThemeSwitch">
+              {displaySnippets && <ThemeSwitch themes={SyntaxThemes} />}
+            </div>
+
+            {/* Header Dynamic Buttons */}
+            {savingSnippet || savingEditedSnippet ? (
+              <Button
+                type="text-icon"
+                startIcon={<ArrowBack />}
+                onClick={handleBackDirect}
+              >
+                Back
+              </Button>
+            ) : (
+              <></>
+            )}
+            {!displaySnippets && !viewingSnippet ? (
+              <Button
+                type="text-icon"
+                startIcon={<Close />}
+                onClick={handleDiscard}
+              >
+                Discard
+              </Button>
+            ) : (
+              <></>
+            )}
+
+            {displaySnippets && (
+              <Button
+                id="add-new-snippet-btn"
+                type="icon"
+                endIcon={<Add />}
+                onClick={() => {
+                  setAddSnippetDialogOpen(true);
+                  dispatch(RESET_SNIPPET());
+                }}
+                className="hidden sm:block"
+              >
+                Add Snippet
+              </Button>
+            )}
+
+            {displaySnippets && (
+              <button
+                onClick={() => {
+                  setAddSnippetDialogOpen(true);
+                  dispatch(RESET_SNIPPET());
+                }}
+                className="icon-button sm:hidden bg-primary hover:bg-opacity-95 rounded-md p-2 inline-flex items-center justify-center text-primaryTextDark focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary active:scale-95 transition-all duration-150"
+              >
+                <span className="sr-only">Close menu</span>
+                <PlusIcon className="h-6 w-6" aria-hidden="true" />
+              </button>
+            )}
+
+            {!viewingSnippet && !displaySnippets ? (
+              <Button
+                type="icon"
+                loading={saving}
+                startIcon={
+                  savingSnippet || savingEditedSnippet ? <Save /> : null
+                }
+                endIcon={
+                  !savingSnippet && !savingEditedSnippet ? <Send /> : null
+                }
+                onClick={mainButtonAction}
+              >
+                {mainButtonTitle}
+              </Button>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       </div>
 
-      <div className="flex items-center justify-between sm:justify-end space-x-2 ml-auto flex-1">
-        {!viewingSnippet && (
-          <div className="lg:hidden">
-            <SearchIcon className="cursor-pointer h-6 mr-2" />
-          </div>
-        )}
-        {displaySnippets && <ThemeSwitch themes={SyntaxThemes} />}
-
-        {/* Header Dynamic Buttons */}
-        {savingSnippet || savingEditedSnippet ? (
-          <Button
-            type="text-icon"
-            startIcon={<ArrowBack />}
-            onClick={handleBackDirect}
-          >
-            Back
-          </Button>
-        ) : (
-          <></>
-        )}
-        {!displaySnippets && !viewingSnippet ? (
-          <Button
-            type="text-icon"
-            startIcon={<Close />}
-            onClick={handleDiscard}
-          >
-            Discard
-          </Button>
-        ) : (
-          <></>
-        )}
-        {displaySnippets && (
-          <Button
-            id="add-new-snippet-btn"
-            type="icon"
-            endIcon={<Add />}
-            onClick={() => {
-              setAddSnippetDialogOpen(true);
-              dispatch(RESET_SNIPPET());
-            }}
-          >
-            Add Snippet
-          </Button>
-        )}
-        {!viewingSnippet && !displaySnippets ? (
-          <Button
-            type="icon"
-            loading={saving}
-            startIcon={savingSnippet || savingEditedSnippet ? <Save /> : null}
-            endIcon={!savingSnippet && !savingEditedSnippet ? <Send /> : null}
-            onClick={mainButtonAction}
-          >
-            {mainButtonTitle}
-          </Button>
-        ) : (
-          <></>
-        )}
-      </div>
       <Modal
         open={addSnippetDialogOpen}
         modalContent={<PreEditor />}

@@ -77,9 +77,17 @@ const Button = ({
         } ${sm ? "py-2 px-3 space-x-2" : "px-5 py-2.5 space-x-3"} ${className}`}
         {...rest}
       >
-        <span className="button-start-icon">{startIcon}</span>
+        {loading && startIcon ? (
+          <Loader sm color="light" type={2} />
+        ) : (
+          <span className="button-start-icon">{startIcon}</span>
+        )}
         <span>{children}</span>
-        <span className="button-end-icon">{endIcon}</span>
+        {loading && endIcon ? (
+          <Loader sm color="light" type={2} />
+        ) : (
+          <span className="button-end-icon">{endIcon}</span>
+        )}
       </button>
     );
 

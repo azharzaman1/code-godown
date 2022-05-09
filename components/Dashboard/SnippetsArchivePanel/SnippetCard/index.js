@@ -67,7 +67,7 @@ const SnippetCard = ({ snippet, ...rest }) => {
       md={6}
       xl={4}
       {...rest}
-      className="snippet__card w-full min-h-[500px]"
+      className="snippet__card w-full min-h-[500px] z-0"
     >
       <div className="flex flex-col px-4 pt-4 pb-2 bg-backgroundContrast dark:bg-backgroundContrastDark rounded-lg shadow-md">
         <div className="snippetCard__header">
