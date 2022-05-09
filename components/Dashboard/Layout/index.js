@@ -68,15 +68,15 @@ const DashboardLayout = ({
       <main>
         <Container className="mt-1" maxWidth={false}>
           {!hideDashboardHeader && <DashboardHeader />}
-          <div className="w-full flex flex-col space-y-2 md:flex-row md:items-start md:space-y-0 mt-2 md:space-x-2 mb-2">
+          <div className="w-full flex flex-col space-y-2 lg:flex-row lg:items-start lg:space-y-0 mt-2 lg:space-x-2 mb-2">
             {showSidebar && (
-              <Paper className="w-full md:w-1/6">
+              <Paper className="w-full lg:w-1/6">
                 <Navigation />
               </Paper>
             )}
             <Paper
               className={`w-full flex bg-backgroundV1 dark:bg-backgroundV1Dark border-borderColor dark:border-dividerColor ${
-                showSidebar && "md:w-5/6"
+                showSidebar && "lg:w-5/6"
               }`}
             >
               {children}

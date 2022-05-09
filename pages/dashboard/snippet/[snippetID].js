@@ -41,7 +41,6 @@ const Snippet = () => {
   } = useQuery(
     ["fetch-snippet-by-id", router.query._id],
     async () => {
-      console.log(router);
       return await axiosPrivate.get(`/api/v1/snippets/${router.query._id}`);
     },
     {

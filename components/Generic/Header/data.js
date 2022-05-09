@@ -11,7 +11,7 @@ import {
   ViewGridIcon,
 } from "@heroicons/react/outline";
 
-import { Dashboard, Settings } from "@mui/icons-material";
+import { Dashboard, Settings, Person } from "@mui/icons-material";
 
 export const solutions = [
   {
@@ -90,6 +90,12 @@ export const dropdownMenu = [
   },
   {
     key: 1,
+    name: "My Account",
+    href: "/my-account",
+    icon: Person,
+  },
+  {
+    key: 2,
     name: "Settings",
     href: "/settings",
     icon: Settings,

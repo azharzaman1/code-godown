@@ -6,14 +6,12 @@ Improvements:
   Register username addition
   Add disabled state to buttons
   Configure readable errors in Auth
-  add react-hook-form in auth
   add local next apis to node express
   add loader to add label button
-  improve dropdowns contrast
 
 Fixes:
   dont allow edit code on snippet page
   unmount monaco once snippet saved
-  labels refetch on reopen of labels dropdown
-
+  label dropdown not opening in production
+  snippet name in slug appears as undefined in production
   snippetName in files

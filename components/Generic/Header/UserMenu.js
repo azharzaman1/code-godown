@@ -17,6 +17,7 @@ function UserMenu() {
   const dispatch = useDispatch();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
+  const router = useRouter();
   const trigger = useRef(null);
   const dropdown = useRef(null);
 
@@ -96,7 +97,12 @@ function UserMenu() {
           className="flex flex-col w-[250px] max-w-[95vw]"
         >
           <div className="flex flex-col p-3">
-            <div className="flex items-center space-x-2">
+            <div
+              className="flex items-center space-x-2 cursor-pointer"
+              onClick={() => {
+                router.push(`/u/@${currentUser?.username}`);
+              }}
+            >
               <Avatar
                 sx={{
                   width: 30,
@@ -141,7 +147,7 @@ export const MenuItem = ({ item, id, onClick, startBorder }) => {
 
   return (
     <>
-      {isFirstItem && startBorder ? <Divider className="my-1" /> : <></>}
+      {isFirstItem && startBorder ? <Divider className="mt-1" /> : <></>}
       <div
         onClick={() => {
           if (item.href) {

@@ -24,6 +24,7 @@ import githubGist from "react-syntax-highlighter/dist/cjs/styles/hljs/github-gis
 import gradientDark from "react-syntax-highlighter/dist/cjs/styles/hljs/gradient-dark";
 import tomorrowNightBlue from "react-syntax-highlighter/dist/cjs/styles/hljs/tomorrow-night-blue";
 import schoolBook from "react-syntax-highlighter/dist/cjs/styles/hljs/school-book";
+import dashify from "dashify";
 
 const syntaxThemes = {
   atomOneDark: atomOneDark,
@@ -44,11 +45,13 @@ const SnippetCard = ({ snippet, ...rest }) => {
   const [activeFile, setActiveFile] = useState(() => snippet.files[0]);
 
   const router = useRouter();
-  const dispatch = useDispatch();
 
   const handleSnippetOpen = () => {
+    console.log(snippet);
     router.push({
-      pathname: `/dashboard/snippet/${snippet?.slug}`,
+      pathname: `/dashboard/snippet/${
+        snippet?.slug || dashify(snippet?.snippetName)
+      }`,
       query: {
         snippet: snippet?.snippetName,
         _id: snippet?._id,
@@ -60,8 +63,9 @@ const SnippetCard = ({ snippet, ...rest }) => {
     <Grid
       item
       xs={12}
-      sm={4}
-      md={4}
+      sm={10}
+      md={6}
+      xl={4}
       {...rest}
       className="snippet__card w-full min-h-[500px]"
     >

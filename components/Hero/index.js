@@ -40,10 +40,7 @@ export default function Hero() {
                 className="mt-3 sm:mt-5 sm:max-w-xl sm:mx-auto md:mt-5 lg:mx-0"
               >
                 Now, every important snippet of your code, on single click
-                ahead.{" "}
-                <span className="text-primaryText dark:text-primaryTextDark">
-                  Share snippets with friends, and collaborate.
-                </span>
+                ahead. Share snippets with friends, and collaborate
               </Text>
               <div className="mt-5 md:mt-8 lg:mt-10 flex items-center justify-center lg:justify-start space-x-3">
                 <div className="flex flex-wrap space-x-3 items-center justify-evenly">

@@ -5,8 +5,9 @@ const SnippetCardSkeleton = ({ ...rest }) => {
     <Grid
       item
       xs={12}
-      sm={4}
-      md={4}
+      sm={10}
+      md={6}
+      xl={4}
       className="snippet__card w-full min-h-[500px]"
       {...rest}
     >

@@ -12,6 +12,7 @@ import Button from "../Button";
 import { auth } from "../../../firebase";
 import useAuth from "../../../hooks/auth/useAuth";
 import { callsToAction, dropdownMenu, resources, solutions } from "./data";
+import useLogout from "../../../hooks/auth/useLogout";
 
 export default function Header({ themeSwitch = false, variant = "dark" }) {
   const router = useRouter();
@@ -131,6 +132,13 @@ export default function Header({ themeSwitch = false, variant = "dark" }) {
 
 const MobileMenu = () => {
   const router = useRouter();
+  const currentUser = useAuth();
+  const logout = useLogout();
+
+  const handleLogout = () => {
+    logout();
+  };
+
   return (
     <Transition
       as={Fragment}
@@ -188,22 +196,35 @@ const MobileMenu = () => {
                 Buy me a coffee 🍵
               </Link>
             </div>
-            <div className="mt-2">
-              <Button
-                onClick={() => {
-                  router.push("/auth/register");
-                }}
-                className="w-full justify-center"
-              >
-                Sign up
-              </Button>
-              <p className="mt-6 text-center text-base font-medium text-gray-500">
-                Existing customer?{" "}
-                <Link underline href="/auth/login">
-                  Sign in
-                </Link>
-              </p>
-            </div>
+            {!currentUser && (
+              <div className="mt-2">
+                <Button
+                  onClick={() => {
+                    router.push("/auth/register");
+                  }}
+                  className="w-full justify-center"
+                >
+                  Sign up
+                </Button>
+                <p className="mt-6 text-center text-base font-medium text-gray-500">
+                  Existing customer?{" "}
+                  <Link underline href="/auth/login">
+                    Sign in
+                  </Link>
+                </p>
+              </div>
+            )}
+
+            {currentUser && (
+              <div className="mt-2">
+                <Button
+                  onClick={handleLogout}
+                  className="w-full justify-center"
+                >
+                  Logout
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </Popover.Panel>

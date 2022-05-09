@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Grid } from "@mui/material";
+import { Grid, useMediaQuery, useTheme } from "@mui/material";
 import Heading from "../../Generic/Heading";
 import Button from "../../Generic/Button";
 import { Add, DeleteSweep } from "@mui/icons-material";
@@ -9,7 +9,6 @@ import { useMutation } from "react-query";
 import useAxiosPrivate from "../../../hooks/auth/useAxiosPrivate";
 import SnippetCard from "./SnippetCard";
 import { selectSnippets, SET_SNIPPETS } from "../../../redux/slices/userSlice";
-import LoaderModal from "../../Generic/Loader/LoaderModal";
 import SnippetCardSkeleton from "./SnippetCard/SnippetCardSkeleton";
 
 const SnippetsArchivePanel = () => {
@@ -17,6 +16,9 @@ const SnippetsArchivePanel = () => {
   const axiosPrivate = useAxiosPrivate();
   const currentUser = useAuth();
   const userSnippets = useSelector(selectSnippets);
+
+  const theme = useTheme();
+  const isAboveMDBreakpoint = useMediaQuery(theme.breakpoints.up("md"));
 
   const { isLoading, mutate: fetchSnippets } = useMutation(
     async (snippetIDs) => {
@@ -26,7 +28,6 @@ const SnippetsArchivePanel = () => {
       onSuccess: (res) => {
         console.log("Snippets fetch response", res);
         dispatch(SET_SNIPPETS(res.data.result));
-        // dispatch(SET_SNIPPETS([]));
       },
       onError: (err) => {
         const statusCode = err.response.status;
@@ -52,8 +53,9 @@ const SnippetsArchivePanel = () => {
         <Grid
           container
           spacing={{ xs: 1, md: 2 }}
-          columns={{ xs: 4, sm: 8, md: 12 }}
-          className="max-w-[100%] overflow-hidden"
+          justifyContent={isAboveMDBreakpoint ? "flex-start" : "center"}
+          alignItems="center"
+          className="max-w-[100%] overflow-hidden translate-x-1 translate-y-1.5 md:translate-x-2 md:translate-y-2 lg:translate-x-0 lg:translate-y-0"
         >
           {/* Display snippets itself if, snippets are present in currentUser obj, and */}
           {/* Individual snippets are fetched from db */}
