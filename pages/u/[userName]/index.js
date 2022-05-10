@@ -2,8 +2,8 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
 import { useQuery } from "react-query";
-import Layout from "../../components/Generic/Layout";
-import useAxiosPrivate from "../../hooks/auth/useAxiosPrivate";
+import Layout from "../../../components/Generic/Layout";
+import useAxiosPrivate from "../../../hooks/auth/useAxiosPrivate";
 
 const User = () => {
   const axiosPrivate = useAxiosPrivate();
