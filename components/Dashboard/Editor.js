@@ -234,7 +234,7 @@ const MonacoEditor = () => {
             onChange={handleEditorChange}
             onMount={handleEditorDidMount}
             theme={themePreference === "dark" ? "vs-dark" : "light"}
-            loading={<Loader />}
+            loading={<Loader type={2} />}
           />
         )}
       </div>

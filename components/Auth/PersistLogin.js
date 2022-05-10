@@ -5,7 +5,6 @@ import { useLocalStorage } from "react-use";
 import useAuth from "../../hooks/auth/useAuth";
 import useRefreshToken from "../../hooks/auth/useRefreshToken";
 import { SET_AUTH_LOADING } from "../../redux/slices/appSlice";
-import LoadingPage from "../Generic/Loader/LoadingPage";
 
 const PersistLogin = ({ children }) => {
   const dispatch = useDispatch();

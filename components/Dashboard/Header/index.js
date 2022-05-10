@@ -198,6 +198,7 @@ const DashboardHeader = () => {
           email: currentUser?.email,
           userID: currentUser?._id,
           fullName: currentUser?.fullName,
+          username: currentUser?.username,
         },
       },
     };

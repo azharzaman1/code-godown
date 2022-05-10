@@ -89,7 +89,7 @@ const Snippet = () => {
 
         <div className="snippet-code-container flex-1">
           {/* snippet code header - tabs - actions */}
-          <div className="flex items-center justify-between pr-2">
+          <div className="flex items-center justify-between pr-5">
             <div className="editor-navigation text-white flex-1 flex items-center select-none overflow-x-scroll">
               {loadingSnippet ? (
                 <div className="flex items-center space-x-1">
@@ -162,7 +162,7 @@ const Snippet = () => {
               path={activeTab?.fileName}
               onMount={handleEditorDidMount}
               theme={"vs-dark"}
-              loading={<Loader />}
+              loading={<Loader type={2} />}
             />
           </div>
         </div>

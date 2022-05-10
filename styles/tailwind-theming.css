@@ -86,12 +86,6 @@
     @apply py-2 px-3 my-3 bg-transparent rounded-md text-primaryText dark:text-primaryTextDark placeholder:text-infoText dark:placeholder:text-infoTextDark border border-borderColor dark:border-borderColorDark outline-none;
   }
 
-  /* .input.dark {
-    @apply bg-transparent text-gray-300 placeholder-gray-400 border-2 border-gray-400;
-  } */
-
-  /* icon */
-
   .icon {
     @apply text-gray-500;
   }

@@ -11,9 +11,12 @@ import Modal from "../../../Generic/Modal";
 import { SET_USER } from "../../../../redux/slices/userSlice";
 import { SET_SNIPPET } from "../../../../redux/slices/appSlice";
 import Tooltip from "../../../Generic/Tooltip";
+import SharePanel from "../../SharePanel";
+import SlideOver from "../../../Generic/SlideOver";
 
 const SnippetCardActions = ({ snippet }) => {
   const currentUser = useAuth();
+  const [sharePanelOpen, setSharePanelOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [action, setAction] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -109,7 +112,13 @@ const SnippetCardActions = ({ snippet }) => {
           </IconButton>
         </Tooltip>
         <Tooltip content="Share snippet">
-          <IconButton color="primary" size="small" onClick={() => {}}>
+          <IconButton
+            color="primary"
+            size="small"
+            onClick={() => {
+              setSharePanelOpen(true);
+            }}
+          >
             <Share fontSize="inherit" />
           </IconButton>
         </Tooltip>
@@ -123,29 +132,15 @@ const SnippetCardActions = ({ snippet }) => {
         loading={deleting}
         confirmAction={actions[action]?.confirmAction}
       />
+
+      {/* <SlideOver open={sharePanelOpen} setOpen={setSharePanelOpen} /> */}
+      <SharePanel
+        open={sharePanelOpen}
+        setOpen={setSharePanelOpen}
+        snippet={snippet}
+      />
     </>
   );
 };
 
 export default SnippetCardActions;
-
-/*
-{
-      onSuccess: (res) => {
-        console.log("Snippet delete response", res);
-        enqueueSnackbar(`Snippet was deleted successfully!`, {
-          variant: "success",
-        });
-        setDialogOpen(false);
-        setDeleting(false);
-      },
-      onError: (err) => {
-        const statusCode = err.response.status;
-        const statusText = err.response.statusText;
-        enqueueSnackbar(statusText, {
-          variant: "error",
-        });
-        setDeleting(false);
-      },
-    }
-*/

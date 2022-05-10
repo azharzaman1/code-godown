@@ -56,5 +56,5 @@ module.exports = {
       sans: ["Inter", "Roboto", "sans-serif"],
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/forms")],
 };

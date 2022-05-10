@@ -2,13 +2,7 @@ import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Loader from ".";
 
-const LoaderModal = ({
-  loading,
-  solidBG,
-  setLoading = () => {},
-  label,
-  type = 1,
-}) => {
+const LoaderModal = ({ loading, type = 2, label, setLoading = () => {} }) => {
   return (
     <Transition.Root show={loading} as={Fragment}>
       <Dialog
@@ -16,7 +10,7 @@ const LoaderModal = ({
         className="fixed z-10 inset-0 overflow-y-auto"
         onClose={setLoading}
       >
-        <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -26,16 +20,10 @@ const LoaderModal = ({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Dialog.Overlay
-              className={`fixed inset-0 bg-gray-100 dark:bg-gray-600 ${
-                solidBG
-                  ? "bg-opacity-0 dark:bg-opacity-0"
-                  : "bg-opacity-75 dark:bg-opacity-75"
-              }  transition-opacity`}
-            />
+            <Dialog.Overlay className="fixed inset-0 bg-gray-100 dark:bg-gray-600 bg-opacity-75 dark:bg-opacity-75 transition-opacity" />
           </Transition.Child>
 
-          {/* This element is to trick the browser into centering the modal contents. */}
+          {/* This span element is to trick the browser into centering the modal contents. */}
           <span
             className="hidden sm:inline-block sm:align-middle sm:h-screen"
             aria-hidden="true"

@@ -4,9 +4,11 @@ import Heading from "../Generic/Heading";
 import Text from "../Generic/Text";
 import Link from "next/link";
 import useAuth from "../../hooks/auth/useAuth";
+import LoaderModal from "../Generic/Loader/LoaderModal";
 
 export default function Hero() {
   const currentUser = useAuth();
+
   return (
     <div className="relative bg-backgroundV1 dark:bg-backgroundV1Dark overflow-hidden lg:py-20">
       <div className="max-w-7xl mx-auto">
@@ -62,6 +64,7 @@ export default function Hero() {
           alt=""
         />
       </div>
+      {/* <LoaderModal loading label="Loading ..." /> */}
     </div>
   );
 }
