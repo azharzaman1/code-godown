@@ -82,7 +82,18 @@
   animation: dotspinner 2s infinite;
 }
 
-.dot-spinner-light.sm {
+.dot-spinner-light.medium {
+  background: radial-gradient(farthest-side, rgb(235, 235, 235) 95%, #0000) 40%
+      0/9px 9px no-repeat,
+    radial-gradient(
+        farthest-side,
+        #0000 calc(100% - 3.5px),
+        white calc(100% - 2.5px)
+      )
+      content-box;
+}
+
+.dot-spinner-light.small {
   background: radial-gradient(farthest-side, rgb(235, 235, 235) 95%, #0000) 33%
       0/9px 9px no-repeat,
     radial-gradient(

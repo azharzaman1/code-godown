@@ -37,7 +37,6 @@ function SharePanel({ open, setOpen, snippet }) {
   );
 
   const shareSlugField = useRef(null);
-  console.log(state);
 
   return (
     <SlideOver open={open} setOpen={setOpen}>

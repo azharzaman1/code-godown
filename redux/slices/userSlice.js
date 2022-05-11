@@ -15,6 +15,7 @@ export const userSlice = createSlice({
     currentUser: null,
     persistSession: true,
     snippets: [],
+    labels: [],
     userType: "",
   },
   reducers: {
@@ -56,6 +57,12 @@ export const userSlice = createSlice({
         snippets: action.payload,
       };
     },
+    SET_LABELS: (state, action) => {
+      return {
+        ...state,
+        labels: action.payload,
+      };
+    },
   },
 });
 
@@ -65,11 +72,24 @@ export const {
   LOGOUT,
   SET_SESSION_PERSIST,
   SET_SNIPPETS,
+  SET_LABELS,
 } = userSlice.actions;
 
 export const selectUser = (state) => state.userStore.currentUser;
 export const selectSessionPersist = (state) => state.userStore.persistSession;
 export const selectUserType = (state) => state.userStore.userType;
 export const selectSnippets = (state) => state.userStore.snippets;
+export const selectLabels = (state) => state.userStore.labels;
+
+export const selectAllTags = (state) => {
+  let snippetsArr = [...state.userStore.snippets];
+  let tags = [];
+  snippetsArr.forEach((snippet) => {
+    tags = tags.concat(snippet.tags);
+  });
+  console.log(tags);
+  const tagsArr = tags.map((tag) => tag.name);
+  return [...new Set(tagsArr)];
+};
 
 export default userSlice.reducer;

@@ -46,7 +46,7 @@ const LoaderModal = ({
           >
             <div className="relative inline-block align-middle bg-white dark:bg-backgroundContrastDark rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8">
               <div className="bg-white dark:bg-backgroundContrastDark p-6">
-                <Loader type={type} label={label} />
+                <Loader size="large" type={type} label={label} />
               </div>
             </div>
           </Transition.Child>

@@ -162,7 +162,7 @@ const Snippet = () => {
               path={activeTab?.fileName}
               onMount={handleEditorDidMount}
               theme={"vs-dark"}
-              loading={<Loader type={2} />}
+              loading={<Loader type={2} size="large" />}
             />
           </div>
         </div>

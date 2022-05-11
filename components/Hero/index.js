@@ -64,7 +64,6 @@ export default function Hero() {
           alt=""
         />
       </div>
-      {/* <LoaderModal loading label="Loading ..." /> */}
     </div>
   );
 }

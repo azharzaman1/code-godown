@@ -1,6 +1,18 @@
 import Text from "../Text";
 
-const Loader = ({ type, sm, className, label, color = "primary" }) => {
+const Loader = ({
+  type = 2,
+  size = "medium",
+  className,
+  label,
+  color = "primary",
+}) => {
+  const sizes = {
+    small: "w-6 h-6 small",
+    medium: "w-9 h-9 medium",
+    large: "w-12 h-12 large",
+  };
+
   if (!type || type == 1) {
     return (
       <div className="flex flex-col items-center">
@@ -26,9 +38,7 @@ const Loader = ({ type, sm, className, label, color = "primary" }) => {
     return (
       <div className="flex flex-col items-center">
         <div
-          class={`dot-spinner-${color} ${
-            sm ? "w-6 h-6 sm" : "w-12 h-12"
-          } rounded-full p-[3px] ${className}`}
+          class={`dot-spinner-${color} ${sizes[size]} rounded-full p-[3px] ${className}`}
         />
         {label && <Text className="mt-3">{label}</Text>}
       </div>

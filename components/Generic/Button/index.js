@@ -35,7 +35,7 @@ const Button = ({
         } ${shrinkTrans && "active:scale-95"} ${className}`}
         {...rest}
       >
-        {loading ? <Loader sm color="light" type={2} /> : children}
+        {loading ? <Loader size="small" color="light" type={2} /> : children}
       </button>
     );
 
@@ -78,13 +78,13 @@ const Button = ({
         {...rest}
       >
         {loading && startIcon ? (
-          <Loader sm color="light" type={2} />
+          <Loader size="small" color="light" type={2} />
         ) : (
           <span className="button-start-icon">{startIcon}</span>
         )}
         <span>{children}</span>
         {loading && endIcon ? (
-          <Loader sm color="light" type={2} />
+          <Loader size="small" color="light" type={2} />
         ) : (
           <span className="button-end-icon">{endIcon}</span>
         )}
@@ -100,7 +100,7 @@ const Button = ({
         } ${className}`}
         {...rest}
       >
-        {loading ? <Loader sm color="primary" type={2} /> : children}
+        {loading ? <Loader size="small" color="primary" type={2} /> : children}
       </a>
     );
 
