@@ -6,6 +6,7 @@ import Text from "../../Generic/Text";
 import Tooltip from "../../Generic/Tooltip";
 import Tag from "../../Generic/Tag";
 import Label from "../../Generic/Label";
+import SnippetCardActions from "../SnippetsArchivePanel/SnippetCard/SnippetCardActions";
 
 const SnippetLeftPanel = ({ snippet, dataIsLoading = true }) => {
   return (
@@ -42,13 +43,19 @@ const SnippetLeftPanel = ({ snippet, dataIsLoading = true }) => {
                 className="mt-1"
               />
             ) : (
-              <Text type="info">
-                {format(
-                  parseISO(snippet?.createdAt || new Date().toISOString()),
-                  "yyyy/MM/dd hh:mm aaaaa'm'"
-                )}
-              </Text>
+              <div>
+                <Text type="info">
+                  {format(
+                    parseISO(snippet?.createdAt || new Date().toISOString()),
+                    "yyyy/MM/dd hh:mm aaaaa'm'"
+                  )}
+                </Text>
+              </div>
             )}
+
+            <div className="lg:hidden">
+              <SnippetCardActions snippet={snippet} />
+            </div>
           </div>
         </div>
 
@@ -70,7 +77,7 @@ const SnippetLeftPanel = ({ snippet, dataIsLoading = true }) => {
                 className="mt-1"
               />
             ) : (
-              <Text type="info">{snippet?.owner?.email}</Text>
+              <Text type="info">@{snippet?.owner?.username}</Text>
             )}
           </div>
         </div>
