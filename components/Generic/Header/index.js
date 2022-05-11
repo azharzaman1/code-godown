@@ -11,7 +11,13 @@ import Link from "../Link";
 import Button from "../Button";
 import { auth } from "../../../firebase";
 import useAuth from "../../../hooks/auth/useAuth";
-import { callsToAction, dropdownMenu, resources, solutions } from "./data";
+import {
+  callsToAction,
+  dropdownMenu,
+  moreFromMe,
+  features,
+  moreFromMeActions,
+} from "./data";
 import useLogout from "../../../hooks/auth/useLogout";
 
 export default function Header({ themeSwitch = false, variant = "dark" }) {
@@ -62,29 +68,29 @@ export default function Header({ themeSwitch = false, variant = "dark" }) {
               {({ open }) => (
                 <MenuDropdown
                   label="Features"
-                  links={solutions}
+                  links={features}
                   footerActions={callsToAction}
                   open={open}
                 />
               )}
             </Popover>
 
+            <Popover className="relative">
+              {({ open }) => (
+                <MenuDropdown
+                  label="More from me"
+                  links={moreFromMe}
+                  footerActions={moreFromMeActions}
+                  open={open}
+                />
+              )}
+            </Popover>
             <a
               href="#"
               className="text-base font-medium text-secondaryText dark:text-secondaryTextDark cursor-pointer"
             >
               Docs
             </a>
-
-            <Popover className="relative">
-              {({ open }) => (
-                <MenuDropdown
-                  label="More from me"
-                  links={resources}
-                  open={open}
-                />
-              )}
-            </Popover>
           </Popover.Group>
 
           <div className="flex md:flex-1 lg:w-0 justify-end space-x-4">

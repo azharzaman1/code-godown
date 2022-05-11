@@ -50,6 +50,8 @@ const MenuDropdown = ({
                 <a
                   key={item.name}
                   href={item.href}
+                  target={item.href !== "#" && "_blank"}
+                  rel="noopener noreferer"
                   className="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-100 dark:hover:bg-backgroundV1Dark transition duration-150"
                 >
                   <item.icon
@@ -75,6 +77,8 @@ const MenuDropdown = ({
                   <div key={item.name} className="flow-root">
                     <a
                       href={item.href}
+                      target={item.href !== "#" && "_blank"}
+                      rel="noopener noreferer"
                       className="-m-3 p-3 flex items-center rounded-md text-base font-medium text-gray-900 dark:text-primaryText hover:bg-backgroundContrast dark:hover:bg-backgroundV1Dark transition duration-150"
                     >
                       <item.icon

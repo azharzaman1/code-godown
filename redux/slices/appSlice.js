@@ -6,7 +6,7 @@ export const appSlice = createSlice({
     fileName: "",
     snippet: {},
     editorActiveTabIndex: 0,
-    syntaxTheme: "a11yDark",
+    syntaxTheme: "atomOneDark",
     authLoading: true,
   },
   reducers: {
