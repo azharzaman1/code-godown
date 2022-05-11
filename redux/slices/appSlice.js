@@ -8,6 +8,7 @@ export const appSlice = createSlice({
     editorActiveTabIndex: 0,
     syntaxTheme: "atomOneDark",
     authLoading: true,
+    dashboardNavigationMode: "Snippets",
   },
   reducers: {
     SET_SNIPPET: (state, action) => {
@@ -48,6 +49,12 @@ export const appSlice = createSlice({
         authLoading: action.payload,
       };
     },
+    SET_DASHBOARD_NAVIGATION_MODE: (state, action) => {
+      return {
+        ...state,
+        dashboardNavigationMode: action.payload,
+      };
+    },
   },
 });
 
@@ -60,6 +67,7 @@ export const {
   RESET_SNIPPET,
   SET_SYNTAX_THEME,
   SET_AUTH_LOADING,
+  SET_DASHBOARD_NAVIGATION_MODE,
 } = appSlice.actions;
 
 export const selectSnippetName = (state) => state.appStore.snippetName;
@@ -73,5 +81,7 @@ export const selectDashboardLoading = (state) =>
 export const selectDashboardCurrentState = (state) =>
   state.appStore.dashboardCurrentState;
 export const selectAuthLoading = (state) => state.appStore.authLoading;
+export const selectDashboardNavigationMode = (state) =>
+  state.appStore.dashboardNavigationMode;
 
 export default appSlice.reducer;

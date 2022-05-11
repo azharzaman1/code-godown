@@ -7,7 +7,6 @@ import { useTheme } from "next-themes";
 import { useRouter } from "next/router";
 import { Paper } from "@mui/material";
 import Header from "../../Generic/Header";
-import Loader from "../../Generic/Loader";
 import Container from "../../Generic/Layout/Container";
 import { selectSnippet } from "../../../redux/slices/appSlice";
 import useAuth from "../../../hooks/auth/useAuth";
@@ -40,8 +39,7 @@ const DashboardLayout = ({
 
   const router = useRouter();
 
-  const showSidebar =
-    router.pathname === "/dashboard" && currentUser?.snippets?.length > 0;
+  const showSidebar = router.pathname === "/dashboard";
 
   const hideDashboardHeader =
     router.pathname === "/dashboard/snippet/[snippetID]";
@@ -69,7 +67,7 @@ const DashboardLayout = ({
               </Paper>
             )}
             <Paper
-              className={`w-full flex bg-backgroundV1 dark:bg-backgroundV1Dark border-borderColor dark:border-dividerColor ${
+              className={`w-full flex bg-backgroundV1 dark:bg-backgroundV1Dark ${
                 showSidebar && "lg:w-5/6"
               }`}
             >

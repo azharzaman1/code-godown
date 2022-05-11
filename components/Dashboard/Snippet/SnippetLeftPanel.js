@@ -109,7 +109,7 @@ const SnippetLeftPanel = ({ snippet, dataIsLoading = true }) => {
           <div className="tags flex items-center flex-wrap">
             {/* Tags */}
             {snippet?.tags?.map((tag) => (
-              <Tag>{tag.name}</Tag>
+              <Tag className="mt-1 mr-2">{tag.name}</Tag>
             ))}
           </div>
         )}
