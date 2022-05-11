@@ -56,6 +56,8 @@ const MonacoEditor = () => {
 
   function handleEditorDidMount(editor, monaco) {
     editorRef.current = editor;
+    console.log({ editor });
+    console.log({ monaco });
   }
 
   // will change a tab in snippet
@@ -230,6 +232,7 @@ const MonacoEditor = () => {
               activeTab?.language?.name?.toLowerCase() || "javascript"
             }
             defaultValue={activeTab?.code}
+            defaultPath={activeTab?.fileName}
             path={activeTab?.fileName}
             onChange={handleEditorChange}
             onMount={handleEditorDidMount}

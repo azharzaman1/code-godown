@@ -2,7 +2,12 @@ import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Loader from ".";
 
-const LoaderModal = ({ loading, type = 2, label, setLoading = () => {} }) => {
+const LoaderModal = ({
+  loading = false,
+  type = 2,
+  label,
+  setLoading = () => {},
+}) => {
   return (
     <Transition.Root show={loading} as={Fragment}>
       <Dialog

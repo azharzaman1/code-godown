@@ -41,6 +41,10 @@ const SnippetCardActions = ({ snippet }) => {
         enqueueSnackbar(`Snippet was deleted successfully!`, {
           variant: "success",
         });
+        console.log("first", router);
+        if (router.pathname.includes("/dashboard/snippet/")) {
+          router.replace("/dashboard");
+        }
         setDialogOpen(false);
         setDeleting(false);
       },

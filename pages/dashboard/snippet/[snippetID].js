@@ -80,7 +80,7 @@ const Snippet = () => {
   return (
     <div className="w-full p-2 md:p-4 pl-0 md:pl-0">
       <div className="snippet-content-container max-w-full flex flex-col space-y-5 lg:flex-row lg:items-start lg:justify-start lg:space-y-0 lg:space-x-2">
-        <div className="lg:min-w-[200px] xl:min-w-[250px]">
+        <div className="min-w-full lg:min-w-[200px] lg:max-w-[25%] xl:max-w-[20%] xl:min-w-[250px]">
           <SnippetLeftPanel
             snippet={snippet?.data?.found}
             dataIsLoading={loadingSnippet}

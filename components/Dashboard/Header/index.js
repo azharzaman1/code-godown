@@ -36,6 +36,7 @@ import {
 } from "../../../redux/slices/userSlice";
 import dashify from "dashify";
 import { PlusIcon, XIcon } from "@heroicons/react/outline";
+import LoaderModal from "../../Generic/Loader/LoaderModal";
 
 const DashboardHeader = () => {
   const currentUser = useAuth();
@@ -440,6 +441,8 @@ const DashboardHeader = () => {
         confirmLabel="Add Snippet"
         confirmAction={pushToEditor}
       />
+
+      <LoaderModal loading={saving} label="Saving, Please wait..." />
     </Paper>
   );
 };
