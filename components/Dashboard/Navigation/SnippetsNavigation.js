@@ -1,18 +1,37 @@
-import React, { useEffect } from "react";
-import { useQuery } from "react-query";
-import Label from "../../Generic/Label";
+import React, { useEffect, useState } from "react";
+import { useMutation, useQuery } from "react-query";
 import Tag from "../../Generic/Tag";
 import Text from "../../Generic/Text";
 import useAxiosPrivate from "../../../hooks/auth/useAxiosPrivate";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAllTags, SET_LABELS } from "../../../redux/slices/userSlice";
 import Loader from "../../Generic/Loader";
+import {
+  selectSnippetsFilters,
+  SET_SNIPPETS_FILTERS,
+} from "../../../redux/slices/appSlice";
+import Button from "../../Generic/Button";
+import { Add, Delete, DeleteForever } from "@mui/icons-material";
+import Modal from "../../Generic/Modal";
+import AddNewLabel from "./AddNewLabel";
+import dashify from "dashify";
+import useAuth from "../../../hooks/auth/useAuth";
+import { useSnackbar } from "notistack";
+import { IconButton, Tooltip } from "@mui/material";
 
 const SnippetsNavigation = () => {
-  const dispatch = useDispatch();
+  const snippetsFilters = useSelector(selectSnippetsFilters);
   const tags = useSelector(selectAllTags);
-  console.log({ tags });
+  const [allCheckboxChecked, setAllCheckboxChecked] = useState(true);
+  const [addNewLabel, setAddNewLabel] = useState(false);
+  const [labelName, setLabelName] = useState("");
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [labelToDelete, setLabelToDelete] = useState(null);
+
+  const dispatch = useDispatch();
+  const currentUser = useAuth();
   const axiosPrivate = useAxiosPrivate();
+  const { enqueueSnackbar } = useSnackbar();
 
   const {
     data: labels,
@@ -40,6 +59,68 @@ const SnippetsNavigation = () => {
     return () => (mounted = false);
   }, [false]);
 
+  const { mutate: postLabel } = useMutation(
+    async (labelsData) => {
+      return await axiosPrivate.post(`/api/v1/labels`, labelsData);
+    },
+    {
+      onSuccess: (res) => {
+        console.log("Label post response", res);
+
+        if (res.status === 201 && res.data.updatedUser) {
+          enqueueSnackbar("Label added", { variant: "success" });
+          fetchLabels();
+          setAddNewLabel(false);
+          setLabelName("");
+        }
+      },
+      onError: (err) => {
+        const statusText = err.response.statusText;
+        enqueueSnackbar(statusText, {
+          variant: "error",
+        });
+      },
+    }
+  );
+
+  const handleAddNewLabel = () => {
+    postLabel({
+      userID: currentUser?._id,
+      label: {
+        name: labelName,
+        slug: dashify(labelName),
+      },
+    });
+  };
+
+  const { mutate: deleteLabel } = useMutation(
+    async () => {
+      return await axiosPrivate.delete(`/api/v1/labels/${labelToDelete?._id}`);
+    },
+    {
+      onSuccess: (res) => {
+        console.log("Label delete response", res);
+
+        if (res.status === 200) {
+          enqueueSnackbar("Label deleted", { variant: "success" });
+          setDeleteDialogOpen(false);
+          fetchLabels();
+        }
+      },
+      onError: (err) => {
+        const statusText = err.response.statusText;
+        enqueueSnackbar(statusText, {
+          variant: "error",
+        });
+      },
+    }
+  );
+
+  const handleLabelDelete = () => {
+    console.log(labelToDelete);
+    deleteLabel();
+  };
+
   if (isLoading) {
     return <Loader color="light" />;
   }
@@ -53,12 +134,77 @@ const SnippetsNavigation = () => {
       <div>
         <Text className="underline underline-offset-2">Filter by labels:</Text>
         <div className="navigation-by-labels mt-3 flex flex-col space-y-2">
+          <div key="all" className="items-center flex space-x-2">
+            <input
+              defaultChecked
+              id="all-snippets-checkbox"
+              type="checkbox"
+              onChange={(e) => {
+                setAllCheckboxChecked(e.target.checked);
+                dispatch(
+                  SET_SNIPPETS_FILTERS({
+                    ...snippetsFilters,
+                    snippetsDisplay: "ALL",
+                    snippetsDisplayByLabel: false,
+                    labels: [],
+                  })
+                );
+              }}
+            />
+            <label htmlFor="all-snippets-checkbox">All</label>
+          </div>
           {labels &&
             labels.data.found.map((label) => (
-              <Label clickable key={label._id}>
-                {label.name}
-              </Label>
+              <div className="flex items-center justify-between">
+                <div key={label._id} className="items-center flex space-x-2">
+                  <input
+                    id={label.slug}
+                    type="checkbox"
+                    onChange={(e) => {
+                      dispatch(
+                        SET_SNIPPETS_FILTERS({
+                          ...snippetsFilters,
+                          snippetsDisplay: allCheckboxChecked
+                            ? "ALL"
+                            : "DISPLAY_BY_LABEL",
+                          snippetsDisplayByLabel: true,
+                          labels: e.target.checked
+                            ? [...snippetsFilters.labels, label]
+                            : snippetsFilters.labels.filter(
+                                (lab) => lab._id != label._id
+                              ),
+                        })
+                      );
+                    }}
+                  />
+                  <label htmlFor={label.slug}>{label.slug}</label>
+                </div>
+                <div>
+                  <IconButton
+                    size="small"
+                    color="primary"
+                    sx={{ opacity: 0.8 }}
+                    onClick={() => {
+                      setDeleteDialogOpen(true);
+                      setLabelToDelete(label);
+                    }}
+                  >
+                    <Delete fontSize="inherit" />
+                  </IconButton>
+                </div>
+              </div>
             ))}
+        </div>
+        <div className="create-new-label mt-2">
+          <Button
+            type="text-icon"
+            startIcon={<Add />}
+            onClick={() => {
+              setAddNewLabel(true);
+            }}
+          >
+            Create label
+          </Button>
         </div>
       </div>
 
@@ -74,6 +220,25 @@ const SnippetsNavigation = () => {
           ))}
         </div>
       </div>
+
+      <Modal
+        open={addNewLabel}
+        modalContent={
+          <AddNewLabel labelName={labelName} setLabelName={setLabelName} />
+        }
+        setOpen={setAddNewLabel}
+        confirmLabel="Save"
+        confirmAction={handleAddNewLabel}
+      />
+
+      <Modal
+        warning
+        title={`Delete label`}
+        desc={`Are you sure you want to delete this label. This action cannot be undone. Dont worry your snippets will not be deleted!`}
+        open={deleteDialogOpen}
+        setOpen={setDeleteDialogOpen}
+        confirmAction={handleLabelDelete}
+      />
     </div>
   );
 };

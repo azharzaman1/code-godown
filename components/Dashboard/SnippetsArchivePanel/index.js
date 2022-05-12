@@ -10,11 +10,13 @@ import useAxiosPrivate from "../../../hooks/auth/useAxiosPrivate";
 import SnippetCard from "./SnippetCard";
 import { selectSnippets, SET_SNIPPETS } from "../../../redux/slices/userSlice";
 import SnippetCardSkeleton from "./SnippetCard/SnippetCardSkeleton";
+import { selectSnippetsFilters } from "../../../redux/slices/appSlice";
 
 const SnippetsArchivePanel = () => {
   const dispatch = useDispatch();
   const axiosPrivate = useAxiosPrivate();
   const currentUser = useAuth();
+  const snippetsFilters = useSelector(selectSnippetsFilters);
   const userSnippets = useSelector(selectSnippets);
 
   const theme = useTheme();
@@ -47,6 +49,31 @@ const SnippetsArchivePanel = () => {
     document.getElementById("add-new-snippet-btn").click();
   };
 
+  const applyFilters = (snippets, filters) => {
+    const snippetsArr = [...snippets];
+    const filtersObj = { ...filters };
+
+    if (filtersObj.snippetsDisplay === "ALL") {
+      return snippetsArr;
+    } else if (filtersObj.snippetsDisplay === "DISPLAY_BY_LABEL") {
+      // filter based on labels
+      let filteredSnippets = [];
+
+      for (let i = 0; i < filtersObj.labels.length; i++) {
+        const label = filtersObj.labels[i];
+        filteredSnippets = filteredSnippets.concat(
+          snippetsArr.filter((snippet) => snippet.labels[0]._id == label._id)
+        );
+      }
+
+      return filteredSnippets;
+    } else if (filtersObj.snippetsDisplay === "DISPLAY_BY_TAG") {
+      // filter based on tags [Pending - Not important right now]
+
+      return snippetsArr;
+    }
+  };
+
   return (
     <div className="dashboard__snippetsArchiveCont w-full">
       {currentUser?.snippets?.length > 0 ? (
@@ -59,7 +86,9 @@ const SnippetsArchivePanel = () => {
           {/* Display snippets itself if, snippets are present in currentUser obj, and */}
           {/* Individual snippets are fetched from db */}
           {userSnippets?.length > 0 ? (
-            userSnippets?.map((snippet) => <SnippetCard snippet={snippet} />)
+            applyFilters(userSnippets, snippetsFilters)?.map((snippet) => (
+              <SnippetCard snippet={snippet} />
+            ))
           ) : (
             // display skeleton in case individiual snippets are being fetched
             // from ids present in currentUser object

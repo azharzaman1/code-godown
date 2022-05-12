@@ -31,6 +31,7 @@ const LabelSelect = () => {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
+  // react-query fetch labels by ids
   const { mutate: fetchLabels } = useMutation(
     async (labelIDs) => {
       return await axiosPrivate.post("/api/v1/labels/many", labelIDs);

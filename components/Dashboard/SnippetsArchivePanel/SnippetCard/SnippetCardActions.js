@@ -12,7 +12,6 @@ import { SET_USER } from "../../../../redux/slices/userSlice";
 import { SET_SNIPPET } from "../../../../redux/slices/appSlice";
 import Tooltip from "../../../Generic/Tooltip";
 import SharePanel from "../../SharePanel";
-import SlideOver from "../../../Generic/SlideOver";
 
 const SnippetCardActions = ({ snippet }) => {
   const currentUser = useAuth();
