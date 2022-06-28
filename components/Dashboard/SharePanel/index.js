@@ -8,9 +8,9 @@ import { useCopyToClipboard } from "react-use";
 import { useSnackbar } from "notistack";
 import { RadioGroup } from "@headlessui/react";
 
-const team = [];
+const persons = [];
 
-const plans = [
+const privacyOptions = [
   {
     name: "Public access",
     desc: "Everyone with the link can see this snippet.",
@@ -27,7 +27,7 @@ const plans = [
 
 function SharePanel({ open, setOpen, snippet }) {
   const [state, copyToClipboard] = useCopyToClipboard();
-  const [selected, setSelected] = useState(plans[0]);
+  const [selected, setSelected] = useState(privacyOptions[0]);
   const { enqueueSnackbar } = useSnackbar();
 
   const [shareURL, setShareURL] = useState(
@@ -73,7 +73,7 @@ function SharePanel({ open, setOpen, snippet }) {
                 </h3>
                 <div className="mt-2">
                   <div className="flex space-x-2">
-                    {team.map((person) => (
+                    {persons.map((person) => (
                       <a
                         key={person.email}
                         href={person.href}
@@ -104,17 +104,17 @@ function SharePanel({ open, setOpen, snippet }) {
                   <div className="mx-auto w-full">
                     <RadioGroup value={selected} onChange={setSelected}>
                       <RadioGroup.Label className="sr-only">
-                        Server size
+                        Privacy options
                       </RadioGroup.Label>
                       <div className="space-y-2">
-                        {plans.map((plan) => (
+                        {privacyOptions.map((option) => (
                           <RadioGroup.Option
-                            key={plan.name}
-                            value={plan}
+                            key={option.name}
+                            value={option}
                             className={({ active, checked }) =>
                               `${
                                 active
-                                  ? "ring-2 ring-white ring-opacity-60 ring-offset-2 ring-offset-sky-300"
+                                  ? "ring-2 ring-white ring-opacity-60 ring-offset-2 ring-offset-primary"
                                   : ""
                               }
                   ${
@@ -138,7 +138,7 @@ function SharePanel({ open, setOpen, snippet }) {
                                             : "text-gray-900"
                                         }`}
                                       >
-                                        {plan.name}
+                                        {option.name}
                                       </RadioGroup.Label>
                                       <RadioGroup.Description
                                         as="span"
@@ -148,7 +148,7 @@ function SharePanel({ open, setOpen, snippet }) {
                                             : "text-gray-500"
                                         }`}
                                       >
-                                        <span>{plan.desc}</span>
+                                        <span>{option.desc}</span>
                                       </RadioGroup.Description>
                                     </div>
                                   </div>

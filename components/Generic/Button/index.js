@@ -123,9 +123,9 @@ const Button = ({
     return (
       <button
         role="tab"
-        className={`flex items-center space-x-4 text-gray-200 bg-white bg-opacity-10 hover:bg-opacity-20 border-r border-dividerColor dark:border-dividerColorDark cursor-pointer ${
+        className={`flex items-center space-x-4 text-gray-500 dark:text-gray-200 bg-gray-100 bg-opacity-80 dark:bg-opacity-10 hover:bg-opacity-90 dark:hover:bg-opacity-20 border-r border-dividerColor dark:border-dividerColorDark cursor-pointer ${
           active &&
-          "pl-4 pr-3 bg-transparent text-primary transition duration-150"
+          "pl-4 pr-3 bg-transparent text-primary dark:!text-primary !bg-white !bg-opacity-100 dark:!bg-opacity-10 transition duration-150"
         } ${tabButtonSizes[size]} ${className}`}
         {...rest}
       >

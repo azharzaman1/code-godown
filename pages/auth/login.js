@@ -30,6 +30,7 @@ const Login = () => {
   );
   const dispatch = useDispatch();
   const router = useRouter();
+  console.log(router);
   const { enqueueSnackbar } = useSnackbar();
 
   const {
@@ -60,7 +61,7 @@ const Login = () => {
         });
         // push to home
         if (res.status === 200 || res.status === 201 || res.status === 202)
-          router.replace("/");
+          router.replace(router.query.redirect || "/");
       },
       onError: (err) => {
         setSigningIn(false);

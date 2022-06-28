@@ -1,10 +1,14 @@
-import { useRouter } from "next/router";
+import Layout from "../../../../components/Generic/Layout";
+import SnippetDisplay from "../../../../components/Dashboard/SnippetDisplay/SnippetDisplay";
 
 const Snippet = () => {
-  const router = useRouter();
-  console.log(router);
-
-  return <h1>Snippet: {router.query.snippetID}</h1>;
+  return <SnippetDisplay />;
 };
+
+Snippet.getLayout = (page) => (
+  <Layout title="Code Godown" tranparentHeader={false} themeSwitch={true}>
+    {page}
+  </Layout>
+);
 
 export default Snippet;

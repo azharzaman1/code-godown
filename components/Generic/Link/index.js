@@ -3,6 +3,7 @@ import NextLink from "next/link";
 const Link = ({
   type,
   href,
+  query = {},
   bold,
   underline,
   children,
@@ -11,8 +12,8 @@ const Link = ({
 }) => {
   if (!type || type === "primary")
     return (
-      <NextLink href={href} {...rest}>
-        <span
+      <NextLink href={{ pathname: href, query }} passHref {...rest}>
+        <a
           className={`text-base font-medium text-secondaryText dark:text-secondaryTextDark hover:text-primary dark:hover:text-primary ${
             bold && "font-semibold"
           } ${
@@ -20,7 +21,7 @@ const Link = ({
           } cursor-pointer transition duration-150 ${className}`}
         >
           {children}
-        </span>
+        </a>
       </NextLink>
     );
 };

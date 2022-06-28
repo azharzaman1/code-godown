@@ -49,7 +49,14 @@ const Register = () => {
         setRegistering(false);
         reset();
         if (res.status === 201) {
-          router.push("/auth/login");
+          router.push({
+            pathname: "/auth/login",
+            query: router.query.redirect
+              ? {
+                  redirect: router.query.redirect,
+                }
+              : {},
+          });
         }
       },
       onError: (err) => {
@@ -91,7 +98,7 @@ const Register = () => {
           enqueueSnackbar(`Login Successful`, {
             variant: "success",
           });
-          router.replace("/");
+          router.replace(router.query.redirect || "/");
         }
         if (result && !userAlreadyRegistered) {
           const user = result?.user;
@@ -119,7 +126,7 @@ const Register = () => {
           enqueueSnackbar(`Login Successful`, {
             variant: "success",
           });
-          router.replace("/");
+          router.replace(router.query.redirect || "/");
         }
       })
       .catch((error) => {
@@ -167,7 +174,7 @@ const Register = () => {
         enqueueSnackbar(`Login Successful`, {
           variant: "success",
         });
-        router.replace("/");
+        router.replace(router.query.redirect || "/");
       })
       .catch((error) => {
         // Handle Errors here.

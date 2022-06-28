@@ -127,7 +127,7 @@ const SnippetLeftPanel = ({ snippet, dataIsLoading = true }) => {
           />
         </div>
       ) : (
-        <Paper className="p-2 mt-5 hidden lg:block ml-2">
+        <div className="p-2 mt-5 hidden lg:block ml-2">
           {/* Snippet Info Header */}
           <div className="snippet-info-header">
             <div className="flex items-center space-x-2">
@@ -159,7 +159,7 @@ const SnippetLeftPanel = ({ snippet, dataIsLoading = true }) => {
               className="mt-2"
             />
           </div>
-        </Paper>
+        </div>
       )}
     </div>
   );

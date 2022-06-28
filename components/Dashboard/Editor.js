@@ -56,8 +56,6 @@ const MonacoEditor = () => {
 
   function handleEditorDidMount(editor, monaco) {
     editorRef.current = editor;
-    console.log({ editor });
-    console.log({ monaco });
   }
 
   // will change a tab in snippet

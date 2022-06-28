@@ -21,6 +21,9 @@ const SnippetCardActions = ({ snippet }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const axiosPrivate = useAxiosPrivate();
 
+  console.log({ snippet });
+  console.log({ currentUser });
+
   const router = useRouter();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
@@ -97,51 +100,63 @@ const SnippetCardActions = ({ snippet }) => {
             <Download fontSize="inherit" />
           </IconButton>
         </Tooltip>
-        <Tooltip content="Edit snippet">
-          <IconButton color="primary" size="small" onClick={handleSnippetEdit}>
-            <Edit fontSize="inherit" />
-          </IconButton>
-        </Tooltip>
-        <Tooltip content="Delete snippet">
-          <IconButton
-            size="small"
-            color="primary"
-            onClick={() => {
-              setAction("delete");
-              setDialogOpen(true);
-            }}
-          >
-            <Delete fontSize="inherit" />
-          </IconButton>
-        </Tooltip>
-        <Tooltip content="Share snippet">
-          <IconButton
-            color="primary"
-            size="small"
-            onClick={() => {
-              setSharePanelOpen(true);
-            }}
-          >
-            <Share fontSize="inherit" />
-          </IconButton>
-        </Tooltip>
+        {currentUser._id === snippet?.owner.userID && (
+          <>
+            <Tooltip content="Edit snippet">
+              <IconButton
+                color="primary"
+                size="small"
+                onClick={handleSnippetEdit}
+              >
+                <Edit fontSize="inherit" />
+              </IconButton>
+            </Tooltip>
+            <Tooltip content="Delete snippet">
+              <IconButton
+                size="small"
+                color="primary"
+                onClick={() => {
+                  setAction("delete");
+                  setDialogOpen(true);
+                }}
+              >
+                <Delete fontSize="inherit" />
+              </IconButton>
+            </Tooltip>
+            <Tooltip content="Share snippet">
+              <IconButton
+                color="primary"
+                size="small"
+                onClick={() => {
+                  setSharePanelOpen(true);
+                }}
+              >
+                <Share fontSize="inherit" />
+              </IconButton>
+            </Tooltip>
+          </>
+        )}
       </Stack>
-      <Modal
-        warning
-        title={actions[action]?.title}
-        desc={actions[action]?.desc}
-        open={dialogOpen}
-        setOpen={setDialogOpen}
-        loading={deleting}
-        confirmAction={actions[action]?.confirmAction}
-      />
+      {currentUser._id === snippet?.owner.userID && (
+        <>
+          <Modal
+            warning
+            title={actions[action]?.title}
+            desc={actions[action]?.desc}
+            open={dialogOpen}
+            setOpen={setDialogOpen}
+            loading={deleting}
+            confirmAction={actions[action]?.confirmAction}
+          />
 
-      {/* <SlideOver open={sharePanelOpen} setOpen={setSharePanelOpen} /> */}
-      <SharePanel
-        open={sharePanelOpen}
-        setOpen={setSharePanelOpen}
-        snippet={snippet}
-      />
+          {/* <SlideOver open={sharePanelOpen} setOpen={setSharePanelOpen} /> */}
+          <SharePanel
+            open={sharePanelOpen}
+            setOpen={setSharePanelOpen}
+            snippet={snippet}
+          />
+        </>
+      )}
     </>
   );
 };

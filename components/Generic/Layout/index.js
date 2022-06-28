@@ -26,7 +26,7 @@ const Layout = ({
         <meta name={descriptionName} content={description} />
         <link rel="icon" href={icon} />
       </Head>
-      {!hideHeader && <Header />}
+      {!hideHeader && <Header themeSwitch={themeSwitch} />}
       <main>{children}</main>
     </div>
   );

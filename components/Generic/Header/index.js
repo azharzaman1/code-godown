@@ -28,12 +28,18 @@ export default function Header({ themeSwitch = false, variant = "dark" }) {
   const handleLoginRedirect = () => {
     router.push({
       pathname: "/auth/login",
+      query: router.asPath !== "/" && {
+        redirect: router.asPath,
+      },
     });
   };
 
   const handleRegisterRedirect = () => {
     router.push({
       pathname: "/auth/register",
+      query: router.asPath !== "/" && {
+        redirect: router.asPath,
+      },
     });
   };
 
@@ -47,7 +53,7 @@ export default function Header({ themeSwitch = false, variant = "dark" }) {
 
   return (
     <Popover className={`relative bg-white dark:bg-backgroundV1Dark`}>
-      <div className="max-w-9xl mx-auto px-4 sm:px-6 border-b border-dividerColor shadow-md">
+      <div className="max-w-9xl mx-auto px-4 sm:px-6 border-b border-dividerColor shadow-sm dark:shadow-md">
         <div className="flex justify-between items-center py-3 md:justify-start md:space-x-10 z-40">
           <div
             className="flex justify-start lg:w-0 lg:flex-1 cursor-pointer"
@@ -94,7 +100,7 @@ export default function Header({ themeSwitch = false, variant = "dark" }) {
           </Popover.Group>
 
           <div className="flex md:flex-1 lg:w-0 justify-end space-x-4">
-            {themeSwitch && (
+            {true && (
               <div className="cursor-pointer">
                 <IconButton
                   onClick={switchTheme}
@@ -138,6 +144,7 @@ export default function Header({ themeSwitch = false, variant = "dark" }) {
 
 const MobileMenu = () => {
   const router = useRouter();
+  console.log(router);
   const currentUser = useAuth();
   const logout = useLogout();
 
@@ -214,7 +221,15 @@ const MobileMenu = () => {
                 </Button>
                 <p className="mt-6 text-center text-base font-medium text-gray-500">
                   Existing customer?{" "}
-                  <Link underline href="/auth/login">
+                  <Link
+                    underline
+                    href="/auth/login"
+                    query={
+                      router.asPath !== "/" && {
+                        redirect: router.pathname,
+                      }
+                    }
+                  >
                     Sign in
                   </Link>
                 </p>
