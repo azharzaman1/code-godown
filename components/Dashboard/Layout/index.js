@@ -1,15 +1,10 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import DashboardHeader from "../Header";
-import Navigation from "../Navigation";
-import { useTheme } from "next-themes";
+import DashboardNavigation from "../DashboardNavigation";
 import { useRouter } from "next/router";
-import { Paper } from "@mui/material";
 import Header from "../../Generic/Header";
 import Container from "../../Generic/Layout/Container";
-import { selectSnippet } from "../../../redux/slices/appSlice";
-import useAuth from "../../../hooks/auth/useAuth";
 // code jsonify
 import SyntaxHighlighter from "react-syntax-highlighter";
 import a11yDark from "react-syntax-highlighter/dist/cjs/styles/hljs/a11y-dark";
@@ -22,14 +17,7 @@ const DashboardLayout = ({
   descriptionName,
   icon,
 }) => {
-  const { theme, setTheme } = useTheme();
-  const snippet = useSelector(selectSnippet);
   const [dashboardLoading, setDashboardLoading] = useState(true);
-  const currentUser = useAuth();
-
-  useEffect(() => {
-    setTheme("dark");
-  }, [setTheme]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -45,7 +33,7 @@ const DashboardLayout = ({
     router.pathname === "/dashboard/snippet/[snippetID]";
 
   return (
-    <div className={`${className} dashboard-container min-h-screen`}>
+    <div className={`${className} dashboard-container min-h-screen min-w-full`}>
       <Head>
         <title>{title || "Dashboard | Code Godown"}</title>
         <meta
@@ -62,17 +50,17 @@ const DashboardLayout = ({
           {!hideDashboardHeader && <DashboardHeader />}
           <div className="w-full flex flex-col space-y-2 lg:flex-row lg:items-start lg:space-y-0 mt-2 lg:space-x-2 mb-2">
             {showSidebar && (
-              <Paper className="w-full lg:w-1/6">
-                <Navigation />
-              </Paper>
+              <div className="w-full bg-backgroundV1 dark:bg-backgroundContrastDark lg:w-1/6">
+                <DashboardNavigation />
+              </div>
             )}
-            <Paper
-              className={`w-full flex bg-backgroundV1 dark:bg-backgroundV1Dark ${
+            <div
+              className={`w-full flex bg-transparent dark:bg-backgroundV1Dark ${
                 showSidebar && "lg:w-5/6"
               }`}
             >
               {children}
-            </Paper>
+            </div>
           </div>
         </Container>
       </main>

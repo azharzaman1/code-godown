@@ -95,7 +95,7 @@ const SnippetCardActions = ({ snippet }) => {
         spacing={1}
         alignItems="center"
       >
-        <Tooltip content="Download snippet" className="">
+        <Tooltip content="Download snippet">
           <IconButton size="small" color="primary" onClick={() => {}}>
             <Download fontSize="inherit" />
           </IconButton>

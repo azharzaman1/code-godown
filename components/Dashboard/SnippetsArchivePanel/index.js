@@ -81,13 +81,13 @@ const SnippetsArchivePanel = () => {
           container
           spacing={{ xs: 1, md: 2 }}
           justifyContent={isAboveMDBreakpoint ? "flex-start" : "center"}
-          className="max-w-[100%] overflow-hidden"
+          className="max-w-[100%] overflow-hidden pb-2"
         >
           {/* Display snippets itself if, snippets are present in currentUser obj, and */}
           {/* Individual snippets are fetched from db */}
           {userSnippets?.length > 0 ? (
             applyFilters(userSnippets, snippetsFilters)?.map((snippet) => (
-              <SnippetCard snippet={snippet} />
+              <SnippetCard key={snippet._id} snippet={snippet} />
             ))
           ) : (
             // display skeleton in case individiual snippets are being fetched

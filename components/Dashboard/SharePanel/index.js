@@ -38,18 +38,28 @@ function SharePanel({ open, setOpen, snippet }) {
 
   const shareSlugField = useRef(null);
 
+  const copyToClipBoardHandler = () => {
+    copyToClipboard(shareURL);
+    if (state.error) {
+      enqueueSnackbar("Unable to copy!", { variant: "error" });
+    } else {
+      // copied
+      enqueueSnackbar("Copied", { variant: "success" });
+    }
+  };
+
   return (
     <SlideOver open={open} setOpen={setOpen}>
       <div className="flex-1 h-0 overflow-y-auto">
-        <div className="py-6 px-4 dark:bg-backgroundContrastDark sm:px-6">
+        <div className="py-6 px-4 bg-backgroundV1 dark:bg-backgroundContrastDark sm:px-6">
           <div className="flex items-center justify-between">
-            <Dialog.Title className="text-lg font-medium text-white">
+            <Dialog.Title className="text-lg font-medium text-primaryText dark:text-primaryTextDark">
               Share {snippet?.snippetName}
             </Dialog.Title>
             <div className="ml-3 h-7 flex items-center">
               <button
                 type="button"
-                className="dark:bg-backgroundV1Dark rounded-md text-indigo-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
+                className="bg-backgroundV1 dark:bg-backgroundV1Dark border-2 border-gray-200 rounded-md dark:border-0 text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary ring-opacity-20"
                 onClick={() => setOpen(false)}
               >
                 <span className="sr-only">Close panel</span>
@@ -88,7 +98,7 @@ function SharePanel({ open, setOpen, snippet }) {
                     ))}
                     <button
                       type="button"
-                      className="flex-shrink-0 bg-white inline-flex h-8 w-8 items-center justify-center rounded-full border-2 border-dashed border-gray-200 text-gray-400 hover:text-gray-500 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      className="flex-shrink-0 bg-white inline-flex h-8 w-8 items-center justify-center rounded-full border-2 border-dashed border-gray-200 text-gray-400 hover:text-gray-500 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary ring-opacity-80"
                     >
                       <span className="sr-only">Add team member</span>
                       <PlusSmIcon className="h-5 w-5" aria-hidden="true" />
@@ -119,8 +129,8 @@ function SharePanel({ open, setOpen, snippet }) {
                               }
                   ${
                     checked
-                      ? "dark:bg-backgroundContrastDark text-white"
-                      : "bg-gray-100"
+                      ? "bg-backgroundContrastDark text-white"
+                      : "bg-backgroundV1"
                   }
                     relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none`
                             }
@@ -171,13 +181,7 @@ function SharePanel({ open, setOpen, snippet }) {
             <div className="pt-4 pb-6">
               <div className="flex text-sm cursor-pointer">
                 <p
-                  onClick={() => {
-                    copyToClipboard(shareURL);
-                    state.value &&
-                      enqueueSnackbar("Copied", { variant: "success" });
-                    state.error &&
-                      enqueueSnackbar("Unable to copy!", { variant: "error" });
-                  }}
+                  onClick={copyToClipBoardHandler}
                   href="#"
                   className="group inline-flex items-center font-medium text-primary text-opacity-80 hover:text-primary hover:text-opacity-90"
                 >
@@ -196,7 +200,7 @@ function SharePanel({ open, setOpen, snippet }) {
                     rows={2}
                     className="block w-full shadow-sm text-sm text-primaryText placeholder:text-infoText dark:placeholder:text-infoTextDark border border-gray-300 dark:border-borderColorDark focus:ring-primary ring-opacity-50 focus:border-primary border-opacity-50 rounded-md"
                     defaultValue={shareURL}
-                    onFocus={() => console.log(shareSlugField.current.select())}
+                    onFocus={() => shareSlugField.current.select()}
                   />
                 </div>
               </div>

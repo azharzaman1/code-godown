@@ -12,9 +12,9 @@ export default function Hero() {
   return (
     <div className="relative bg-backgroundV1 dark:bg-backgroundV1Dark overflow-hidden lg:py-20">
       <div className="max-w-7xl mx-auto">
-        <div className="relative z-0 lg:z-10 py-8 lg:py-12 xl:py-16 lg:max-w-2xl lg:w-full bg-white shadow-sm">
+        <div className="relative z-0 lg:z-10 py-8 lg:py-12 xl:py-16 lg:max-w-2xl lg:w-full bg-white dark:bg-backgroundContrastDark shadow-sm">
           <svg
-            className="hidden lg:block absolute right-0 inset-y-0 h-full w-48 transform translate-x-1/2 text-white"
+            className="hidden lg:block absolute right-0 inset-y-0 h-full w-48 transform translate-x-1/2 text-white dark:text-backgroundContrastDark"
             fill="currentColor"
             viewBox="0 0 100 100"
             preserveAspectRatio="none"

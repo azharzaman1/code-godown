@@ -3,13 +3,14 @@ import { createTheme, ThemeProvider } from "@mui/material";
 import { useTheme } from "next-themes";
 import { palette, paletteDark } from "./palette";
 
-const ThemeWrapper = ({ children }) => {
-  const { theme, setTheme } = useTheme();
-  const light = theme === "light";
+const MuiThemeWrapper = ({ children }) => {
+  const { theme, resolvedTheme } = useTheme();
+  const light = resolvedTheme === "light";
 
   const colorTheme = createTheme({
     palette: {
-      type: theme,
+      type: resolvedTheme === "system" ? theme : resolvedTheme, // resolvedTheme is async
+      //take some time, till 'theme' will be used
 
       primary: {
         main: light ? palette.primary : paletteDark.primary,
@@ -290,4 +291,4 @@ const ThemeWrapper = ({ children }) => {
   );
 };
 
-export default ThemeWrapper;
+export default MuiThemeWrapper;

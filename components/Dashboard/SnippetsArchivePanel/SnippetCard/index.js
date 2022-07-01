@@ -1,14 +1,11 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useRouter } from "next/dist/client/router";
 import { format, parseISO } from "date-fns";
 import SyntaxHighlighter from "react-syntax-highlighter";
-import { Grid, Stack, Tooltip } from "@mui/material";
+import { Grid, Stack } from "@mui/material";
 import { Lock } from "@mui/icons-material";
-import {
-  selectSyntaxTheme,
-  SET_SNIPPET,
-} from "../../../../redux/slices/appSlice";
+import { selectSyntaxTheme } from "../../../../redux/slices/appSlice";
 import SnippetCardActions from "./SnippetCardActions";
 import Heading from "../../../Generic/Heading";
 import Text from "../../../Generic/Text";
@@ -25,6 +22,8 @@ import gradientDark from "react-syntax-highlighter/dist/cjs/styles/hljs/gradient
 import tomorrowNightBlue from "react-syntax-highlighter/dist/cjs/styles/hljs/tomorrow-night-blue";
 import schoolBook from "react-syntax-highlighter/dist/cjs/styles/hljs/school-book";
 import dashify from "dashify";
+import { useTheme } from "next-themes";
+import Tooltip from "../../../Generic/Tooltip";
 
 const syntaxThemes = {
   atomOneDark: atomOneDark,
@@ -39,7 +38,8 @@ const syntaxThemes = {
   schoolBook: schoolBook,
 };
 
-const SnippetCard = ({ snippet, ...rest }) => {
+const SnippetCard = ({ snippet }) => {
+  const { theme, resolvedTheme } = useTheme();
   const syntaxTheme = useSelector(selectSyntaxTheme);
   let [snippetFiles, setSnippetFiles] = useState(() => snippet.files);
   const [activeFile, setActiveFile] = useState(() => snippet.files[0]);
@@ -66,7 +66,6 @@ const SnippetCard = ({ snippet, ...rest }) => {
       sm={10}
       md={6}
       xl={4}
-      {...rest}
       className="snippet__card w-full min-h-[500px] z-0"
     >
       <div className="flex flex-col px-4 pt-4 pb-2 bg-backgroundContrast dark:bg-backgroundContrastDark rounded-lg shadow-md">
@@ -81,9 +80,10 @@ const SnippetCard = ({ snippet, ...rest }) => {
             </Heading>
 
             {snippet?.snippetInfo?.isPrivate ? (
-              <Tooltip title="Private">
+              <Tooltip content="Private">
                 <Lock
                   sx={{ fontSize: "14px", marginLeft: "9px", marginTop: "2px" }}
+                  className="text-primaryText dark:text-primaryTextDark"
                 />
               </Tooltip>
             ) : (
@@ -121,7 +121,7 @@ const SnippetCard = ({ snippet, ...rest }) => {
                   key={key}
                   color={activeFile.key == key ? "primaryContained" : "light"}
                   size="small"
-                  className="mb-2 mr-2 mt-1"
+                  className="mb-2 mr-2"
                   onClick={() => {
                     setActiveFile(snippetFiles[key]);
                   }}

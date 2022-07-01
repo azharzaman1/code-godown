@@ -7,15 +7,6 @@ import {
   SET_SYNTAX_THEME,
 } from "../../redux/slices/appSlice";
 
-const people = [
-  { name: "Wade Cooper" },
-  { name: "Arlene Mccoy" },
-  { name: "Devon Webb" },
-  { name: "Tom Cook" },
-  { name: "Tanya Fox" },
-  { name: "Hellen Schmidt" },
-];
-
 const ThemeSwitch = ({ themes }) => {
   const dispatch = useDispatch();
   const syntaxTheme = useSelector(selectSyntaxTheme);
@@ -27,8 +18,10 @@ const ThemeSwitch = ({ themes }) => {
     <div className="z-[250]">
       <Listbox value={syntaxTheme} onChange={onThemeChange}>
         <div className="relative">
-          <Listbox.Button className="relative w-full min-w-[200px] sm:text-sm py-2 pl-3 pr-10 text-left bg-backgroundV1 dark:bg-backgroundV1Dark rounded-lg shadow-md cursor-default">
-            <span className="block truncate">{syntaxTheme}</span>
+          <Listbox.Button className="relative w-full min-w-[200px] sm:text-sm py-2 pl-3 pr-10 text-left bg-backgroundV1 dark:bg-backgroundV1Dark rounded-lg shadow cursor-default ">
+            <span className="block truncate text-primaryText dark:text-primaryTextDark">
+              {syntaxTheme}
+            </span>
             <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
               <SelectorIcon
                 className="w-5 h-5 text-gray-400"

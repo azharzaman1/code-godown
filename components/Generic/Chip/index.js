@@ -13,7 +13,7 @@ const Chip = ({
 }) => {
   const colorSchemes = {
     light:
-      "border-gray-400 border-opacity-30 hover:bg-gray-100 bg-opacity-95 dark:bg-opacity-10",
+      "text-primaryText dark:text-secondaryTextDark border-borderColor dark:borderColorDark border-opacity-50 dark:border-opacity-30 hover:bg-gray-100 bg-opacity-95 dark:bg-opacity-10",
     lightContained:
       "border-gray-300 border-opacity-30 bg-gray-100 bg-opacity-95",
     primary: "text-primary border-primary border-opacity-40",

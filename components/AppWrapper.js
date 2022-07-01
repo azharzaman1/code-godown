@@ -1,19 +1,18 @@
 import { useTheme } from "next-themes";
 import { useEffect } from "react";
-import { useRouter } from "next/dist/client/router";
+import { useDispatch } from "react-redux";
+import { SET_SYNTAX_THEME } from "../redux/slices/appSlice";
 
 const AppWrapper = ({ children }) => {
-  const { theme, setTheme } = useTheme();
-  const router = useRouter();
+  const dispatch = useDispatch();
+  const { theme, resolvedTheme } = useTheme();
 
   useEffect(() => {
-    if (router.pathname.startsWith("/dashboard")) {
-      setTheme("dark");
-    } else {
-      setTheme("light");
+    // change syntax theme to github - light if color scheme is light
+    if (resolvedTheme === "light") {
+      dispatch(SET_SYNTAX_THEME("github"));
     }
-  }, [router, setTheme]);
-
+  }, [resolvedTheme]);
   return children;
 };
 

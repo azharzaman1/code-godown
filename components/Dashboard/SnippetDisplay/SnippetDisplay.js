@@ -23,7 +23,7 @@ const SnippetDisplay = () => {
   const currentUser = useAuth();
 
   const activeTabIndex = useSelector(selectActiveTabIndex);
-  const themePreference = useTheme();
+  const { theme: themePreference } = useTheme();
   const [activeTab, setActiveTab] = useState({});
 
   const axiosPrivate = useAxiosPrivate();

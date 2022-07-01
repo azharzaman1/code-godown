@@ -28,6 +28,7 @@ const SnippetLeftPanel = ({ snippet, dataIsLoading = true }) => {
                       marginLeft: "9px",
                       marginTop: "2px",
                     }}
+                    className="text-primaryText dark:text-primaryTextDark"
                   />
                 </Tooltip>
               )}

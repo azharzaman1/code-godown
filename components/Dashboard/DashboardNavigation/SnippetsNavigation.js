@@ -132,7 +132,6 @@ const SnippetsNavigation = () => {
   return (
     <div className="flex flex-col">
       <div>
-        <Text className="underline underline-offset-2">Filter by labels:</Text>
         <div className="navigation-by-labels mt-3 flex flex-col space-y-2">
           <div key="all" className="items-center flex space-x-2">
             <input
@@ -151,7 +150,12 @@ const SnippetsNavigation = () => {
                 );
               }}
             />
-            <label htmlFor="all-snippets-checkbox">All</label>
+            <label
+              htmlFor="all-snippets-checkbox"
+              className="text-primaryText dark:text-primaryTextDark"
+            >
+              All
+            </label>
           </div>
           {labels &&
             labels.data.found.map((label) => (
@@ -177,7 +181,12 @@ const SnippetsNavigation = () => {
                       );
                     }}
                   />
-                  <label htmlFor={label.slug}>{label.slug}</label>
+                  <label
+                    htmlFor={label.slug}
+                    className="text-primaryText dark:bg-primaryTextDark"
+                  >
+                    {label.slug}
+                  </label>
                 </div>
                 <div>
                   <IconButton
@@ -197,13 +206,14 @@ const SnippetsNavigation = () => {
         </div>
         <div className="create-new-label mt-2">
           <Button
-            type="text-icon"
-            startIcon={<Add />}
+            type="special-icon"
+            className="block justify-center"
+            // startIcon={<Add />}
             onClick={() => {
               setAddNewLabel(true);
             }}
           >
-            Create label
+            <Add />
           </Button>
         </div>
       </div>

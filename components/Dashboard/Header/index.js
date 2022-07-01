@@ -337,7 +337,7 @@ const DashboardHeader = () => {
   // </Dynamic Content>
 
   return (
-    <Paper className="dashboard__contentHeader">
+    <div className="dashboard__contentHeader bg-backgroundV1 dark:bg-backgroundContrastDark">
       <div className="dashboardContentHeader__content w-full flex justify-between items-center py-2 px-3 sm:space-x-2 md:space-x-3">
         <div className="dashboardContentHeader__leftContainer hidden sm:block">
           <div className="dashboardContentHeader__leftContent">
@@ -352,7 +352,7 @@ const DashboardHeader = () => {
             {!viewingSnippet && (
               <div className="dashboardContentHeader__rightSearchContainer">
                 <div className="dashboardContentHeader__rightSearchIcon">
-                  <SearchIcon className="cursor-pointer h-6 mr-2" />
+                  <SearchIcon className="cursor-pointer h-6 mr-2 text-primaryText dark:bg-primaryTextDark" />
                 </div>
               </div>
             )}
@@ -443,7 +443,7 @@ const DashboardHeader = () => {
       />
 
       <LoaderModal loading={saving} label="Saving, Please wait..." />
-    </Paper>
+    </div>
   );
 };
 

@@ -2,13 +2,13 @@ import Head from "next/head";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import Router from "next/router";
-import ThemeWrapper from "../theming/ThemeWrapper";
+import MuiThemeWrapper from "../theming/MuiThemeWrapper";
 import PersistLogin from "../components/Auth/PersistLogin";
-import AppWrapper from "../components/AppWrapper";
 import { Provider } from "react-redux";
 import { SnackbarProvider } from "notistack";
 import ProgressBar from "@badrap/bar-of-progress";
-import { ThemeProvider, useTheme } from "next-themes";
+import { CssBaseline } from "@mui/material";
+import { ThemeProvider as NextThemeProvider } from "next-themes";
 import store from "../redux/store";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
@@ -19,7 +19,7 @@ import "../components/Generic/Loader/Loader.css";
 import "../components/Dashboard/Editor.css";
 import "../components/Dashboard/SnippetsArchivePanel/SnippetsArchivePanel.css";
 import "../components/Dashboard/Snippet/SnippetLeftPanel.css";
-import { CssBaseline } from "@mui/material";
+import AppWrapper from "../components/AppWrapper";
 
 const progress = new ProgressBar({
   size: 2,
@@ -56,23 +56,23 @@ function MyApp({ Component, pageProps }) {
         />
       </Head>
 
-      <ThemeProvider attribute="class">
+      <NextThemeProvider attribute="class">
         <Provider store={store}>
-          <ThemeWrapper>
-            <QueryClientProvider client={queryClient}>
-              <SnackbarProvider maxSnack={3}>
-                <AppWrapper>
+          <AppWrapper>
+            <MuiThemeWrapper>
+              <QueryClientProvider client={queryClient}>
+                <SnackbarProvider maxSnack={3}>
                   <PersistLogin>
                     {getLayout(<Component {...pageProps} />)}
                     <CssBaseline />
                   </PersistLogin>
-                </AppWrapper>
-                <ReactQueryDevtools initialIsOpen={false} />
-              </SnackbarProvider>
-            </QueryClientProvider>
-          </ThemeWrapper>
+                  <ReactQueryDevtools initialIsOpen={false} />
+                </SnackbarProvider>
+              </QueryClientProvider>
+            </MuiThemeWrapper>
+          </AppWrapper>
         </Provider>
-      </ThemeProvider>
+      </NextThemeProvider>
     </>
   );
 }

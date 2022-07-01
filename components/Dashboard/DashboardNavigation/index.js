@@ -10,7 +10,7 @@ import SnippetsNavigation from "./SnippetsNavigation";
 
 const Tabs = ["Snippets", "Posts"];
 
-const Navigation = () => {
+const DashboardNavigation = () => {
   const dispatch = useDispatch();
   const navigationMode = useSelector(selectDashboardNavigationMode);
 
@@ -25,7 +25,7 @@ const Navigation = () => {
           onChange={handleActiveTabChange}
           selectedIndex={Tabs.findIndex((tab) => tab === navigationMode)}
         >
-          <Tab.List className="flex space-x-1 rounded-xl bg-primary/5 p-1 border border-primary border-opacity-20">
+          <Tab.List className="flex space-x-1 rounded-xl bg-primary/[0.05] dark:bg-primary/[0.05] p-1 border border-primary border-opacity-20">
             {Tabs.map((tab) => (
               <Tab
                 key={tab}
@@ -43,11 +43,11 @@ const Navigation = () => {
               </Tab>
             ))}
           </Tab.List>
-          <Tab.Panels className="mt-2">
+          <Tab.Panels className="mt-2 pb-2">
             <Tab.Panel
               key="snippets-tab-content"
               className={classNames(
-                "rounded-xl bg-backgroundContrast dark:bg-backgroundContrastDark p-3",
+                "rounded-xl bg-transparent dark:bg-backgroundContrastDark p-3",
                 "focus:outline-none"
               )}
             >
@@ -56,7 +56,7 @@ const Navigation = () => {
             <Tab.Panel
               key="posts-tab-content"
               className={classNames(
-                "rounded-xl bg-backgroundContrast dark:bg-backgroundContrastDark p-3",
+                "text-primaryText dark:text-primaryTextDark rounded-xl bg-transparent dark:bg-backgroundContrastDark p-3",
                 "focus:outline-none"
               )}
             >
@@ -69,4 +69,4 @@ const Navigation = () => {
   );
 };
 
-export default Navigation;
+export default DashboardNavigation;
