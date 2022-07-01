@@ -183,7 +183,7 @@ const SnippetsNavigation = () => {
                   />
                   <label
                     htmlFor={label.slug}
-                    className="text-primaryText dark:bg-primaryTextDark"
+                    className="text-primaryText dark:text-primaryTextDark"
                   >
                     {label.slug}
                   </label>
@@ -204,18 +204,16 @@ const SnippetsNavigation = () => {
               </div>
             ))}
         </div>
-        <div className="create-new-label mt-2">
+        {/* <div className="create-new-label mt-2 flex">
           <Button
-            type="special-icon"
-            className="block justify-center"
-            // startIcon={<Add />}
+            type="text-icon"
+            className="justify-center"
+            startIcon={<Add />}
             onClick={() => {
               setAddNewLabel(true);
             }}
-          >
-            <Add />
-          </Button>
-        </div>
+          >Create label</Button>
+        </div> */}
       </div>
 
       <div className="mt-5">

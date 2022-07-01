@@ -352,7 +352,7 @@ const DashboardHeader = () => {
             {!viewingSnippet && (
               <div className="dashboardContentHeader__rightSearchContainer">
                 <div className="dashboardContentHeader__rightSearchIcon">
-                  <SearchIcon className="cursor-pointer h-6 mr-2 text-primaryText dark:bg-primaryTextDark" />
+                  <SearchIcon className="cursor-pointer h-6 mr-2 text-primaryText dark:text-primaryTextDark" />
                 </div>
               </div>
             )}
