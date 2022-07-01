@@ -1,7 +1,5 @@
 import Head from "next/head";
-import useSWR from "swr";
 import Header from "../../Generic/Header";
-import { fetcher } from "../../../files/utils";
 
 const Layout = ({
   children,
@@ -14,11 +12,8 @@ const Layout = ({
   description = "Code management applicatoin created with NextJs",
   descriptionName = "descritpion",
   icon = "/favicon.ico",
-  navigation,
   themeSwitch,
 }) => {
-  const { data, error } = useSWR("/api/navigation", fetcher);
-
   return (
     <div className={`layout-container min-h-screen min-w-full ${className}`}>
       <Head>

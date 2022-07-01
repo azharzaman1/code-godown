@@ -4,9 +4,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "jest",
-    "storybook": "start-storybook -p 4000",
-    "build-storybook": "build-storybook"
+    "test": "jest"
   },
   "dependencies": {
     "@badrap/bar-of-progress": "^0.1.2",
@@ -46,13 +44,6 @@
   "devDependencies": {
     "@babel/core": "^7.16.7",
     "@playwright/test": "^1.17.2",
-    "@storybook/addon-actions": "^6.4.12",
-    "@storybook/addon-essentials": "^6.4.12",
-    "@storybook/addon-links": "^6.4.12",
-    "@storybook/addon-postcss": "^2.0.0",
-    "@storybook/builder-webpack5": "^6.4.12",
-    "@storybook/manager-webpack5": "^6.4.12",
-    "@storybook/react": "^6.4.12",
     "@tailwindcss/forms": "^0.5.1",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",

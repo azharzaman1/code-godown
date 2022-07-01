@@ -100,7 +100,7 @@ const SnippetCardActions = ({ snippet }) => {
             <Download fontSize="inherit" />
           </IconButton>
         </Tooltip>
-        {currentUser._id === snippet?.owner.userID && (
+        {currentUser?._id === snippet?.owner.userID && (
           <>
             <Tooltip content="Edit snippet">
               <IconButton
@@ -137,7 +137,7 @@ const SnippetCardActions = ({ snippet }) => {
           </>
         )}
       </Stack>
-      {currentUser._id === snippet?.owner.userID && (
+      {currentUser?._id === snippet?.owner.userID && (
         <>
           <Modal
             warning

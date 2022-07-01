@@ -1,5 +1,6 @@
 Aditions:
   Skeleton Screens
+  passport.js - social auth
 
 Improvements: 
   Multiple Labels Selection per Snippet

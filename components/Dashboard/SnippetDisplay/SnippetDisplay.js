@@ -87,7 +87,7 @@ const SnippetDisplay = () => {
 
   useEffect(() => {
     fetchSnippet();
-  }, [router.query._id, fetchSnippet]);
+  }, [router.query._id]);
 
   return (
     <div className="w-full p-2 md:p-4 pl-0 md:pl-0">

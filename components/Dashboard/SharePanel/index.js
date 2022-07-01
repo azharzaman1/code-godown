@@ -16,8 +16,8 @@ const privacyOptions = [
     desc: "Everyone with the link can see this snippet.",
   },
   {
-    name: "Private to project members [Coming soon]",
-    desc: "Only members of your team would be able to access.",
+    name: "Private - Team members only [Coming soon]",
+    desc: "Only members of your team would be able to and collaborate.",
   },
   {
     name: "Open-source [Coming soon]",
@@ -102,7 +102,7 @@ function SharePanel({ open, setOpen, snippet }) {
                 </legend>
                 <div className="w-full py-4">
                   <div className="mx-auto w-full">
-                    <RadioGroup value={selected} onChange={setSelected}>
+                    <RadioGroup value={selected} onChange={() => {}}>
                       <RadioGroup.Label className="sr-only">
                         Privacy options
                       </RadioGroup.Label>
@@ -132,7 +132,7 @@ function SharePanel({ open, setOpen, snippet }) {
                                     <div className="text-sm">
                                       <RadioGroup.Label
                                         as="p"
-                                        className={`font-medium  ${
+                                        className={`font-medium ${
                                           checked
                                             ? "text-white"
                                             : "text-gray-900"
