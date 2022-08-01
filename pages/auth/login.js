@@ -1,8 +1,6 @@
 import { useRouter } from "next/dist/client/router";
 import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "@heroicons/react/outline";
-import { sendPasswordResetEmail } from "@firebase/auth";
-import { auth } from "../../firebase";
 import { regexCodes } from "../../files/utils";
 import { useSnackbar } from "notistack";
 import Button from "../../components/Generic/Button";
@@ -13,9 +11,9 @@ import { useMutation } from "react-query";
 import { useDispatch } from "react-redux";
 import { SET_USER } from "../../redux/slices/userSlice";
 import { axiosPrivate } from "../../api/axios";
-import Text from "../../components/Generic/Text";
 import { useLocalStorage } from "react-use";
 import AuthLayout from "../../components/Auth/Layout";
+import Text from "../../components/Generic/Text";
 
 const Login = () => {
   const [passwordShow, setPasswordShow] = useState(false);
@@ -84,31 +82,6 @@ const Login = () => {
     setRemember(e.target.checked);
   };
 
-  const passwordResetRequest = (e) => {
-    e.preventDefault();
-    setSendingPasswordResetEmail(true);
-    sendPasswordResetEmail(auth, email)
-      .then(() => {
-        // Password reset email sent
-        setResetEmailSent(true);
-        setSendingPasswordResetEmail(false);
-        enqueueSnackbar(
-          `Password reset email sent! Please follow instructions in the email`,
-          {
-            variant: "info",
-          }
-        );
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        setSendingPasswordResetEmail(false);
-        enqueueSnackbar(`Error Code: ${errorCode}: ${errorMessage}`, {
-          variant: "error",
-        });
-      });
-  };
-
   const formLabel =
     resetingPassword && resetEmailSent
       ? "Return to Login"
@@ -124,7 +97,7 @@ const Login = () => {
           setResetingPassword(false);
         }
       : resetingPassword
-      ? passwordResetRequest
+      ? () => {} // handle password reset in this handler
       : handleSubmit(onSubmit);
 
   return (
@@ -238,3 +211,30 @@ Login.getLayout = (page) => (
 );
 
 export default Login;
+
+/*
+const passwordResetRequest = (e) => {
+    e.preventDefault();
+    setSendingPasswordResetEmail(true);
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        // Password reset email sent
+        setResetEmailSent(true);
+        setSendingPasswordResetEmail(false);
+        enqueueSnackbar(
+          `Password reset email sent! Please follow instructions in the email`,
+          {
+            variant: "info",
+          }
+        );
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        setSendingPasswordResetEmail(false);
+        enqueueSnackbar(`Error Code: ${errorCode}: ${errorMessage}`, {
+          variant: "error",
+        });
+      });
+  };
+*/

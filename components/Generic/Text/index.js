@@ -2,24 +2,36 @@ const Text = ({
   type,
   component = "p",
   bold,
-  colorVariant = "normal",
+  colorVariant,
+  size,
   children,
   className,
   ...rest
 }) => {
   const Tag = component;
 
-  const colorsVariants = {
+  const sizeVariants = {
+    small: `text-sm tracking-tight`,
+    normal: `text-base tracking-normal`,
+    large: `text-xl tracking-tight leading-8`,
+    // specials
+    info: `text-xs md:text-sm font-normal`,
+    heading: `text-md md:text-lg lg:text-xl xl:text-2xl font-normal md:font-medium xl:font-semibold`,
+  };
+
+  const colorVariants = {
     normal: `text-primaryText dark:text-primaryTextDark`,
     dim: `text-secondaryText dark:text-secondaryTextDark`,
+    // specials
+    info: `text-infoText dark:text-infoTextDark`,
   };
 
   if (!type || type === "primary")
     return (
       <Tag
-        className={`text-sm md:text-base ${colorsVariants[colorVariant]} ${
-          bold && "font-semibold"
-        } ${className}`}
+        className={`${sizeVariants[size || "normal"]} ${
+          colorVariants[colorVariant || "normal"]
+        } ${bold && "font-semibold"}  ${className}`}
         {...rest}
       >
         {children}
@@ -29,9 +41,7 @@ const Text = ({
   if (!type || type === "heading")
     return (
       <Tag
-        className={`text-md md:text-lg lg:text-xl xl:text-2xl font-normal md:font-medium ${
-          colorsVariants[colorVariant]
-        } ${bold && "font-semibold"} ${className}`}
+        className={`${sizeVariants["heading"]} ${colorVariants[colorVariant]} ${className}`}
         {...rest}
       >
         {children}
@@ -41,7 +51,7 @@ const Text = ({
   if (type === "info")
     return (
       <Tag
-        className={`text-xs md:text-sm text-infoText dark:text-infoTextDark font-normal ${className}`}
+        className={`${sizeVariants["info"]} ${colorVariants["info"]} ${className}`}
         {...rest}
       >
         {children}

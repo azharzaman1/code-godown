@@ -1,16 +1,16 @@
 import Head from "next/head";
+import Router from "next/router";
+import ProgressBar from "@badrap/bar-of-progress";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-import Router from "next/router";
-import MuiThemeWrapper from "../theming/MuiThemeWrapper";
-import PersistLogin from "../components/Auth/PersistLogin";
-import { Provider } from "react-redux";
-import { SnackbarProvider } from "notistack";
-import ProgressBar from "@badrap/bar-of-progress";
 import { CssBaseline } from "@mui/material";
 import { ThemeProvider as NextThemeProvider } from "next-themes";
+import { Provider } from "react-redux";
+import { SnackbarProvider } from "notistack";
+import MuiThemeWrapper from "../theming/MuiThemeWrapper";
+import PersistLogin from "../components/Auth/PersistLogin";
+import AppWrapper from "../components/AppWrapper";
 import store from "../redux/store";
-import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import "../styles/globals.css";
 import "../styles/theme.css";
@@ -19,7 +19,7 @@ import "../components/Generic/Loader/Loader.css";
 import "../components/Dashboard/Editor.css";
 import "../components/Dashboard/SnippetsArchivePanel/SnippetsArchivePanel.css";
 import "../components/Dashboard/Snippet/SnippetLeftPanel.css";
-import AppWrapper from "../components/AppWrapper";
+import "primereact/resources/primereact.min.css";
 
 const progress = new ProgressBar({
   size: 2,

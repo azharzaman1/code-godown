@@ -1,4 +1,4 @@
-export const filteredLangs = [
+export const langs = [
   {
     name: "JavaScript",
     type: "programming",

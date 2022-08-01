@@ -1,14 +1,14 @@
 Aditions:
-  Skeleton Screens
+  Skeleton Screens - [DONE]
   passport.js - social auth
+  Multiple Labels Selection per Snippet
 
 Improvements: 
-  Multiple Labels Selection per Snippet
   Register username addition
   Add disabled state to buttons
-  Configure readable errors in Auth
-  add local next apis to node express
+  add local next apis to node express [DONE]
   add loader to add label button
+  Configure readable errors in Auth
 
 Fixes:
   dont allow edit code on snippet page
@@ -16,3 +16,4 @@ Fixes:
   label dropdown not opening in production
   snippet name in slug appears as undefined in production
   snippetName in files
+  light theme fixes on create snippet screens

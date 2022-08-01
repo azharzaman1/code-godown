@@ -3,20 +3,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { useSnackbar } from "notistack";
-import { GitHub, Google, Info } from "@mui/icons-material";
+import { Info } from "@mui/icons-material";
 import { EyeIcon, EyeOffIcon } from "@heroicons/react/outline";
-import {
-  GithubAuthProvider,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from "@firebase/auth";
-import { doc, serverTimestamp, setDoc, getDoc } from "@firebase/firestore";
-import {
-  auth,
-  db,
-  githubAuthProvider,
-  googleAuthProvider,
-} from "../../firebase";
 import { formInputGuide, regexCodes } from "../../files/utils";
 import Button from "../../components/Generic/Button";
 import Heading from "../../components/Generic/Heading";
@@ -85,105 +73,6 @@ const Register = () => {
       email,
       pswd: password,
     });
-  };
-
-  const continueWithGoogle = () => {
-    signInWithPopup(auth, googleAuthProvider)
-      .then(async (result) => {
-        let userAlreadyRegistered = false;
-        const docRef = doc(db, "users", result?.user?.uid);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          userAlreadyRegistered = true;
-          enqueueSnackbar(`Login Successful`, {
-            variant: "success",
-          });
-          router.replace(router.query.redirect || "/");
-        }
-        if (result && !userAlreadyRegistered) {
-          const user = result?.user;
-          const token =
-            GoogleAuthProvider.credentialFromResult(result).accessToken;
-          // Setting to db
-          const docRef = doc(db, "users", user.uid);
-          await setDoc(docRef, {
-            userDetails: {
-              userID: user.uid,
-              fullName: "",
-              displayName: user.displayName,
-              email: user.email,
-              photoURL: user.photoURL,
-              password: "",
-              emailVerified: user.emailVerified,
-              registeredAt: serverTimestamp(),
-              accountType: "google_provider",
-              accessToken: token,
-              registerPhase2Completed: false,
-            },
-            snippets: [],
-          });
-
-          enqueueSnackbar(`Login Successful`, {
-            variant: "success",
-          });
-          router.replace(router.query.redirect || "/");
-        }
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        enqueueSnackbar(`Error Code: ${errorCode}: ${errorMessage}`, {
-          variant: "error",
-        });
-      });
-  };
-
-  const continueWithGH = () => {
-    signInWithPopup(auth, githubAuthProvider)
-      .then(async (result) => {
-        let userAlreadyRegistered = false;
-        const docRef = doc(db, "users", result?.user?.uid);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          userAlreadyRegistered = true;
-        }
-        if (result && !userAlreadyRegistered) {
-          const user = result?.user;
-          const token =
-            GithubAuthProvider.credentialFromResult(result).accessToken;
-          // Setting to db
-          const docRef = doc(db, "users", user.uid);
-
-          setDoc(docRef, {
-            userDetails: {
-              userID: user.uid,
-              fullName: "",
-              displayName: user.displayName,
-              email: user.email,
-              photoURL: user.photoURL,
-              password: "",
-              emailVerified: user.emailVerified,
-              registeredAt: serverTimestamp(),
-              accountType: "github_provider",
-              accessToken: token,
-              registerPhase2Completed: false,
-            },
-            snippets: [],
-          });
-        }
-        enqueueSnackbar(`Login Successful`, {
-          variant: "success",
-        });
-        router.replace(router.query.redirect || "/");
-      })
-      .catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        enqueueSnackbar(`Error Code: ${errorCode}: ${errorMessage}`, {
-          variant: "error",
-        });
-      });
   };
 
   return (

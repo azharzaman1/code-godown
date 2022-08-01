@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useSnackbar } from "notistack";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import useSWR from "swr";
 import { v4 as uuidv4 } from "uuid";
 
 import { Add, ArrowBack, Close, Save, Send } from "@mui/icons-material";
@@ -19,6 +18,7 @@ import {
   CompareObjects,
   extractExtentionAndLanguage,
   fetcher,
+  isValidFileName,
 } from "../../../files/utils";
 import Button from "../../../components/Generic/Button";
 import ThemeSwitch from "../../../components/Dashboard/ThemeSwitch";
@@ -27,7 +27,7 @@ import Heading from "../../../components/Generic/Heading";
 import Modal from "../../Generic/Modal";
 import PreEditor from "../PreEditor";
 import useAuth from "../../../hooks/auth/useAuth";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import useAxiosPrivate from "../../../hooks/auth/useAxiosPrivate";
 import {
   selectSnippets,
@@ -37,6 +37,7 @@ import {
 import dashify from "dashify";
 import { PlusIcon, XIcon } from "@heroicons/react/outline";
 import LoaderModal from "../../Generic/Loader/LoaderModal";
+import axios from "../../../api/axios";
 
 const DashboardHeader = () => {
   const currentUser = useAuth();
@@ -46,13 +47,34 @@ const DashboardHeader = () => {
 
   const [saving, setSaving] = useState();
 
-  const { data, error } = useSWR("/api/programming-langs", fetcher);
   const [addSnippetDialogOpen, setAddSnippetDialogOpen] = useState(false);
 
   const dispatch = useDispatch();
   const router = useRouter();
   const axiosPrivate = useAxiosPrivate();
   const { enqueueSnackbar } = useSnackbar();
+
+  // fetch programming langs
+  const {
+    data: langs,
+    isLoading,
+    error,
+    refetch: fetchLangs,
+  } = useQuery(
+    "fetch-programming-langs",
+    async () => {
+      return await axios.get("/api/v1/public/programming-langs");
+    },
+    {
+      enabled: false,
+      onSuccess: (res) => {
+        console.log("Programming langs fetch response", res);
+      },
+      onError: (error) => {
+        console.log("Programming langs fetch error", error.message);
+      },
+    }
+  );
 
   // display snippet
   const displaySnippets = router.pathname === "/dashboard";
@@ -110,11 +132,11 @@ const DashboardHeader = () => {
   };
 
   const pushToEditor = () => {
-    if (fileName.includes(".")) {
+    if (isValidFileName(fileName)) {
       setAddSnippetDialogOpen(false);
       const [fileExtention, language] = extractExtentionAndLanguage(
         fileName,
-        data
+        langs.data.data
       );
       const snippetUID = `snippet_${uuidv4()}`;
       const snippetTemplate = {
@@ -390,7 +412,8 @@ const DashboardHeader = () => {
                 id="add-new-snippet-btn"
                 type="icon"
                 endIcon={<Add />}
-                onClick={() => {
+                onClick={async () => {
+                  await fetchLangs();
                   setAddSnippetDialogOpen(true);
                   dispatch(RESET_SNIPPET());
                 }}

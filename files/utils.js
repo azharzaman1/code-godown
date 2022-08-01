@@ -38,6 +38,12 @@ export const extractExtentionAndLanguage = (fileName, languages) => {
   return [extention, language];
 };
 
+export const isValidFileName = (fileName) => {
+  const isValid =
+    String(fileName).includes(".") && String(fileName).split(".").length > 1;
+  return isValid;
+};
+
 export const fetcher = (url) => fetch(url).then((res) => res.json());
 
 export const sortArray = (arr) => {

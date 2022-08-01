@@ -9,7 +9,6 @@ import MenuDropdown from "./MenuDropdown";
 import UserMenu, { MenuItem } from "./UserMenu";
 import Link from "../Link";
 import Button from "../Button";
-import { auth } from "../../../firebase";
 import useAuth from "../../../hooks/auth/useAuth";
 import {
   callsToAction,
@@ -41,10 +40,6 @@ export default function Header({ themeSwitch = false, variant = "dark" }) {
         redirect: router.asPath,
       },
     });
-  };
-
-  const handleLogout = () => {
-    auth.signOut();
   };
 
   const switchTheme = () => {
