@@ -4,7 +4,7 @@ const palette = {
   primaryDark: "rgb(161, 77, 56)",
   secondary: "#38bdf8",
   secondaryLight: "rgb(95, 202, 249)",
-  secondaryDark: "rgb(39, 132, 173)",
+  secondaryDark: "rgb(39, 132, 174)",
 
   primaryText: "#1e293b",
   secondaryText: "#64748b",
