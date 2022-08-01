@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { IconButton, Tooltip } from "@mui/material";
+import useSWR from "swr";
+
 import { useTheme } from "next-themes";
 import dashify from "dashify";
 import { useRouter } from "next/dist/client/router";
@@ -16,15 +18,10 @@ import {
   SET_EDITOR_ACTIVE_TAB_INDEX,
   SET_SNIPPET,
 } from "../../redux/slices/appSlice";
-import {
-  extractExtentionAndLanguage,
-  isValidFileName,
-} from "../../files/utils";
+import { extractExtentionAndLanguage, fetcher } from "../../files/utils";
 import Loader from "../Generic/Loader";
 import Modal from "../Generic/Modal";
 import useAuth from "../../hooks/auth/useAuth";
-import { useQuery } from "react-query";
-import axios from "../../api/axios";
 
 const MonacoEditor = () => {
   const currentUser = useAuth();
@@ -36,6 +33,7 @@ const MonacoEditor = () => {
   const [addingNewFile, setAddingNewFile] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [newFileName, setNewFileName] = useState("");
+  const { data: languages, error } = useSWR("/api/programming-langs", fetcher);
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -52,28 +50,6 @@ const MonacoEditor = () => {
       mounted = false;
     };
   }, [snippetObj, activeTabIndex]);
-
-  // fetch programming langs
-  const {
-    data: languages,
-    isLoading,
-    error,
-    refetch: fetchLangs,
-  } = useQuery(
-    "fetch-programming-langs",
-    async () => {
-      return await axios.get("/api/v1/public/programming-langs");
-    },
-    {
-      enabled: false,
-      onSuccess: (res) => {
-        console.log("Programming langs fetch response", res);
-      },
-      onError: (error) => {
-        console.log("Programming langs fetch error", error.message);
-      },
-    }
-  );
 
   // Preparing Editor
 
@@ -106,10 +82,10 @@ const MonacoEditor = () => {
   // Add New File Handler
   const handleAddNewFile = (e) => {
     e.preventDefault();
-    if (isValidFileName(newFileName)) {
+    if (newFileName.includes(".")) {
       const [fileExtention, language] = extractExtentionAndLanguage(
         newFileName,
-        languages.data.data
+        languages
       );
 
       let snippetToSet;
@@ -243,8 +219,7 @@ const MonacoEditor = () => {
             onClick={
               addingNewFile
                 ? handleAddNewFile
-                : async () => {
-                    await fetchLangs();
+                : () => {
                     setAddingNewFile(true);
                   }
             }
