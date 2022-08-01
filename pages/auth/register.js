@@ -77,11 +77,11 @@ const Register = () => {
 
   return (
     <div>
-      <div className="mt-3 mb-2">
+      {/* <div className="mt-3 mb-2">
         <Heading type="tertiary" className="text-center">
           Create account with email
         </Heading>
-      </div>
+      </div> */}
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col space-y-0 w-full">
@@ -161,10 +161,10 @@ const Register = () => {
               defaultValue=""
               {...register("password", {
                 required: { value: true, message: "Password is requiered" },
-                // pattern: {
-                //   value: regexCodes.password,
-                //   message: "Password is not valid!",
-                // },
+                pattern: {
+                  value: regexCodes.password,
+                  message: "Password is not valid!",
+                },
               })}
               aria-invalid={errors?.password ? "true" : "false"}
               aria-describedby="password-note"

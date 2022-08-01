@@ -11,6 +11,8 @@ Improvements:
   Configure readable errors in Auth
 
 Fixes:
+  // SERVER SIDE RENDER dashboard index PAGE
+  // FETCH LABELS FOR USER not ALL
   dont allow edit code on snippet page
   unmount monaco once snippet saved
   label dropdown not opening in production

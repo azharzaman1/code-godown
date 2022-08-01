@@ -45,7 +45,7 @@ const AuthLayout = ({
             </div>
 
             <div className="py-8 px-6 w-full bg-white shadow rounded-lg border select-none">
-              <div className="providersAuth-section flex-evenly-center mb-6">
+              {/* <div className="providersAuth-section flex-evenly-center mb-6">
                 <Button type="special-icon" onClick={handleAuthWithGH}>
                   <GitHub fontSize="medium" className="icon" />
                 </Button>
@@ -53,7 +53,7 @@ const AuthLayout = ({
                   <Google fontSize="medium" className="icon" />
                 </Button>
               </div>
-              <Divider>OR</Divider>
+              <Divider>OR</Divider> */}
               <main>{children}</main>
             </div>
             <div className="mt-3 flex items-center space-x-2">

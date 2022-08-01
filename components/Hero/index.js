@@ -1,16 +1,14 @@
-import { Popover } from "@headlessui/react";
 import Button from "../Generic/Button";
 import Heading from "../Generic/Heading";
 import Text from "../Generic/Text";
 import Link from "next/link";
 import useAuth from "../../hooks/auth/useAuth";
-import LoaderModal from "../Generic/Loader/LoaderModal";
 
 export default function Hero() {
   const currentUser = useAuth();
 
   return (
-    <div className="relative bg-backgroundV1 dark:bg-backgroundV1Dark overflow-hidden lg:py-20">
+    <section className="section hero-section relative bg-backgroundV1 dark:bg-backgroundV1Dark overflow-hidden lg:py-20">
       <div className="max-w-7xl mx-auto">
         <div className="relative z-0 lg:z-10 py-8 lg:py-12 xl:py-16 lg:max-w-2xl lg:w-full bg-white dark:bg-backgroundContrastDark shadow-sm">
           <svg
@@ -64,6 +62,6 @@ export default function Hero() {
           alt=""
         />
       </div>
-    </div>
+    </section>
   );
 }

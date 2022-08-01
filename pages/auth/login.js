@@ -102,12 +102,11 @@ const Login = () => {
 
   return (
     <div>
-      <div className="mt-3 mb-2">
+      {/* <div className="mt-3 mb-2">
         <Heading type="tertiary" className="text-center">
           Login with email
         </Heading>
-      </div>
-
+      </div> */}
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col">
           <input
@@ -144,10 +143,6 @@ const Login = () => {
                       value: true,
                       message: "Password is required for login",
                     },
-                    // pattern: {
-                    //   value: regexCodes.password,
-                    //   message: "Password is not valid!",
-                    // },
                   })}
                 />
 
@@ -178,7 +173,7 @@ const Login = () => {
               </div>
             </div>
 
-            <div className="flex justify-end mb-3">
+            {/* <div className="flex justify-end mb-3">
               <span
                 className="link"
                 onClick={() => {
@@ -187,7 +182,7 @@ const Login = () => {
               >
                 Forgot password? Reset
               </span>
-            </div>
+            </div> */}
           </>
         )}
         <input type="submit" className="hidden" />

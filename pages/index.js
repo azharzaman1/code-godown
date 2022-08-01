@@ -12,7 +12,11 @@ export default function Home() {
     );
   }, []);
 
-  return <Hero />;
+  return (
+    <div className="page home-page">
+      <Hero />
+    </div>
+  );
 }
 
 Home.getLayout = (page) => (
