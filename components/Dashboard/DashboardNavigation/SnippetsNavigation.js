@@ -133,7 +133,7 @@ const SnippetsNavigation = () => {
   return (
     <div className="flex flex-col">
       <div>
-        {labels.length > 0 && (
+        {labels?.length > 0 && (
           <div className="navigation-by-labels mt-3 flex flex-col space-y-2">
             <div key="all" className="items-center flex space-x-2">
               <input
@@ -218,7 +218,7 @@ const SnippetsNavigation = () => {
           >Create label</Button>
         </div> */}
       </div>
-      {tags.length > 0 && (
+      {tags?.length > 0 && (
         <div className="mt-5">
           <Text className="underline underline-offset-2">
             Recently used tags:

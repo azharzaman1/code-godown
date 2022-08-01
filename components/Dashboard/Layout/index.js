@@ -6,8 +6,8 @@ import { useRouter } from "next/router";
 import Header from "../../Generic/Header";
 import Container from "../../Generic/Layout/Container";
 // code jsonify
-import SyntaxHighlighter from "react-syntax-highlighter";
-import a11yDark from "react-syntax-highlighter/dist/cjs/styles/hljs/a11y-dark";
+// import SyntaxHighlighter from "react-syntax-highlighter";
+// import a11yDark from "react-syntax-highlighter/dist/cjs/styles/hljs/a11y-dark";
 
 const DashboardLayout = ({
   children,
